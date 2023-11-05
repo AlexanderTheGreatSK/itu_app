@@ -1,13 +1,19 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:itu_app/Class/RoomType.dart';
+import 'package:itu_app/Database/RoomType.dart';
 import 'package:itu_app/Pages/AddNewRoom.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:itu_app/Widgets/ItemWidget.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
-  final document = await getApplicationDocumentsDirectory();
-  await Hive.initFlutter(document.path);
+  if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+    final document = await getApplicationDocumentsDirectory();
+    await Hive.initFlutter(document.path);
+  } else {
+    await Hive.initFlutter();
+  }
+
   await Hive.openBox('rooms');
   Hive.registerAdapter(RoomClassAdapter());
   runApp(const MyApp());
@@ -16,14 +22,12 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return const MaterialApp(
+      title: 'My home',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -31,12 +35,12 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  OurWidgets ourWidgets = OurWidgets();
 
   @override
   void initState() {
@@ -65,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      return getRoomWidget(snapshot.data!.getAt(index));
+                      return ourWidgets.roomWidget(snapshot.data!.getAt(index));
                     },
                   );
                 }
@@ -86,21 +90,6 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Create new room',
         backgroundColor: Colors.deepPurpleAccent,
         child: const Icon(Icons.add),
-      ),
-    );
-  }
-
-  Widget getRoomWidget(String name) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 50, top: 10, right: 100, bottom: 10.0),
-      child: Material(
-        elevation: 20,
-        child: Container(
-          height: 100,
-          child: Center(
-            child: Text(name, style: const TextStyle(fontSize: 45, fontWeight: FontWeight.bold),),
-          ),
-        ),
       ),
     );
   }

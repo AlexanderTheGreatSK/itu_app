@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-
-import '../Class/RoomType.dart';
-import '../Class/myEnum.dart';
+import 'package:itu_app/Database/DatabaseHandler.dart';
 
 const List<String> list = <String>['Living Room', 'Bedroom', 'Kitchen', 'Garden'];
 
@@ -15,14 +12,11 @@ class AddNewRoom extends StatefulWidget {
 
 class AddNewRoomState extends State<AddNewRoom> {
   TextEditingController textEditingController = TextEditingController();
+  DatabaseHandler databaseHandler = DatabaseHandler();
 
-  Future<void> addNewRoom() async {
-    print(textEditingController.text);
-    await Hive.box("rooms").add(textEditingController.text);
-  }
 
   void create() {
-    addNewRoom().then((value) {
+    databaseHandler.addNewRoom(textEditingController.text).then((value) {
       Navigator.pop(context);
     });
   }
@@ -47,12 +41,12 @@ class AddNewRoomState extends State<AddNewRoom> {
               cursorColor: Colors.deepPurpleAccent,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
+          const Padding(
+            padding: EdgeInsets.all(15.0),
+            child: SizedBox(
                 height: 60,
                 width: 200,
-                child: const DropdownButtonExample()),
+                child: DropdownButtonExample()),
           ),
           MaterialButton(
               color: Colors.deepPurpleAccent,
@@ -69,7 +63,6 @@ class AddNewRoomState extends State<AddNewRoom> {
 
 class DropdownButtonExample extends StatefulWidget {
   const DropdownButtonExample({super.key});
-
   @override
   State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
 }
@@ -89,7 +82,6 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
         color: Colors.deepPurpleAccent,
       ),
       onChanged: (String? value) {
-        // This is called when the user selects an item.
         setState(() {
           dropdownValue = value!;
         });
