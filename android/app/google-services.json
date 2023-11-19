@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "152393665335",
+    "project_id": "nashhouse-6656c",
+    "storage_bucket": "nashhouse-6656c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152393665335:android:136ea586b075c998f7a8b2",
+        "android_client_info": {
+          "package_name": "com.example.itu_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152393665335-pnvkvg510fudheejggp66niaecfh8210.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAren1fKq3QVfdxIl9WYsMiP651Px_TViI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152393665335-pnvkvg510fudheejggp66niaecfh8210.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "152393665335-efdp5l8sl6egba24pmd0q7lub4kbd9ha.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ituApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
