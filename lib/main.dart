@@ -1,18 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/RoomType.dart';
-import 'package:itu_app/Pages/AddNewRoom.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:itu_app/Pages/FridgePage.dart';
 import 'package:itu_app/Pages/HomePage.dart';
 import 'package:itu_app/Pages/ProblemsPage.dart';
 import 'package:itu_app/Pages/ReservationsPage.dart';
 import 'package:itu_app/Pages/ShoppingListPage.dart';
-import 'package:itu_app/Pages/TasksPage.dart';
 import 'package:itu_app/Widgets/ItemWidget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 
 import 'Pages/SignUpPage.dart';
 import 'firebase_options.dart';
@@ -29,7 +26,6 @@ Future<void> main() async {
   await Hive.openBox('rooms');
   Hive.registerAdapter(RoomClassAdapter());
 
-  print(DefaultFirebaseOptions.currentPlatform);
   if(Platform.isAndroid || Platform.isIOS) {
     await Firebase.initializeApp(name: "dev project", options: DefaultFirebaseOptions.currentPlatform);
   }
@@ -59,16 +55,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'My home',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        /*colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: deepPurple,
-        )*/
-      ),
-      home: const MyLoginPage(),
+      home: MyLoginPage(),
     );
   }
 }
@@ -109,17 +99,6 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
         title: const Text("My home", style: TextStyle(color: Colors.white)),
       ),
       body: pages[index],
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddNewRoom()),
-          );
-        },
-        tooltip: 'Create new room',
-        backgroundColor: Colors.deepPurpleAccent,
-        child: const Icon(Icons.add),
-      ),*/
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ClipRRect(
