@@ -3,9 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:itu_app/Database/RoomType.dart';
 import 'package:itu_app/Pages/AddNewRoom.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:itu_app/Pages/FridgePage.dart';
+import 'package:itu_app/Pages/HomePage.dart';
+import 'package:itu_app/Pages/ProblemsPage.dart';
+import 'package:itu_app/Pages/ReservationsPage.dart';
+import 'package:itu_app/Pages/ShoppingListPage.dart';
+import 'package:itu_app/Pages/TasksPage.dart';
 import 'package:itu_app/Widgets/ItemWidget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 
 import 'Pages/SignUpPage.dart';
 import 'firebase_options.dart';
@@ -34,25 +41,56 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static MaterialColor deepPurple = const MaterialColor(
+    0xFF9575CD,
+    <int, Color>{
+      50: Color(0xFFEDE7F6),
+      100: Color(0xFFD1C4E9),
+      200: Color(0xFFB39DDB),
+      300: Color(0xFF9575CD),
+      400: Color(0xFF7E57C2),
+      500: Color(0xFF673AB7),
+      600: Color(0xFF5E35B1),
+      700: Color(0xFF512DA8),
+      800: Color(0xFF4527A0),
+      900: Color(0xFF311B92),
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'My home',
       debugShowCheckedModeBanner: false,
-      home: MyLoginPage(),
+      theme: ThemeData(
+        useMaterial3: true,
+        /*colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: deepPurple,
+        )*/
+      ),
+      home: const MyLoginPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyBottomNavigationPage extends StatefulWidget {
+  const MyBottomNavigationPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyBottomNavigationPage> createState() => _MyBottomNavigationPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
   OurWidgets ourWidgets = OurWidgets();
+  List<Widget> pages = [const MyHomePage(), const MyShoppingListPage(), const MyReservationsPage(), const MyFridgePage(), const MyProblemsPage()];
+  List<bool> selectedPage = [true, false, false, false, false];
+  int index = 0;
+
+  void selectNewIndex(int newIndex) {
+    setState(() {
+      index = newIndex;
+    });
+  }
 
   @override
   void initState() {
@@ -62,37 +100,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
-        title: const Text("My home"),
+        title: const Text("My home", style: TextStyle(color: Colors.white)),
       ),
-      body: FutureBuilder<Box> (
-        future: Hive.openBox('rooms'),
-        builder: (context, AsyncSnapshot<Box> snapshot) {
-          if(snapshot.hasData) {
-            return ValueListenableBuilder<Box>(
-              valueListenable: Hive.box("rooms").listenable(),
-              builder: (context, Box<dynamic> box, widget) {
-                if(box.isEmpty) {
-                  return const Center(
-                    child: Text("No room created."),
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return ourWidgets.roomWidget(snapshot.data!.getAt(index));
-                    },
-                  );
-                }
-              },
-            );
-          } else {
-            return const CircularProgressIndicator(color: Colors.purpleAccent,);
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
+      body: pages[index],
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -102,6 +116,56 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Create new room',
         backgroundColor: Colors.deepPurpleAccent,
         child: const Icon(Icons.add),
+      ),*/
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30.0),
+          child: BottomAppBar(
+            elevation: 10.0,
+            color: Colors.deepPurpleAccent,
+            child: SizedBox(
+              height: 60,
+              child: Row(
+                children: [
+                  const Spacer(),
+                  customBottomNavBarItem(const Icon(Icons.home, color: Colors.white), "Home", 0),
+                  const Spacer(),
+                  customBottomNavBarItem(const Icon(Icons.list, color: Colors.white), "Shopping lists", 1),
+                  const Spacer(),
+                  customBottomNavBarItem(const Icon(Icons.access_time, color: Colors.white), "Reservations", 2),
+                  const Spacer(),
+                  customBottomNavBarItem(const Icon(Icons.kitchen_rounded, color: Colors.white), "Fridge", 3),
+                  const Spacer(),
+                  customBottomNavBarItem(const Icon(Icons.report, color: Colors.white), "Problems", 4),
+                  const Spacer(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget customBottomNavBarItem(Icon icon, String text, int newIndex) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            selectedPage[index] = false;
+            selectedPage[newIndex] = true;
+            index = newIndex;
+          });
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            (selectedPage[newIndex]) ? icon : SizedBox(width: 50, child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [icon])),
+            (selectedPage[newIndex]) ? Text(text, style: const TextStyle(color: Colors.white)) : Container(),
+          ],
+        ),
       ),
     );
   }

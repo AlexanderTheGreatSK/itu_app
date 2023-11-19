@@ -43,6 +43,7 @@ dependencies:
   firebase_auth: ^4.14.0
   http: ^1.1.0
   cloud_firestore: ^4.13.1
+  floating_bottom_navigation_bar: ^1.5.2
 
 dev_dependencies:
   flutter_test:

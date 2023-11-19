@@ -22,7 +22,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   void nextPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MyHomePage()),
+      MaterialPageRoute(builder: (context) => const MyBottomNavigationPage()),
     );
   }
 
