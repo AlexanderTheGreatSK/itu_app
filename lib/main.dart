@@ -102,6 +102,9 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.white
+        ),
         backgroundColor: Colors.deepPurpleAccent,
         title: const Text("My home", style: TextStyle(color: Colors.white)),
       ),
