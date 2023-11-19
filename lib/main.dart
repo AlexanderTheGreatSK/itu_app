@@ -1,16 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Database/RoomType.dart';
 import 'package:itu_app/Pages/AddNewRoom.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:itu_app/Widgets/ItemWidget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart' as http;
 
+import 'Pages/SignUpPage.dart';
 import 'firebase_options.dart';
 
 
@@ -62,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,38 +106,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-}
-
-class MyLoginPage extends StatefulWidget {
-  const MyLoginPage({super.key});
-
-  @override
-  State<MyLoginPage> createState() => _MyLoginPageState();
-}
-
-class _MyLoginPageState extends State<MyLoginPage> {
-  DatabaseHandler databaseHandler = DatabaseHandler();
-
-  Future<void> getData() async {
-    databaseHandler.getUsers().then((value) {
-      print(value);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("NashHouse"),
-      ),
-      body: Column(
-        children: [
-          MaterialButton(
-            onPressed: getData,
-            child: const Text("Test"),
-          )
-        ],
-      ),
-    );
-  }
 }
