@@ -5,4 +5,6 @@ class Room {
   late int roomId;
   late Image image;
   late int progressBarValue;
+
+  Room(this.name, this.roomId, this.image, this.progressBarValue);
 }

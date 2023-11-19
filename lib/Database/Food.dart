@@ -9,4 +9,6 @@ class Food {
   late Image image;
   late DateTime endDate;
   late DateTime createdDate;
+
+  Food(this.name, this.assignedUsers, this.private, this.image, this.endDate, this.createdDate);
 }

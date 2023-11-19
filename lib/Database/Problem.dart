@@ -12,4 +12,6 @@ class Problem {
   late List<Image> images;
   late DateTime created;
   late Room room;
+
+  Problem(this.title, this.details, this.assignedUsers, this.author, this.priority, this.images, this.created, this.room);
 }

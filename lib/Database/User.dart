@@ -5,4 +5,6 @@ class User {
   late String userId;
   late Image profilePicture;
   late int points;
+
+  User(this.username, this.userId, this.profilePicture, this.points);
 }

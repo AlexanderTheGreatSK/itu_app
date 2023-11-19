@@ -7,4 +7,6 @@ class ShoppingList {
   late List<ShoppingListItem> items;
   late List<User> assignedUsers;
   late String type; // TODO
+
+  ShoppingList(this.name, this.boughtItems, this.items, this.assignedUsers, this.type);
 }
