@@ -25,7 +25,7 @@ Future<void> main() async {
   } else {
     await Hive.initFlutter();
   }*/
-
+  WidgetsFlutterBinding.ensureInitialized();
   if(Platform.isAndroid || Platform.isIOS) {
     await Firebase.initializeApp(name: "dev project", options: DefaultFirebaseOptions.currentPlatform);
   }
