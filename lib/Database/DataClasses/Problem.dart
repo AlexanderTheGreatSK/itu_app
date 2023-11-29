@@ -6,8 +6,8 @@ import 'User.dart';
 class Problem {
   late String title;
   late String details;
-  late List<User> assignedUsers;
-  late User author;
+  late List<OurUser> assignedUsers;
+  late OurUser author;
   late int priority;
   late List<Image> images;
   late DateTime created;

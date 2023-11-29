@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-class User {
+class OurUser {
   late String username;
   late String userId;
-  late Image profilePicture;
+  late String profilePicture;
   late int points;
 
-  User(this.username, this.userId, this.profilePicture, this.points);
+  OurUser(this.username, this.userId, this.profilePicture, this.points);
 }

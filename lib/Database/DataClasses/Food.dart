@@ -4,7 +4,7 @@ import 'User.dart';
 
 class Food {
   late String name;
-  late List<User> assignedUsers;
+  late List<OurUser> assignedUsers;
   late bool private;
   late Image image;
   late DateTime endDate;
