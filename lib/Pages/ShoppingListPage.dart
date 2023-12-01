@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itu_app/Widgets/ListWidget.dart';
 
 class MyShoppingListPage extends StatefulWidget {
   const MyShoppingListPage({super.key});
@@ -12,21 +13,13 @@ class _MyShoppingListPageState extends State<MyShoppingListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          width: 400,
-          height: 300,
-          alignment: Alignment.topCenter,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          color: Colors.deepPurple,
-          child: const Text(
-            "SHOPPING LIST",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-            ),
-          ),
+        child: Column(
+          children: [
+            OurWidgets().listWidget("Grocery", "item"),
+            OurWidgets().listWidget("Household and cleaning", "item"),
+            OurWidgets().listWidget("Pet care", "item"),
+          ],
         ),
-
       ),
     );
   }
