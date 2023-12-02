@@ -45,6 +45,20 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: Divider(),
           ),
+          /*FutureBuilder(
+              future: databaseHandler.getShoppingLists(),
+              builder: (BuildContext context, AsyncSnapshot<List<ShoppingList>> snapshot) {
+              if(snapshot.hasData) {
+                print("HAS DATA");
+                print("LEN ${snapshot.data?.length}");
+                snapshot.data?[0].debugPrint();
+                return Text(snapshot.data!.length.toString());
+              } else {
+                print("NO DATA YET");
+                print("LEN ${snapshot.data?.length}");
+                return const CircularProgressIndicator();
+              }
+          })*/
         ],
       ),
     );

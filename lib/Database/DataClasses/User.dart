@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 class OurUser {
   late String username;
   late String userId;

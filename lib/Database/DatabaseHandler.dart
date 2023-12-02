@@ -57,17 +57,13 @@ class DatabaseHandler {
     }
   }
 
-  Future<OurUser?> getUserById(String userId) async {
+  Future<OurUser> getUserById(String userId) async {
     OurUser user;
 
     if(isMobilePlatform()) {
-      await FirebaseFirestore.instance.collection("users").doc(userId).get().then((snapshot) {
-        if(snapshot.exists) {
-          var userMap = snapshot.data(),
-          user = OurUser(userMap?["username"], userMap?["userId"], userMap?["profilePicture"], userMap?["points"]);
-          return user;
-        }
-      });
+      var snapshot = await FirebaseFirestore.instance.collection("users").doc(userId).get();
+      print(snapshot.data());
+      return OurUser(snapshot.data()?["username"], snapshot.data()?["userId"], snapshot.data()?["profilePicture"], snapshot.data()?["points"]);
     } else {
       Uri uri = Uri.https("firestore.googleapis.com", "v1/projects/nashhouse-6656c/databases/(default)/documents/users/$userId");
       var response = await http.get(uri);
@@ -75,7 +71,6 @@ class DatabaseHandler {
       user = OurUser(body["username"], body["userId"], body["profilePicture"], body["points"]);
       return user;
     }
-    return null;
   }
 
   bool isMobilePlatform() {
@@ -112,7 +107,6 @@ class DatabaseHandler {
           }
           String name = item.data()["name"];
           String type = item.data()["type"];
-
           shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type));
         }
       });
