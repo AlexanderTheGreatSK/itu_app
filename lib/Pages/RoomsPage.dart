@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hexagon/hexagon.dart';
+import '../Database/ImageHandler.dart';
 
 class MyRoomsPage extends StatefulWidget {
   const MyRoomsPage({super.key});
@@ -9,8 +11,9 @@ class MyRoomsPage extends StatefulWidget {
 }
 
 class _MyRoomsPageState extends State<MyRoomsPage> {
-  @override
+  ImageHandler imageHandler = ImageHandler();
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _buildMore(MediaQuery.of(context).size),
@@ -36,10 +39,23 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
 
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
-                    child: Image.network("https://firebasestorage.googleapis.com/v0/b/nashhouse-6656c.appspot.com/o/rooms%2F1.png?alt=media&token=bffe8928-ee44-4938-9bf0-3e56b7754920", fit: BoxFit.fitHeight),
+                    child: FutureBuilder<Uint8List?>(
+                      future: imageHandler.getRoomImage("1"),
+                      builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+                        if(snapshot.hasData) {
+                          return Image.memory(snapshot.data!);
+                        } else if(snapshot.hasError) {
+                          // if error show error.png
+                          print("Error");
+                          return Container();
+                        } else {
+                          return const CircularProgressIndicator(color: Colors.deepPurpleAccent);
+                        }
+                      }
+                      ),
+                    ),
                   ),
                 ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(0),
                 child: HexagonWidget.pointy(

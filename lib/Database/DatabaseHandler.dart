@@ -120,7 +120,8 @@ class DatabaseHandler {
           }
           String name = item.data()["name"];
           String type = item.data()["type"];
-          shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type));
+          bool private = item.data()["private"];
+          shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type, private));
         }
       });
     } else {
@@ -131,6 +132,7 @@ class DatabaseHandler {
         var fields = item["fields"];
         String name = fields["name"]["stringValue"];
         String type = fields["type"]["stringValue"];
+        bool private = fields["private"]["booleanValue"];
         List<String> items = [];
         List<String> boughtItems = [];
         List<OurUser> assignedUsers = [];
@@ -155,7 +157,7 @@ class DatabaseHandler {
           }
         }
 
-        shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type));
+        shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type, private));
       }
     }
 
