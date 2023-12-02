@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itu_app/Widgets/ListWidget.dart';
+import 'package:itu_app/Widgets/ListsWidget.dart';
 
 class MyShoppingListPage extends StatefulWidget {
   const MyShoppingListPage({super.key});
@@ -15,9 +15,10 @@ class _MyShoppingListPageState extends State<MyShoppingListPage> {
       body: Center(
         child: Column(
           children: [
-            OurWidgets().listWidget("Grocery", "item"),
-            OurWidgets().listWidget("Household and cleaning", "item"),
-            OurWidgets().listWidget("Pet care", "item"),
+            ListsWidgets().menuWidget(),
+            ListsWidgets().listWidget("Grocery", "item"),
+            ListsWidgets().listWidget("Household and cleaning", "item"),
+            ListsWidgets().listWidget("Pet care", "item"),
           ],
         ),
       ),
