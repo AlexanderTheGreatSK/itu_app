@@ -16,9 +16,9 @@ class _MyShoppingListPageState extends State<MyShoppingListPage> {
         child: Column(
           children: [
             ListsWidgets().menuWidget(),
-            ListsWidgets().listWidget("Grocery", "item"),
-            ListsWidgets().listWidget("Household and cleaning", "item"),
-            ListsWidgets().listWidget("Pet care", "item"),
+            ListsWidgets().listWidget("Grocery", "item", context),
+            ListsWidgets().listWidget("Household and cleaning", "item", context),
+            ListsWidgets().listWidget("Pet care", "item", context),
           ],
         ),
       ),
