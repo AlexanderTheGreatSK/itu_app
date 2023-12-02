@@ -45,42 +45,42 @@ class ListsWidgets {
   // widget pro jednotlive seznamy, zatim jen jmeno a ikona
   Widget listWidget(String name, String item, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
+      padding: const EdgeInsets.all(10),
       child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.deepPurple[300],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              name,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.deepPurple[300],
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
               ),
-            ),
-            IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    elevation: 10,
-                    showDragHandle: true,
-                    backgroundColor: Colors.deepPurple[300],
-                    builder: (BuildContext context) {
-                      return bottomBarWidget(context);
-                    });
-              },
-              icon: const Icon(
-                Icons.more_horiz,
-                color: Colors.white,
-                size: 30,
+              IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      elevation: 10,
+                      showDragHandle: true,
+                      backgroundColor: Colors.deepPurple[300],
+                      builder: (BuildContext context) {
+                        return bottomBarWidget(context);
+                      });
+                },
+                icon: const Icon(
+                  Icons.more_horiz,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
       ),
     );
   }
@@ -92,67 +92,67 @@ class ListsWidgets {
       child: const Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Icon(
-                Icons.edit,
-                color: Colors.white,
-                size: 35,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                ),
+                Text(
+                  "Rename",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              "Rename",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(
+                    Icons.change_circle,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                ),
+                Text(
+                  "Change category",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Icon(
-                Icons.change_circle,
-                color: Colors.white,
-                size: 35,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(
+                    Icons.delete_forever,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                ),
+                Text(
+                  "Delete List",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              "Change category",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Icon(
-                Icons.delete_forever,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),
-            Text(
-              "Delete List",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
-          ],
-        ),
-      ]),
+          ]),
     );
   }
 }
