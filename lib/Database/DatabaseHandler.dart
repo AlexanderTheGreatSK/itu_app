@@ -68,7 +68,8 @@ class DatabaseHandler {
       Uri uri = Uri.https("firestore.googleapis.com", "v1/projects/nashhouse-6656c/databases/(default)/documents/users/$userId");
       var response = await http.get(uri);
       Map body = jsonDecode(response.body);
-      user = OurUser(body["username"], body["userId"], body["profilePicture"], body["points"]);
+      body = body["fields"];
+      user = OurUser(body["username"]["stringValue"], body["userId"]["stringValue"], body["profilePicture"]["stringValue"], int.parse(body["points"]["integerValue"]));
       return user;
     }
   }
@@ -110,6 +111,40 @@ class DatabaseHandler {
           shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type));
         }
       });
+    } else {
+      Uri uri = Uri.https("firestore.googleapis.com", "v1/projects/nashhouse-6656c/databases/(default)/documents/shoppingLists");
+      var response = await http.get(uri);
+      Map data = json.decode(response.body);
+      for(var item in data["documents"]) {
+        var fields = item["fields"];
+        String name = fields["name"]["stringValue"];
+        String type = fields["type"]["stringValue"];
+        List<String> items = [];
+        List<String> boughtItems = [];
+        List<OurUser> assignedUsers = [];
+
+        var rawItems = fields["items"]["arrayValue"]["values"];
+        for(var item in rawItems) {
+          items.add(item["stringValue"]);
+        }
+        var rawBoughtItems = fields["boughtItems"]["arrayValue"];
+        if(rawBoughtItems.isNotEmpty) {
+          rawBoughtItems = rawBoughtItems["values"];
+          for(var item in rawBoughtItems) {
+            boughtItems.add(item["stringValue"]);
+          }
+        }
+
+        var rawUsers = fields["assignedUsers"]["arrayValue"];
+        if(rawUsers.isNotEmpty) {
+          rawUsers = rawUsers["values"];
+          for(var item in rawUsers) {
+            assignedUsers.add(await getUserById(item["stringValue"]));
+          }
+        }
+
+        shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type));
+      }
     }
 
     return shoppingLists;
