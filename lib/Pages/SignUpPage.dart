@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';
+import 'package:itu_app/Pages/BEtest.dart';
 import 'package:itu_app/Pages/NewUserPage.dart';
 import '../Database/DatabaseHandler.dart';
 import '../main.dart';
@@ -75,6 +76,14 @@ class _MyLoginPageState extends State<MyLoginPage> {
     );
   }
 
+
+  void toTestPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MyBEtestPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,6 +150,34 @@ class _MyLoginPageState extends State<MyLoginPage> {
                         child: Center(
                           child: Text(
                             "NEXT PAGE",
+                            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 25.0),
+                child: Material(
+                  elevation: 10.0,
+                  child: InkWell(
+                    onTap: toTestPage,
+                    child: Container(
+                      height: 150,
+                      width: 300,
+                      color: Colors.deepPurpleAccent,
+                      child: const Padding(
+                        padding: EdgeInsets.all(40),
+                        child: Center(
+                          child: Text(
+                            "TEST BE PAGE",
                             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                         ),
