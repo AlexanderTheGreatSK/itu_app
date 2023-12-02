@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itu_app/Pages/ListOverviewPage.dart';
 import 'package:itu_app/Widgets/ListsWidget.dart';
 
 class MyShoppingListPage extends StatefulWidget {
@@ -19,6 +20,8 @@ class _MyShoppingListPageState extends State<MyShoppingListPage> {
             ListsWidgets().listWidget("Grocery", "item", context),
             ListsWidgets().listWidget("Household and cleaning", "item", context),
             ListsWidgets().listWidget("Pet care", "item", context),
+            const ListOverviewPage(),
+            const ListOverviewPage(),
           ],
         ),
       ),
