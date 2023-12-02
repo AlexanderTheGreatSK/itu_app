@@ -43,11 +43,12 @@ class DatabaseHandler {
     List<OurUser> users = [];
 
     if(isMobilePlatform()) {
-      late String ret;
       await FirebaseFirestore.instance.collection("users").get().then((snapshot) {
         var docsMap = snapshot.docs;
         for(var item in docsMap) {
-          print(item);
+          print(item.data());
+          var data = item.data();
+          users.add(OurUser(data["username"], data["userId"], data["profilePicture"], data["points"]));
         }
       });
       return users;
