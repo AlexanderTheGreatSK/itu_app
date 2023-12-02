@@ -44,6 +44,7 @@ dependencies:
   http: ^1.1.0
   cloud_firestore: ^4.13.1
   google_sign_in: ^6.1.6
+  hexagon: ^0.2.0
 
 dev_dependencies:
   flutter_test:
