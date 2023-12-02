@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:itu_app/Pages/FridgePage.dart';
 import 'package:itu_app/Pages/HomePage.dart';
@@ -10,6 +11,7 @@ import 'package:itu_app/Widgets/ItemWidget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'Pages/ProfilePage.dart';
 import 'Pages/SignUpPage.dart';
 import 'Database/firebase_options.dart';
 
@@ -93,10 +95,32 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
       extendBody: true,
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.white
+          color: Colors.black
         ),
-        backgroundColor: Colors.deepPurpleAccent,
-        title: const Text("My home", style: TextStyle(color: Colors.white)),
+        title: const Text("Welcome home 👋", style: TextStyle(color: Colors.black)),
+        actions: [
+          RawMaterialButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyProfilePage()),
+              );
+            },
+            elevation: 2.0,
+            fillColor: const Color(0xFFF5F6F9),
+            shape: const CircleBorder(),
+            child: const CircleAvatar(
+              backgroundImage: NetworkImage("https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+          onPressed: (){
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
       body: pages[index],
       bottomNavigationBar: Padding(
