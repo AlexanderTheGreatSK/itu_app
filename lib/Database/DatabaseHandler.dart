@@ -1,15 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:hive/hive.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 import 'DataClasses/ShoppingList.dart';
-import 'DataClasses/ShoppingListItem.dart';
 import 'DataClasses/User.dart';
 
 class DatabaseHandler {
@@ -43,17 +39,32 @@ class DatabaseHandler {
     return exists;
   }
 
-  Future<String> getUsers() async {
+  Future<List<OurUser>> getUsers() async {
+    List<OurUser> users = [];
+
     if(isMobilePlatform()) {
       late String ret;
-      await FirebaseFirestore.instance.collection("users").limit(10).get().then((snapshot) {
-        ret = snapshot.docs.first.data().toString();
+      await FirebaseFirestore.instance.collection("users").get().then((snapshot) {
+        var docsMap = snapshot.docs;
+        for(var item in docsMap) {
+          print(item);
+        }
       });
-      return ret;
+      return users;
     } else {
       Uri uri = Uri.https("firestore.googleapis.com", "v1/projects/nashhouse-6656c/databases/(default)/documents/users");
       var response = await http.get(uri);
-      return response.body;
+      Map data = json.decode(response.body);
+      for(var item in data["documents"]) {
+        var fields = item["fields"];
+        String username = fields["username"]["stringValue"];
+        String profilePicture = fields["profilePicture"]["stringValue"];
+        int points = int.parse(fields["points"]["integerValue"]);
+        String userId = fields["userId"]["stringValue"];
+
+        users.add(OurUser(username, userId, profilePicture, points));
+      }
+      return users;
     }
   }
 
