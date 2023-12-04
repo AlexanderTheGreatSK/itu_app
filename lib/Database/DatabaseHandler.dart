@@ -1,19 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:hive/hive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
+import 'DataClasses/Room.dart';
 import 'DataClasses/ShoppingList.dart';
+import 'DataClasses/Task.dart';
 import 'DataClasses/User.dart';
 
 class DatabaseHandler {
 
-  Future<void> addNewRoom(String roomName) async {
-    await Hive.box("rooms").add(roomName);
+  bool isMobilePlatform() {
+    if(Platform.isIOS || Platform.isAndroid) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
+  // USER end-points--------------------------------------------------------------
   Future<void> createNewUser(OurUser user) async {
     final userMap = <String, dynamic> {
       "username" : user.username,
@@ -86,14 +92,7 @@ class DatabaseHandler {
     }
   }
 
-  bool isMobilePlatform() {
-    if(Platform.isIOS || Platform.isAndroid) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+  // SHOPPING LISTS end-points--------------------------------------------------------------
   Future<List<ShoppingList>> getShoppingLists() async {
     List<ShoppingList> shoppingLists = [];
 
@@ -162,5 +161,58 @@ class DatabaseHandler {
     }
 
     return shoppingLists;
+  }
+
+  // ROOMS end-points--------------------------------------------------------------
+  Future<void> createRoom(Room newRoom) async {
+    if(isMobilePlatform()) {
+      final dataMap = <String, dynamic> {
+        "name" : newRoom.name,
+        "imageId" : newRoom.imageId,
+        "progressBar" : newRoom.progressBarValue,
+      };
+
+      if(isMobilePlatform()) {
+        await FirebaseFirestore.instance.collection("rooms").doc(newRoom.name).set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+      }
+    } else {
+      // TODO
+    }
+  }
+
+  // ROOMS end-points--------------------------------------------------------------
+  Future<void> createTask(Task newTask) async {
+    if(isMobilePlatform()) {
+      List<String> userIds = [];
+
+      for(var user in newTask.assignedUsers) {
+        userIds.add(user.userId);
+      }
+
+      final dataMap = <String, dynamic> {
+        "name" : newTask.name,
+        "reward" : newTask.reward,
+        "days" : newTask.days,
+        "priority" : newTask.priority,
+        "taskIsDone" : newTask.taskIsDone,
+        "room" : newTask.room,
+        "lastDone" : newTask.lastDone,
+        "targetDate" : newTask.targetDate,
+        "assignedUsers" : userIds,
+      };
+
+      if(isMobilePlatform()) {
+        DocumentReference documentReference = FirebaseFirestore.instance.collection("tasks").doc();
+
+        documentReference.set(dataMap).then((value) async {
+          print(documentReference.id);
+          await FirebaseFirestore.instance.collection("rooms").doc(newTask.room).collection("roomTasks").doc(documentReference.id).set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+        }).onError((error, stackTrace) {
+          print("Error: $error, $stackTrace");
+        });
+      }
+    } else {
+      // TODO
+    }
   }
 }

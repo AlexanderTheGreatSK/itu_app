@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
+import 'package:itu_app/Pages/BEtestPages/CreateRoomPage.dart';
+
+import 'BEtestPages/CreateTaskPage.dart';
 
 class MyBEtestPage extends StatefulWidget {
   const MyBEtestPage({super.key});
@@ -70,20 +73,46 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: Divider(),
           ),
-          /*FutureBuilder(
-              future: databaseHandler.getShoppingLists(),
-              builder: (BuildContext context, AsyncSnapshot<List<ShoppingList>> snapshot) {
-              if(snapshot.hasData) {
-                print("HAS DATA");
-                print("LEN ${snapshot.data?.length}");
-                snapshot.data?[0].debugPrint();
-                return Text(snapshot.data!.length.toString());
-              } else {
-                print("NO DATA YET");
-                print("LEN ${snapshot.data?.length}");
-                return const CircularProgressIndicator();
-              }
-          })*/
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyCreateRoomPage()),
+              );
+            },
+            child: const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text("createRoom()"),
+                )
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Divider(),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyCreateTaskPage()),
+              );
+            },
+            child: const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text("createTask()"),
+                )
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Divider(),
+          ),
         ],
       ),
     );
