@@ -19,21 +19,26 @@ class _ListOverviewPage extends State<ListOverviewPage> {
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: InkWell(
             onTap: () {
-             setState(() {isActive = !isActive;});},
+              setState(() {
+                isActive = !isActive;
+              });
+            },
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.deepPurple[300],
-                borderRadius: isActive?
-                  const BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)):
-                  BorderRadius.circular(20),
+                borderRadius: isActive
+                    ? const BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20))
+                    : BorderRadius.circular(20),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                    const Text(
-                    "something",
-                    style:  TextStyle(
+                  const Text(
+                    "Candy",
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                     ),
@@ -44,7 +49,7 @@ class _ListOverviewPage extends State<ListOverviewPage> {
                           context: context,
                           elevation: 10,
                           showDragHandle: true,
-                          backgroundColor: Colors.deepPurple[300],
+                          backgroundColor: Colors.grey,
                           builder: (BuildContext context) {
                             return bottomBarWidget(context);
                           });
@@ -60,31 +65,29 @@ class _ListOverviewPage extends State<ListOverviewPage> {
             ),
           ),
         ),
-        if(isActive)
+        if (isActive)
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20)
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+              child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20)),
                   ),
-                ),
-                // tady budou jednotlive itemy a checboxy, musim to dat mimo po jednom
-              child: const Row(
-                children: [
+                  // tady budou jednotlive itemy a checboxy, musim to dat mimo po jednom
+                  child: const Row(
+                    children: [
                       Text(
-                      "banana",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                        "Banana",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),],
-                  )
-              )
-            ),
+                    ],
+                  ))),
       ],
     );
   }
@@ -159,5 +162,4 @@ class _ListOverviewPage extends State<ListOverviewPage> {
           ]),
     );
   }
-
 }

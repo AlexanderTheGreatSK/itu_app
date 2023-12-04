@@ -47,40 +47,40 @@ class ListsWidgets {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.deepPurple[300],
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.deepPurple[300],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              name,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
               ),
-              IconButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      elevation: 10,
-                      showDragHandle: true,
-                      backgroundColor: Colors.deepPurple[300],
-                      builder: (BuildContext context) {
-                        return bottomBarWidget(context);
-                      });
-                },
-                icon: const Icon(
-                  Icons.more_horiz,
-                  color: Colors.white,
-                  size: 30,
-                ),
+            ),
+            IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    elevation: 10,
+                    showDragHandle: true,
+                    backgroundColor: Colors.grey,
+                    builder: (BuildContext context) {
+                      return bottomBarWidget(context);
+                    });
+              },
+              icon: const Icon(
+                Icons.more_horiz,
+                color: Colors.white,
+                size: 30,
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
     );
   }
