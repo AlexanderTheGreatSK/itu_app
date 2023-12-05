@@ -180,14 +180,9 @@ class DatabaseHandler {
     }
   }
 
-  // ROOMS end-points--------------------------------------------------------------
+  // TASKS end-points--------------------------------------------------------------
   Future<void> createTask(Task newTask) async {
     if(isMobilePlatform()) {
-      List<String> userIds = [];
-
-      for(var user in newTask.assignedUsers) {
-        userIds.add(user.userId);
-      }
 
       final dataMap = <String, dynamic> {
         "name" : newTask.name,
@@ -198,7 +193,7 @@ class DatabaseHandler {
         "room" : newTask.room,
         "lastDone" : newTask.lastDone,
         "targetDate" : newTask.targetDate,
-        "assignedUsers" : userIds,
+        "assignedUsers" : newTask.assignedUsers,
       };
 
       if(isMobilePlatform()) {
@@ -213,6 +208,41 @@ class DatabaseHandler {
       }
     } else {
       // TODO
+    }
+  }
+
+  Future<List<Task>> getTasksForRoom(String roomName) async {
+    List<Task> tasks = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("rooms").doc(roomName).collection("roomTasks").get().then((snapshot) {
+        for(var docSnapshot in snapshot.docs) {
+          var data = docSnapshot.data();
+
+          Timestamp timestamp = data["lastDone"];
+          DateTime lastDone = timestamp.toDate();
+
+          timestamp = data["targetDate"];
+          DateTime targetDate = timestamp.toDate();
+
+          List<String> userIds = [];
+
+          for(var item in data["assignedUsers"]) {
+            userIds.add(item);
+          }
+
+          Task task = Task(data["name"], data["reward"], data["days"],
+              data["priority"], data["taskIsDone"], data["room"],
+              lastDone, targetDate, userIds);
+
+          tasks.add(task);
+        }
+      });
+
+      return tasks;
+    } else {
+      // TODO
+      return tasks;
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
+import 'package:itu_app/Database/DataClasses/Task.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Pages/BEtestPages/CreateRoomPage.dart';
@@ -32,6 +33,15 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
     for(OurUser user in users) {
       print("User $index ----------");
       user.debugPrint();
+    }
+  }
+
+  Future<void> getTasksForWC() async {
+    List<Task> wcTasks = await databaseHandler.getTasksForRoom("WC");
+    int index = 0;
+    for(var task in wcTasks) {
+      print("Task $index ----------");
+      task.debugPrint();
     }
   }
 
@@ -105,6 +115,21 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text("createTask()"),
+                )
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Divider(),
+          ),
+          InkWell(
+            onTap: getTasksForWC,
+            child: const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text("getTasksForRoom(WC)"),
                 )
               ],
             ),

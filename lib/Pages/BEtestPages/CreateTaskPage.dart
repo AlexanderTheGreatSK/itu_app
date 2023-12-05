@@ -25,9 +25,8 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
   TextEditingController roomController = TextEditingController();
 
   Future<void> crateNewTask() async {
-    List<OurUser> users = [];
-
-    users.add(await databaseHandler.getUserById(chosenID));
+    List<String> users = [];
+    users.add(chosenID);
 
     Task newTask = Task(nameController.text, int.parse(rewardController.text), int.parse(daysController.text), int.parse(priorityController.text), bool.parse(taskIsDoneController.text),
         roomController.text, DateTime.parse(lastDoneController.text), DateTime.parse(targetDateController.text), users);
