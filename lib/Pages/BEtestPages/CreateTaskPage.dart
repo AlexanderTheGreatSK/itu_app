@@ -15,6 +15,7 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
   DatabaseHandler databaseHandler = DatabaseHandler();
   String chosenID = "";
 
+  /// PLS do not be lazy as me and use FormTextField -> one controller for group of TextFields :))
   TextEditingController nameController = TextEditingController();
   TextEditingController daysController = TextEditingController();
   TextEditingController lastDoneController = TextEditingController();

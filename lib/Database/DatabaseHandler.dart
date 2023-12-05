@@ -102,7 +102,7 @@ class DatabaseHandler {
         for(var item in docsMap) {
           List<String> boughtItems = [];
           List<String> items = [];
-          List<OurUser> assignedUsers = [];
+          List<String> assignedUsers = [];
 
           for(var bItem in item.data()["boughtItems"]) {
             boughtItems.add(bItem);
@@ -112,11 +112,15 @@ class DatabaseHandler {
           }
 
           for(var user in item.data()["assignedUsers"]) {
+            assignedUsers.add(user);
+          }
+
+          /*for(var user in item.data()["assignedUsers"]) {
             OurUser? ourUser = await getUserById(user);
             if(ourUser != null) {
               assignedUsers.add(ourUser);
             }
-          }
+          }*/
           String name = item.data()["name"];
           String type = item.data()["type"];
           bool private = item.data()["private"];
@@ -134,7 +138,7 @@ class DatabaseHandler {
         bool private = fields["private"]["booleanValue"];
         List<String> items = [];
         List<String> boughtItems = [];
-        List<OurUser> assignedUsers = [];
+        List<String> assignedUsers = [];
 
         var rawItems = fields["items"]["arrayValue"]["values"];
         for(var item in rawItems) {
@@ -152,7 +156,7 @@ class DatabaseHandler {
         if(rawUsers.isNotEmpty) {
           rawUsers = rawUsers["values"];
           for(var item in rawUsers) {
-            assignedUsers.add(await getUserById(item["stringValue"]));
+            assignedUsers.add(item["stringValue"]);
           }
         }
 
@@ -161,6 +165,42 @@ class DatabaseHandler {
     }
 
     return shoppingLists;
+  }
+
+  Future<List<String>> getFavouriteShoppingItems(String categoryName) async {
+    List<String> items = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("items").doc(categoryName).get().then((snapshot) {
+        var data = snapshot.data();
+        for(var item in data!["items"]) {
+          items.add(item);
+        }
+      });
+      return items;
+    } else {
+      // TODO
+      return items;
+    }
+  }
+
+  Future<void> createNewShoppingList(ShoppingList newShoppingList) async {
+    if(isMobilePlatform()) {
+      final dataMap = <String, dynamic> {
+        "name" : newShoppingList.name,
+        "private" : newShoppingList.private,
+        "type" : newShoppingList.type,
+        "items" : newShoppingList.items,
+        "boughtItems" : newShoppingList.boughtItems,
+        "assignedUsers" : newShoppingList.assignedUsers,
+      };
+
+      if(isMobilePlatform()) {
+        await FirebaseFirestore.instance.collection("shoppingLists").doc().set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+      }
+    } else {
+      // TODO
+    }
   }
 
   // ROOMS end-points--------------------------------------------------------------
@@ -275,6 +315,7 @@ class DatabaseHandler {
       });
       return tasks;
     } else {
+      // TODO
       return tasks;
     }
   }

@@ -4,7 +4,7 @@ class ShoppingList {
   late String name;
   late List<String> boughtItems;
   late List<String> items;
-  late List<OurUser> assignedUsers;
+  late List<String> assignedUsers;
   late String type;
   late bool private;
 
@@ -19,9 +19,9 @@ class ShoppingList {
     print("Assigned users:");
 
     int index = 0;
-    for(OurUser user in assignedUsers) {
+    for(String user in assignedUsers) {
       print("User number $index --------");
-      user.debugPrint();
+      print(user);
       index++;
     }
   }

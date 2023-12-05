@@ -58,6 +58,15 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
     }
   }
 
+  Future<void> getFavouriteItems() async {
+    List<String> items = await databaseHandler.getFavouriteShoppingItems("drogery");
+    int index = 0;
+    for(var item in items) {
+      print("Item $index: $item");
+      index++;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,6 +167,21 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text("getTasksForUser(Alex)"),
+                )
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Divider(),
+          ),
+          InkWell(
+            onTap: getFavouriteItems,
+            child: const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text("getFavouriteItems(drogery)"),
                 )
               ],
             ),
