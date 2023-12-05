@@ -24,6 +24,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
     for(ShoppingList shoppingList in shoppingLists) {
       print("ShoppingList $index ----------");
       shoppingList.debugPrint();
+      index++;
     }
   }
 
@@ -33,6 +34,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
     for(OurUser user in users) {
       print("User $index ----------");
       user.debugPrint();
+      index++;
     }
   }
 
@@ -42,6 +44,17 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
     for(var task in wcTasks) {
       print("Task $index ----------");
       task.debugPrint();
+      index++;
+    }
+  }
+
+  Future<void> getTasksForAlex() async {
+    List<Task> alexTasks = await databaseHandler.getTaskForUser("ApWjem5KL7OekZhSToV1rBv99My1");
+    int index = 0;
+    for(var task in alexTasks) {
+      print("Task $index ----------");
+      task.debugPrint();
+      index++;
     }
   }
 
@@ -130,6 +143,21 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text("getTasksForRoom(WC)"),
+                )
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Divider(),
+          ),
+          InkWell(
+            onTap: getTasksForAlex,
+            child: const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text("getTasksForUser(Alex)"),
                 )
               ],
             ),
