@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:itu_app/Pages/TodayTasksPage.dart';
+import 'package:itu_app/Pages/WeekTasksPage.dart';
+
+import 'CalendarTasksPage.dart';
 
 class MyTasksPage extends StatefulWidget {
   const MyTasksPage({super.key});
@@ -11,8 +15,67 @@ class _MyTasksPageState extends State<MyTasksPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text("TASKS"),
+      body: TabBarTasksPage(),
+    );
+  }
+}
+
+class TabBarTasksPage extends StatefulWidget {
+  const TabBarTasksPage({super.key});
+
+  @override
+  State<TabBarTasksPage> createState() => _TabBarState();
+}
+
+class _TabBarState extends State<TabBarTasksPage>
+    with TickerProviderStateMixin {
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: Container(),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const <Widget>[
+            Tab(
+              text: "Today",
+            ),
+            Tab(
+              text: "Week",
+            ),
+            Tab(
+              text: "Calendar",
+            ),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: const <Widget>[
+          Center(
+            child: TodayTasksPage(),
+          ),
+          Center(
+            child: WeekTasksPage(),
+          ),
+          Center(
+            child: CalendarTasksPage(),
+          ),
+        ],
       ),
     );
   }
