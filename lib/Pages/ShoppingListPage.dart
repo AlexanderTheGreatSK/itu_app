@@ -20,14 +20,16 @@ class _MyShoppingListPageState extends State<MyShoppingListPage>
       initialIndex: 0,
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          leading: Container(),
-          bottom: const TabBar(
-            labelColor: Colors.purple,
-            tabs: <Widget>[
-              Tab(text: "FAMILY LISTS"),
-              Tab(text: "MY LISTS"),
-            ],
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50.0),
+          child: AppBar(
+            leading: Container(),
+            bottom: const TabBar(
+              tabs: <Widget>[
+                Tab(text: "FAMILY LISTS"),
+                Tab(text: "MY LISTS"),
+              ],
+            ),
           ),
         ),
         body: const TabBarView(
