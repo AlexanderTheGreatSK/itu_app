@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Pages/ListOverviewPage.dart';
 import 'package:itu_app/Widgets/ListsWidget.dart';
+import 'package:itu_app/Database/DatabaseHandler.dart';
 
 class MyShoppingListPage extends StatefulWidget {
   const MyShoppingListPage({super.key});
@@ -10,6 +12,8 @@ class MyShoppingListPage extends StatefulWidget {
 }
 
 class _MyShoppingListPageState extends State<MyShoppingListPage> {
+  DatabaseHandler databaseHandler = DatabaseHandler();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,11 +21,27 @@ class _MyShoppingListPageState extends State<MyShoppingListPage> {
         child: Column(
           children: [
             ListsWidgets().menuWidget(),
-            ListsWidgets().listWidget("Grocery", "item", context),
-            ListsWidgets()
-                .listWidget("Household and cleaning", "item", context),
-            ListsWidgets().listWidget("Pet care", "item", context),
-            const ListOverviewPage(),
+            FutureBuilder<List<ShoppingList>>(
+              future: databaseHandler.getShoppingLists(),
+              builder: (BuildContext context, AsyncSnapshot<List<ShoppingList>?> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      String? categoryName = snapshot.data?[index].name;
+                      return ListsWidgets().listWidget(categoryName!, "item", context);
+                    },
+                  );
+                } else if(snapshot.hasError) {
+                  // if error show error.png
+                  print("Error");
+                  return Container();
+                }else {
+                  return const CircularProgressIndicator(color: Colors.deepPurpleAccent);
+                }
+              },
+            ),
           ],
         ),
       ),
