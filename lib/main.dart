@@ -104,13 +104,11 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
           ),
         ],
       ),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-          onPressed: (){
-          },
-          child: const Icon(Icons.add),
-        ),
-      ),
+      /*floatingActionButton: FloatingActionButton(
+        onPressed: (){
+        },
+        child: const Icon(Icons.add),
+      ),*/
       body: pages[index],
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(10.0),
