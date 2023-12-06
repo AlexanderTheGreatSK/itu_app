@@ -102,7 +102,7 @@ class DatabaseHandler {
         for(var item in docsMap) {
           List<String> boughtItems = [];
           List<String> items = [];
-          List<String> assignedUsers = [];
+          List<OurUser> assignedUsers = [];
 
           for(var bItem in item.data()["boughtItems"]) {
             boughtItems.add(bItem);
@@ -115,12 +115,12 @@ class DatabaseHandler {
             assignedUsers.add(user);
           }
 
-          /*for(var user in item.data()["assignedUsers"]) {
+          for(var user in item.data()["assignedUsers"]) {
             OurUser? ourUser = await getUserById(user);
             if(ourUser != null) {
               assignedUsers.add(ourUser);
             }
-          }*/
+          }
           String name = item.data()["name"];
           String type = item.data()["type"];
           bool private = item.data()["private"];
@@ -138,7 +138,7 @@ class DatabaseHandler {
         bool private = fields["private"]["booleanValue"];
         List<String> items = [];
         List<String> boughtItems = [];
-        List<String> assignedUsers = [];
+        List<OurUser> assignedUsers = [];
 
         var rawItems = fields["items"]["arrayValue"]["values"];
         for(var item in rawItems) {
@@ -156,7 +156,7 @@ class DatabaseHandler {
         if(rawUsers.isNotEmpty) {
           rawUsers = rawUsers["values"];
           for(var item in rawUsers) {
-            assignedUsers.add(item["stringValue"]);
+            assignedUsers.add(await getUserById(item["stringValue"]));
           }
         }
 
@@ -185,6 +185,12 @@ class DatabaseHandler {
   }
 
   Future<void> createNewShoppingList(ShoppingList newShoppingList) async {
+    List<String> userId = [];
+
+    for(var user in newShoppingList.assignedUsers) {
+      userId.add(user.userId);
+    }
+
     if(isMobilePlatform()) {
       final dataMap = <String, dynamic> {
         "name" : newShoppingList.name,
@@ -192,7 +198,7 @@ class DatabaseHandler {
         "type" : newShoppingList.type,
         "items" : newShoppingList.items,
         "boughtItems" : newShoppingList.boughtItems,
-        "assignedUsers" : newShoppingList.assignedUsers,
+        "assignedUsers" : userId,
       };
 
       if(isMobilePlatform()) {

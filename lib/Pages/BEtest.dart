@@ -4,6 +4,7 @@ import 'package:itu_app/Database/DataClasses/Task.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Pages/BEtestPages/CreateRoomPage.dart';
+import 'package:itu_app/Pages/BEtestPages/CreateShoppingList.dart';
 
 import 'BEtestPages/CreateTaskPage.dart';
 
@@ -182,6 +183,26 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text("getFavouriteItems(drogery)"),
+                )
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Divider(),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyCreateShoppingListPage()),
+              );
+            },
+            child: const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text("createShoppingList()"),
                 )
               ],
             ),
