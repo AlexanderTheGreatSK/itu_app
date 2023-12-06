@@ -18,7 +18,7 @@ import 'Database/firebase_options.dart';
 
 Future<void> main() async {
 
-  /// Hive local database initialization is not needed at the moment
+  /// Hive local dataabse initialization is not needed at the moment
   /// maybe we will need it later for some setting or themes, idk
   /// so we can delete it later :D
   /*if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
@@ -115,13 +115,11 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
           ),
         ],
       ),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-          onPressed: (){
-          },
-          child: const Icon(Icons.add),
-        ),
-      ),
+      /*floatingActionButton: FloatingActionButton(
+        onPressed: (){
+        },
+        child: const Icon(Icons.add),
+      ),*/
       body: pages[index],
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(10.0),

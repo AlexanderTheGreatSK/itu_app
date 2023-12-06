@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexagon/hexagon.dart';
+import 'package:itu_app/Pages/AddNewRoom.dart';
 import '../Database/ImageHandler.dart';
 
 class MyRoomsPage extends StatefulWidget {
@@ -16,6 +17,15 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 100),
+        child: FloatingActionButton(
+          onPressed: (){
+            toAddNewRoomPage();
+          },
+          child: const Icon(Icons.add),
+        ),
+      ),
       body: _buildMore(MediaQuery.of(context).size),
     );
   }
@@ -68,7 +78,7 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
               ),
             ],
           ),
-          Row(
+          /*Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
@@ -107,9 +117,16 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
                 ),
               ),
             ],
-          ),
+          ),*/
         ],
       ),
+    );
+  }
+
+  void toAddNewRoomPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AddNewRoom()),
     );
   }
 }
