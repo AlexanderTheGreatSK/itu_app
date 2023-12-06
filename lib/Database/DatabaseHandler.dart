@@ -112,10 +112,6 @@ class DatabaseHandler {
           }
 
           for(var user in item.data()["assignedUsers"]) {
-            assignedUsers.add(user);
-          }
-
-          for(var user in item.data()["assignedUsers"]) {
             OurUser? ourUser = await getUserById(user);
             if(ourUser != null) {
               assignedUsers.add(ourUser);
@@ -204,6 +200,14 @@ class DatabaseHandler {
       if(isMobilePlatform()) {
         await FirebaseFirestore.instance.collection("shoppingLists").doc().set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
       }
+    } else {
+      // TODO
+    }
+  }
+
+  Future<void> addItemToShoppingList(String shoppingListName, String newItem) async {
+    if(isMobilePlatform()) {
+      //await FirebaseFirestore.instance.collection("shoppingLists").where("name", isEqualTo: shoppingListName).u
     } else {
       // TODO
     }
