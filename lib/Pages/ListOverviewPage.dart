@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 
 class ListOverviewPage extends StatefulWidget {
   const ListOverviewPage({super.key});
 
   @override
-  State<ListOverviewPage> createState() => _ListOverviewPage();
+  State<ListOverviewPage> createState() => _ListOverviewPage(list: []);
 }
 
 class _ListOverviewPage extends State<ListOverviewPage> {
+  final List<ShoppingList> list;
+
+  _ListOverviewPage({required this.list});
+
   DatabaseHandler databaseHandler = DatabaseHandler();
   bool isActive = false;
 
@@ -17,6 +22,7 @@ class _ListOverviewPage extends State<ListOverviewPage> {
     return listOverview(context);
   }
 
+  @override
   Widget listOverview(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -107,6 +113,7 @@ class _ListOverviewPage extends State<ListOverviewPage> {
   }
 
   // vyskakovaci obrazovka spodku
+  @override
   Widget bottomBarWidget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Pages/FamilyListPage.dart';
+import 'package:itu_app/Pages/MyListPage.dart';
 import 'package:itu_app/Pages/ListOverviewPage.dart';
 import 'package:itu_app/Widgets/ListsWidget.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
@@ -47,11 +48,3 @@ class _MyShoppingListPageState extends State<MyShoppingListPage>
   }
 }
 
-class MyListPage extends StatelessWidget {
-  const MyListPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text("My List Page");
-  }
-}
