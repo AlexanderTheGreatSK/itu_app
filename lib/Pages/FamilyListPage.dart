@@ -22,7 +22,8 @@ class _FamilyListPageState extends State<FamilyListPage> {
           children: [
             FutureBuilder<List<ShoppingList>>(
               future: databaseHandler.getShoppingLists(),
-              builder: (BuildContext context, AsyncSnapshot<List<ShoppingList>?> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<ShoppingList>?> snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     shrinkWrap: true,
@@ -31,12 +32,9 @@ class _FamilyListPageState extends State<FamilyListPage> {
                       return const ListOverviewPage();
                     },
                   );
-                } else if(snapshot.hasError) {
-                  // if error show error.png
-                  print("Error");
-                  return Container();
-                }else {
-                  return const CircularProgressIndicator(color: Colors.deepPurpleAccent);
+                } else {
+                  return const CircularProgressIndicator(
+                      color: Colors.deepPurpleAccent);
                 }
               },
             ),

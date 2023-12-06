@@ -14,7 +14,6 @@ class MyShoppingListPage extends StatefulWidget {
 
 class _MyShoppingListPageState extends State<MyShoppingListPage>
     with TickerProviderStateMixin {
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -25,7 +24,7 @@ class _MyShoppingListPageState extends State<MyShoppingListPage>
           leading: Container(),
           bottom: const TabBar(
             labelColor: Colors.purple,
-            tabs:  <Widget>[
+            tabs: <Widget>[
               Tab(text: "FAMILY LISTS"),
               Tab(text: "MY LISTS"),
             ],
