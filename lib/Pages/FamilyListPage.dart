@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Pages/ListOverviewPage.dart';
@@ -18,27 +20,36 @@ class _FamilyListPageState extends State<FamilyListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          children: [
-            FutureBuilder<List<ShoppingList>>(
-              future: databaseHandler.getShoppingLists(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<ShoppingList>?> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return const ListOverviewPage();
-                    },
-                  );
-                } else {
-                  return const CircularProgressIndicator(
-                      color: Colors.deepPurpleAccent);
-                }
-              },
+        child: Container(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FutureBuilder<List<ShoppingList>>(
+                  future: databaseHandler.getShoppingLists(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<ShoppingList>?> snapshot) {
+                    if (snapshot.hasData) {
+                      return Flexible(
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return const ListOverviewPage();
+                          },
+                        ),
+                      );
+                    } else {
+                      return const CircularProgressIndicator(
+                          color: Colors.deepPurpleAccent);
+                    }
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
