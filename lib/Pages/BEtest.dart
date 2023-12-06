@@ -3,6 +3,7 @@ import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Database/DataClasses/Task.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
+import 'package:itu_app/Database/ImageHandler.dart';
 import 'package:itu_app/Pages/BEtestPages/CreateRoomPage.dart';
 import 'package:itu_app/Pages/BEtestPages/CreateShoppingList.dart';
 
@@ -19,6 +20,7 @@ class MyBEtestPage extends StatefulWidget {
 class _MyBEtestPageState extends State<MyBEtestPage> {
 
   DatabaseHandler databaseHandler = DatabaseHandler();
+  ImageHandler imageHandler = ImageHandler();
 
   Future<void> getShoppingLists() async {
     List<ShoppingList> shoppingLists = await databaseHandler.getShoppingLists();
@@ -84,159 +86,170 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
       appBar: AppBar(
         title: const Text("BE tester"),
       ),
-      body: Column(
-        children: [
-          InkWell(
-            onTap: getShoppingLists,
-            child: const Row(
-              children: [
-                Padding(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            InkWell(
+              onTap: getShoppingLists,
+              child: const Row(
+                children: [
+                  Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text("getShoppingLists()"),
+                  )
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
+            ),
+            InkWell(
+              onTap: getAllUsers,
+              child: const Row(
+                children: [
+                  Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Text("getShoppingLists()"),
-                )
-              ],
+                    child: Text("getAllUsers()"),
+                  )
+                ],
+              ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Divider(),
-          ),
-          InkWell(
-            onTap: getAllUsers,
-            child: const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("getAllUsers()"),
-                )
-              ],
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Divider(),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MyCreateRoomPage()),
-              );
-            },
-            child: const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("createRoom()"),
-                )
-              ],
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyCreateRoomPage()),
+                );
+              },
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("createRoom()"),
+                  )
+                ],
+              ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Divider(),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MyCreateTaskPage()),
-              );
-            },
-            child: const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("createTask()"),
-                )
-              ],
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Divider(),
-          ),
-          InkWell(
-            onTap: getTasksForWC,
-            child: const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("getTasksForRoom(WC)"),
-                )
-              ],
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyCreateTaskPage()),
+                );
+              },
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("createTask()"),
+                  )
+                ],
+              ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Divider(),
-          ),
-          InkWell(
-            onTap: getTasksForAlex,
-            child: const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("getTasksForUser(Alex)"),
-                )
-              ],
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Divider(),
-          ),
-          InkWell(
-            onTap: getFavouriteItems,
-            child: const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("getFavouriteItems(drogery)"),
-                )
-              ],
+            InkWell(
+              onTap: getTasksForWC,
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("getTasksForRoom(WC)"),
+                  )
+                ],
+              ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Divider(),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MyCreateShoppingListPage()),
-              );
-            },
-            child: const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("createShoppingList()"),
-                )
-              ],
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Divider(),
-          ),
-          InkWell(
-            onTap: getAllRooms,
-            child: const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("getAllRooms()"),
-                )
-              ],
+            InkWell(
+              onTap: getTasksForAlex,
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("getTasksForUser(Alex)"),
+                  )
+                ],
+              ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Divider(),
-          ),
-        ],
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
+            ),
+            InkWell(
+              onTap: getFavouriteItems,
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("getFavouriteItems(drogery)"),
+                  )
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyCreateShoppingListPage()),
+                );
+              },
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("createShoppingList()"),
+                  )
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
+            ),
+            InkWell(
+              onTap: getAllRooms,
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("getAllRooms()"),
+                  )
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
+            ),
+            FutureBuilder(
+                future: imageHandler.getRoomImage("10"),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    return Image.memory(snapshot.data!, width: 50, height: 50);
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
+          ],
+        ),
       ),
     );
   }
