@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 class Room {
   late String name;
-  late int roomId;
-  late Image image;
+  late String imageId;
   late int progressBarValue;
 
-  Room(this.name, this.roomId, this.image, this.progressBarValue);
+  Room(this.name, this.imageId, this.progressBarValue);
 }

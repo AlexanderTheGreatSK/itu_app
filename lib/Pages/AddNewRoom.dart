@@ -16,9 +16,9 @@ class AddNewRoomState extends State<AddNewRoom> {
 
 
   void create() {
-    databaseHandler.addNewRoom(textEditingController.text).then((value) {
+    /*databaseHandler.addNewRoom(textEditingController.text).then((value) {
       Navigator.pop(context);
-    });
+    });*/
   }
 
   @override

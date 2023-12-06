@@ -1,19 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:hive/hive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
+import 'DataClasses/Room.dart';
 import 'DataClasses/ShoppingList.dart';
+import 'DataClasses/Task.dart';
 import 'DataClasses/User.dart';
 
 class DatabaseHandler {
 
-  Future<void> addNewRoom(String roomName) async {
-    await Hive.box("rooms").add(roomName);
+  bool isMobilePlatform() {
+    if(Platform.isIOS || Platform.isAndroid) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
+  // USER end-points--------------------------------------------------------------
   Future<void> createNewUser(OurUser user) async {
     final userMap = <String, dynamic> {
       "username" : user.username,
@@ -86,14 +92,7 @@ class DatabaseHandler {
     }
   }
 
-  bool isMobilePlatform() {
-    if(Platform.isIOS || Platform.isAndroid) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+  // SHOPPING LISTS end-points--------------------------------------------------------------
   Future<List<ShoppingList>> getShoppingLists() async {
     List<ShoppingList> shoppingLists = [];
 
@@ -110,6 +109,10 @@ class DatabaseHandler {
           }
           for(var nItem in item.data()["items"]) {
             items.add(nItem);
+          }
+
+          for(var user in item.data()["assignedUsers"]) {
+            assignedUsers.add(user);
           }
 
           for(var user in item.data()["assignedUsers"]) {
@@ -162,5 +165,164 @@ class DatabaseHandler {
     }
 
     return shoppingLists;
+  }
+
+  Future<List<String>> getFavouriteShoppingItems(String categoryName) async {
+    List<String> items = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("items").doc(categoryName).get().then((snapshot) {
+        var data = snapshot.data();
+        for(var item in data!["items"]) {
+          items.add(item);
+        }
+      });
+      return items;
+    } else {
+      // TODO
+      return items;
+    }
+  }
+
+  Future<void> createNewShoppingList(ShoppingList newShoppingList) async {
+    List<String> userId = [];
+
+    for(var user in newShoppingList.assignedUsers) {
+      userId.add(user.userId);
+    }
+
+    if(isMobilePlatform()) {
+      final dataMap = <String, dynamic> {
+        "name" : newShoppingList.name,
+        "private" : newShoppingList.private,
+        "type" : newShoppingList.type,
+        "items" : newShoppingList.items,
+        "boughtItems" : newShoppingList.boughtItems,
+        "assignedUsers" : userId,
+      };
+
+      if(isMobilePlatform()) {
+        await FirebaseFirestore.instance.collection("shoppingLists").doc().set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+      }
+    } else {
+      // TODO
+    }
+  }
+
+  // ROOMS end-points--------------------------------------------------------------
+  Future<void> createRoom(Room newRoom) async {
+    if(isMobilePlatform()) {
+      final dataMap = <String, dynamic> {
+        "name" : newRoom.name,
+        "imageId" : newRoom.imageId,
+        "progressBar" : newRoom.progressBarValue,
+      };
+
+      if(isMobilePlatform()) {
+        await FirebaseFirestore.instance.collection("rooms").doc(newRoom.name).set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+      }
+    } else {
+      // TODO
+    }
+  }
+
+  // TASKS end-points--------------------------------------------------------------
+  Future<void> createTask(Task newTask) async {
+    if(isMobilePlatform()) {
+
+      final dataMap = <String, dynamic> {
+        "name" : newTask.name,
+        "reward" : newTask.reward,
+        "days" : newTask.days,
+        "priority" : newTask.priority,
+        "taskIsDone" : newTask.taskIsDone,
+        "room" : newTask.room,
+        "lastDone" : newTask.lastDone,
+        "targetDate" : newTask.targetDate,
+        "assignedUsers" : newTask.assignedUsers,
+      };
+
+      if(isMobilePlatform()) {
+        DocumentReference documentReference = FirebaseFirestore.instance.collection("tasks").doc();
+
+        documentReference.set(dataMap).then((value) async {
+          print(documentReference.id);
+          await FirebaseFirestore.instance.collection("rooms").doc(newTask.room).collection("roomTasks").doc(documentReference.id).set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+        }).onError((error, stackTrace) {
+          print("Error: $error, $stackTrace");
+        });
+      }
+    } else {
+      // TODO
+    }
+  }
+
+  Future<List<Task>> getTasksForRoom(String roomName) async {
+    List<Task> tasks = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("rooms").doc(roomName).collection("roomTasks").get().then((snapshot) {
+        for(var docSnapshot in snapshot.docs) {
+          var data = docSnapshot.data();
+
+          Timestamp timestamp = data["lastDone"];
+          DateTime lastDone = timestamp.toDate();
+
+          timestamp = data["targetDate"];
+          DateTime targetDate = timestamp.toDate();
+
+          List<String> userIds = [];
+
+          for(var item in data["assignedUsers"]) {
+            userIds.add(item);
+          }
+
+          Task task = Task(data["name"], data["reward"], data["days"],
+              data["priority"], data["taskIsDone"], data["room"],
+              lastDone, targetDate, userIds);
+
+          tasks.add(task);
+        }
+      });
+
+      return tasks;
+    } else {
+      // TODO
+      return tasks;
+    }
+  }
+
+  Future<List<Task>> getTaskForUser(String userId) async {
+    List<Task> tasks = [];
+    if(isMobilePlatform()) {
+
+      await FirebaseFirestore.instance.collection("tasks").where("assignedUsers", arrayContains: userId).get().then((snapshot) {
+        for(var docSnapshot in snapshot.docs) {
+          var data = docSnapshot.data();
+
+          Timestamp timestamp = data["lastDone"];
+          DateTime lastDone = timestamp.toDate();
+
+          timestamp = data["targetDate"];
+          DateTime targetDate = timestamp.toDate();
+
+          List<String> userIds = [];
+
+          for(var item in data["assignedUsers"]) {
+            userIds.add(item);
+          }
+
+          Task task = Task(data["name"], data["reward"], data["days"],
+              data["priority"], data["taskIsDone"], data["room"],
+              lastDone, targetDate, userIds);
+
+          tasks.add(task);
+        }
+      });
+      return tasks;
+    } else {
+      // TODO
+      return tasks;
+    }
   }
 }
