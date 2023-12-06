@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'DataClasses/Room.dart';
 import 'DataClasses/ShoppingList.dart';
@@ -17,6 +18,29 @@ class DatabaseHandler {
     } else {
       return false;
     }
+  }
+
+  // LOCAL USER end-points--------------------------------------------------------------
+  Future<void> safeUserId(String userId) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("userId", userId);
+  }
+
+  Future<String> getCurrentUserId() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String userId = preferences.getString("userId")!;
+    return userId;
+  }
+
+  Future<OurUser> getCurrentUser() async {
+    String userId = await getCurrentUserId();
+    OurUser user = await getUserById(userId);
+    return user;
+  }
+
+  Future<bool> isUserSaved() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.containsKey("userId");
   }
 
   // USER end-points--------------------------------------------------------------
@@ -96,8 +120,10 @@ class DatabaseHandler {
   Future<List<ShoppingList>> getShoppingLists() async {
     List<ShoppingList> shoppingLists = [];
 
+    String userId = await getCurrentUserId();
+
     if(isMobilePlatform()) {
-      await FirebaseFirestore.instance.collection("shoppingLists").get().then((snapshot) async {
+      await FirebaseFirestore.instance.collection("shoppingLists").where("assignedUsers", arrayContains: userId).get().then((snapshot) async {
         var docsMap = snapshot.docs;
         for(var item in docsMap) {
           List<String> boughtItems = [];
@@ -207,7 +233,9 @@ class DatabaseHandler {
 
   Future<void> addItemToShoppingList(String shoppingListName, String newItem) async {
     if(isMobilePlatform()) {
-      //await FirebaseFirestore.instance.collection("shoppingLists").where("name", isEqualTo: shoppingListName).u
+      FirebaseFirestore.instance.collection("shoppingLists").where("name", isEqualTo: shoppingListName).get().then((snapshot) {
+        // TODO WIP
+      });
     } else {
       // TODO
     }
@@ -227,6 +255,23 @@ class DatabaseHandler {
       }
     } else {
       // TODO
+    }
+  }
+
+  Future<List<Room>> getRooms() async {
+    List<Room> rooms = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("rooms").get().then((snapshot) {
+        for(var doc in snapshot.docs) {
+          var data = doc.data();
+          rooms.add(Room(data["name"], data["imageId"], data["progressBar"]));
+        }
+      });
+      return rooms;
+    } else {
+      // todo
+      return rooms;
     }
   }
 

@@ -4,4 +4,10 @@ class Room {
   late int progressBarValue;
 
   Room(this.name, this.imageId, this.progressBarValue);
+
+  void debugPrint() {
+    print("Name: $name");
+    print("ImageId: $imageId");
+    print("ProgressBarValue: $progressBarValue");
+  }
 }

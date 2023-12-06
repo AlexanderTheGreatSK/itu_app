@@ -46,21 +46,24 @@ class _TabBarState extends State<TabBarTasksPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Container(),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const <Widget>[
-            Tab(
-              text: "Today",
-            ),
-            Tab(
-              text: "Week",
-            ),
-            Tab(
-              text: "Calendar",
-            ),
-          ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50.0),
+        child: AppBar(
+          leading: Container(),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const <Widget>[
+              Tab(
+                text: "Today",
+              ),
+              Tab(
+                text: "Week",
+              ),
+              Tab(
+                text: "Calendar",
+              ),
+            ],
+          ),
         ),
       ),
       body: TabBarView(
