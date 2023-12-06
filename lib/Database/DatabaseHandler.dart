@@ -233,7 +233,9 @@ class DatabaseHandler {
 
   Future<void> addItemToShoppingList(String shoppingListName, String newItem) async {
     if(isMobilePlatform()) {
-      //await FirebaseFirestore.instance.collection("shoppingLists").where("name", isEqualTo: shoppingListName).u
+      FirebaseFirestore.instance.collection("shoppingLists").where("name", isEqualTo: shoppingListName).get().then((snapshot) {
+        // TODO WIP
+      });
     } else {
       // TODO
     }
@@ -253,6 +255,23 @@ class DatabaseHandler {
       }
     } else {
       // TODO
+    }
+  }
+
+  Future<List<Room>> getRooms() async {
+    List<Room> rooms = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("rooms").get().then((snapshot) {
+        for(var doc in snapshot.docs) {
+          var data = doc.data();
+          rooms.add(Room(data["name"], data["imageId"], data["progressBar"]));
+        }
+      });
+      return rooms;
+    } else {
+      // todo
+      return rooms;
     }
   }
 
