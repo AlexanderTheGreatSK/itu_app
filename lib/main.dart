@@ -1,14 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:itu_app/Pages/FridgePage.dart';
 import 'package:itu_app/Pages/HomePage.dart';
 import 'package:itu_app/Pages/ProblemsPage.dart';
 import 'package:itu_app/Pages/ReservationsPage.dart';
 import 'package:itu_app/Pages/ShoppingListPage.dart';
 import 'package:itu_app/Widgets/ItemWidget.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'Pages/ProfilePage.dart';
@@ -18,15 +16,6 @@ import 'Database/firebase_options.dart';
 
 Future<void> main() async {
 
-  /// Hive local database initialization is not needed at the moment
-  /// maybe we will need it later for some setting or themes, idk
-  /// so we can delete it later :D
-  /*if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-    final document = await getApplicationDocumentsDirectory();
-    await Hive.initFlutter(document.path);
-  } else {
-    await Hive.initFlutter();
-  }*/
   WidgetsFlutterBinding.ensureInitialized();
   if(Platform.isAndroid || Platform.isIOS) {
     await Firebase.initializeApp(name: "dev project", options: DefaultFirebaseOptions.currentPlatform);
