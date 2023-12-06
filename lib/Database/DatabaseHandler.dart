@@ -261,16 +261,29 @@ class DatabaseHandler {
   Future<List<Room>> getRooms() async {
     List<Room> rooms = [];
 
-    if(isMobilePlatform()) {
-      await FirebaseFirestore.instance.collection("rooms").get().then((snapshot) {
-        for(var doc in snapshot.docs) {
+    if (isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("rooms").get().then((
+          snapshot) {
+        for (var doc in snapshot.docs) {
           var data = doc.data();
           rooms.add(Room(data["name"], data["imageId"], data["progressBar"]));
         }
       });
       return rooms;
     } else {
-      // todo
+      Uri uri = Uri.https("firestore.googleapis.com",
+          "v1/projects/nashhouse-6656c/databases/(default)/documents/rooms");
+      var response = await http.get(uri);
+      Map data = json.decode(response.body);
+      for (var item in data["documents"]) {
+        var fields = item["fields"];
+        print(fields);
+        String name = fields["name"]["stringValue"];
+        String imageId = fields["imageId"]["stringValue"];
+        int progressBar = int.parse(fields["progressBar"]["integerValue"]);
+
+        rooms.add(Room(name, imageId, progressBar));
+      }
       return rooms;
     }
   }

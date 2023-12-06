@@ -12,3 +12,5 @@ class ImageHandler {
     return imageData;
   }
 }
+
+// /b/nashhouse-6656c.appspot.com/o/rooms/10.png

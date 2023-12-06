@@ -44,64 +44,43 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
               List<Room> room = snapshot.data!;
               int oddRow = 0;
               int evenRow = 0;
+              double width = MediaQuery.of(context).size.width;
+              double height = MediaQuery.of(context).size.height;
 
+              double midWidth = width / 2;
 
-              return ListView.builder(
-                  itemCount: ((room.length / 3) * 2).round(),
-                  itemBuilder: (context, index) {
+              print("Height: $height");
+              print("Width: $width");
+              print("Width: $midWidth");
+              print(room[0].imageId);
 
-                  if(index.isEven){
-                    evenRow++;
-                    return Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FutureBuilder(
-                                  future: imageHandler.getRoomImage(room[index+oddRow].imageId),
-                                  builder: (context, snapshotImage) {
-                                    if (snapshotImage.hasData) {
-                                       return Image.memory(snapshotImage.data!, width: 180, height: 180);
-                                    } else {
-                                      return const Center(child: CircularProgressIndicator());
-                                    }
-                                  },
-                          ),
-                          FutureBuilder(
-                            future: imageHandler.getRoomImage(room[index+oddRow+1].imageId),
-                            builder: (context, snapshotImage) {
-                              if (snapshotImage.hasData) {
-                                return Image.memory(snapshotImage.data!, width: 180, height: 180);
-                              } else {
-                                return const Center(child: CircularProgressIndicator());
-                              }
-                            },
-                          )
-                        ],
+              return SingleChildScrollView(
+                child: SizedBox(
+                  height: 5000,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Positioned(
+                        child: roomWidget(room[0].imageId),
+                        width: midWidth - (midWidth/20),
+                        top: 10,
+                        right: midWidth - (midWidth/20),
                       ),
-                    );
-                  } else {
-                    oddRow++;
-                    return Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FutureBuilder(
-                            future: imageHandler.getRoomImage(room[index+evenRow].imageId),
-                            builder: (context, snapshotImage) {
-                              if (snapshotImage.hasData) {
-                                return Image.memory(snapshotImage.data!, width: 180, height: 180);
-                              } else {
-                                return const Center(child: CircularProgressIndicator());
-                              }
-                            },
-                          ),
-                        ],
+                      Positioned(
+                        child: roomWidget(room[1].imageId),
+                        width: midWidth - (midWidth/20),
+                        top: 10,
+                        left: midWidth - (midWidth/20),
                       ),
-                    );
-                  }
-              }
+                      Positioned(
+                        child: roomWidget(room[2].imageId),
+                        width : midWidth - (midWidth/20),
+                        top: (height/(5.5)),
+                      ),
+                    ],
+                  ),
+                ),
               );
             } else {
               return const Center(child: CircularProgressIndicator());
@@ -109,96 +88,19 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
           }
       ),
     );
-    /*var h = 220.0;
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: HexagonWidget.pointy(
-                  height: h,
-                  child: InkWell(
-                    onTap: () {
-                      const snackBar = SnackBar(content: Text('Living room'));
+  }
 
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    },
-                    child: FutureBuilder<Uint8List?>(
-                      future: imageHandler.getRoomImage("1"),
-                      builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-                        if(snapshot.hasData) {
-                          return Image.memory(snapshot.data!);
-                        } else if(snapshot.hasError) {
-                          // if error show error.png
-                          print("Error");
-                          return Container();
-                        } else {
-                          return const CircularProgressIndicator(color: Colors.deepPurpleAccent);
-                        }
-                      }
-                      ),
-                    ),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: HexagonWidget.pointy(
-                  height: h,
-                  child: InkWell(
-                    onTap: () {},
-                    child: Image.network("https://firebasestorage.googleapis.com/v0/b/nashhouse-6656c.appspot.com/o/rooms%2F2.png?alt=media&token=a7f4626e-2b9d-40f4-acd9-c95c42452121", fit: BoxFit.fitHeight),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: HexagonWidget.pointy(
-                  height: h,
-                  child: InkWell(
-                    onTap: () {},
-                    child: Image.network("https://firebasestorage.googleapis.com/v0/b/nashhouse-6656c.appspot.com/o/rooms%2F3.png?alt=media&token=888fdd79-9da8-4aaa-a304-a2b608e7577e", fit: BoxFit.fitHeight),
-                ),
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: HexagonWidget.pointy(
-                  height: h,
-                  child: InkWell(
-                    onTap: () {},
-                    child: Image.network("https://firebasestorage.googleapis.com/v0/b/nashhouse-6656c.appspot.com/o/rooms%2F4.png?alt=media&token=cac0881e-7534-4a8f-b08f-1e8e2568ba0e", fit: BoxFit.fitHeight),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: HexagonWidget.pointy(
-                  height: h,
-                  child: InkWell(
-                    onTap: () {},
-                    child: Image.network("https://firebasestorage.googleapis.com/v0/b/nashhouse-6656c.appspot.com/o/rooms%2F5.png?alt=media&token=ffd74039-2499-4854-8f33-1f6e9791e376", fit: BoxFit.fitHeight),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );*/
+  Widget roomWidget(String imageId) {
+    return FutureBuilder(
+      future: imageHandler.getRoomImage(imageId),
+      builder: (context, snapshotImage) {
+        if (snapshotImage.hasData) {
+          return InkWell(onTap: () {}, child: Image.memory(snapshotImage.data!));
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   void toAddNewRoomPage() {

@@ -86,6 +86,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
               )
             ],
           ),
+          (databaseHandler.isMobilePlatform()) ?
           FutureBuilder(
               future: databaseHandler.isUserSaved(),
               builder: (context, snapshot) {
@@ -98,7 +99,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 } else {
                   return const CircularProgressIndicator();
                 }
-              }),
+              }) : nextPageButton()
         ],
       ),
     );

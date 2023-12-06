@@ -240,10 +240,10 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
               child: Divider(),
             ),
             FutureBuilder(
-                future: imageHandler.getRoomImage("10"),
+                future: imageHandler.getRoomImage("5"),
                 builder: (context, snapshot) {
                   if(snapshot.hasData) {
-                    return Image.memory(snapshot.data!, width: 50, height: 50);
+                    return Image.memory(snapshot.data!, width: 250, height: 250);
                   } else {
                     return const Center(child: CircularProgressIndicator());
                   }
