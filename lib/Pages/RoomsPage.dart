@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexagon/hexagon.dart';
+import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Pages/AddNewRoom.dart';
+import '../Database/DataClasses/Room.dart';
 import '../Database/ImageHandler.dart';
 
 class MyRoomsPage extends StatefulWidget {
@@ -13,6 +15,7 @@ class MyRoomsPage extends StatefulWidget {
 
 class _MyRoomsPageState extends State<MyRoomsPage> {
   ImageHandler imageHandler = ImageHandler();
+  DatabaseHandler databaseHandler = DatabaseHandler();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,82 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
   }
 
   Widget _buildMore(Size size) {
-    var h = 220.0;
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: FutureBuilder(
+          future: databaseHandler.getRooms(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+
+              List<Room> room = snapshot.data!;
+              int oddRow = 0;
+              int evenRow = 0;
+
+
+              return ListView.builder(
+                  itemCount: ((room.length / 3) * 2).round(),
+                  itemBuilder: (context, index) {
+
+                  if(index.isEven){
+                    evenRow++;
+                    return Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FutureBuilder(
+                                  future: imageHandler.getRoomImage(room[index+oddRow].imageId),
+                                  builder: (context, snapshotImage) {
+                                    if (snapshotImage.hasData) {
+                                       return Image.memory(snapshotImage.data!, width: 180, height: 180);
+                                    } else {
+                                      return const Center(child: CircularProgressIndicator());
+                                    }
+                                  },
+                          ),
+                          FutureBuilder(
+                            future: imageHandler.getRoomImage(room[index+oddRow+1].imageId),
+                            builder: (context, snapshotImage) {
+                              if (snapshotImage.hasData) {
+                                return Image.memory(snapshotImage.data!, width: 180, height: 180);
+                              } else {
+                                return const Center(child: CircularProgressIndicator());
+                              }
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    oddRow++;
+                    return Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FutureBuilder(
+                            future: imageHandler.getRoomImage(room[index+evenRow].imageId),
+                            builder: (context, snapshotImage) {
+                              if (snapshotImage.hasData) {
+                                return Image.memory(snapshotImage.data!, width: 180, height: 180);
+                              } else {
+                                return const Center(child: CircularProgressIndicator());
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+              }
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }
+      ),
+    );
+    /*var h = 220.0;
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -78,7 +156,7 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
               ),
             ],
           ),
-          /*Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
@@ -117,10 +195,10 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
                 ),
               ),
             ],
-          ),*/
+          ),
         ],
       ),
-    );
+    );*/
   }
 
   void toAddNewRoomPage() {

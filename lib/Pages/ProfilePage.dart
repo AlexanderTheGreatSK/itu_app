@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itu_app/Pages/LeaderBoardPage.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -32,12 +33,26 @@ class _MyProfilePage extends State<MyProfilePage> {
         backgroundImage: NetworkImage("https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
   );
 
-  Widget profileContent() => const Column(
+  Widget profileContent() => Column(
     children: [
       Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Text("🏆 100 pt", style: TextStyle(fontSize: 30)),
+        padding: const EdgeInsets.all(8.0),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 30),
+            ),
+            onPressed: toLeaderBoardPage,
+            child: const Text("🏆 100 pt"),
+        //child: Text("🏆 100 pt", style: TextStyle(fontSize: 30)),
+        ),
       ),
     ],
   );
+
+  void toLeaderBoardPage() {
+  Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => const LeaderBoardPage()),
+  );
+  }
 }
