@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
+import 'package:itu_app/Database/DataClasses/User.dart';
 
 import '../../Database/DatabaseHandler.dart';
 
@@ -12,8 +13,14 @@ class MyCreateShoppingListPage extends StatefulWidget {
 
 class _MyCreateShoppingListPageState extends State<MyCreateShoppingListPage> {
   DatabaseHandler databaseHandler = DatabaseHandler();
-  String chosenID = "";
-
+  int chosenID = 0;
+  
+  List<OurUser> users = [
+    OurUser("Alexander", "ApWjem5KL7OekZhSToV1rBv99My1", "TODO", 0),
+    OurUser("Džejn", "4ZmwxEOSUBSXKnfiCzGmH8EaP1Z2", "TODO", 0),
+    OurUser("Elinka", "QYxII6KeZYNGBsAtEWVsKy57X2B3", "TODO", 0),
+  ];
+  
   /// PLS do not be lazy as me and use FormTextField -> one controller for group of TextFields :))
   TextEditingController nameController = TextEditingController();
   TextEditingController privateController = TextEditingController();
@@ -26,8 +33,8 @@ class _MyCreateShoppingListPageState extends State<MyCreateShoppingListPage> {
     List<String> boughtItems = [];
     boughtItems.add(boughtItemsController.text);
 
-    List<String> assignedUsers = [];
-    assignedUsers.add(chosenID);
+    List<OurUser> assignedUsers = [];
+    assignedUsers.add(users[chosenID]);
 
     List<String> items = [];
     items.add(itemsController.text);
@@ -65,7 +72,7 @@ class _MyCreateShoppingListPageState extends State<MyCreateShoppingListPage> {
                     border: OutlineInputBorder(),
                     labelText: "Private"
                 ),
-                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                keyboardType: TextInputType.text,
               ),
             ),
             Padding(
@@ -98,7 +105,7 @@ class _MyCreateShoppingListPageState extends State<MyCreateShoppingListPage> {
                     border: OutlineInputBorder(),
                     labelText: "BoughtItems"
                 ),
-                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                keyboardType: TextInputType.text,
               ),
             ),
             Padding(
@@ -109,11 +116,11 @@ class _MyCreateShoppingListPageState extends State<MyCreateShoppingListPage> {
                       padding: const EdgeInsets.all(10.0),
                       child: RadioListTile(
                           title: const Text("Alex"),
-                          value: "ApWjem5KL7OekZhSToV1rBv99My1",
+                          value: 0,
                           groupValue: chosenID,
                           onChanged: (newValue) {
                             setState(() {
-                              chosenID = newValue.toString();
+                              chosenID = newValue!;
                             });
                           }),
                     ),
@@ -121,11 +128,11 @@ class _MyCreateShoppingListPageState extends State<MyCreateShoppingListPage> {
                       padding: const EdgeInsets.all(10.0),
                       child: RadioListTile(
                           title: const Text("Džejn"),
-                          value: "4ZmwxEOSUBSXKnfiCzGmH8EaP1Z2",
+                          value: 1,
                           groupValue: chosenID,
                           onChanged: (newValue) {
                             setState(() {
-                              chosenID = newValue.toString();
+                              chosenID = newValue!;
                             });
                           }),
                     ),
@@ -133,11 +140,11 @@ class _MyCreateShoppingListPageState extends State<MyCreateShoppingListPage> {
                       padding: const EdgeInsets.all(10.0),
                       child: RadioListTile(
                           title: const Text("Elinka"),
-                          value: "QYxII6KeZYNGBsAtEWVsKy57X2B3",
+                          value: 2,
                           groupValue: chosenID,
                           onChanged: (newValue) {
                             setState(() {
-                              chosenID = newValue.toString();
+                              chosenID = newValue!;
                             });
                           }),
                     ),
