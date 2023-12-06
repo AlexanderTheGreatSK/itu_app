@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itu_app/Database/DatabaseHandler.dart';
 
 class ListOverviewPage extends StatefulWidget {
   const ListOverviewPage({super.key});
@@ -8,10 +9,15 @@ class ListOverviewPage extends StatefulWidget {
 }
 
 class _ListOverviewPage extends State<ListOverviewPage> {
+  DatabaseHandler databaseHandler = DatabaseHandler();
   bool isActive = false;
 
   @override
   Widget build(BuildContext context) {
+    return listOverview(context);
+  }
+
+  Widget listOverview(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -36,13 +42,21 @@ class _ListOverviewPage extends State<ListOverviewPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Candy",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
+                  FutureBuilder(
+                      future: databaseHandler.getShoppingLists(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if(snapshot.hasData) {
+                          return Text(
+                            snapshot.data[0].name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          );
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      }),
                   IconButton(
                     onPressed: () {
                       showModalBottomSheet(
@@ -162,4 +176,5 @@ class _ListOverviewPage extends State<ListOverviewPage> {
           ]),
     );
   }
+
 }

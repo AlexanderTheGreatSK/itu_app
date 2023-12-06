@@ -29,8 +29,7 @@ class _MyShoppingListPageState extends State<MyShoppingListPage> {
                     shrinkWrap: true,
                     itemCount: snapshot.data?.length,
                     itemBuilder: (BuildContext context, int index) {
-                      String? categoryName = snapshot.data?[index].name;
-                      return ListsWidgets().listWidget(categoryName!, "item", context);
+                      return const ListOverviewPage();
                     },
                   );
                 } else if(snapshot.hasError) {
