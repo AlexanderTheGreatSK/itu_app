@@ -6,6 +6,7 @@ import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Pages/BEtestPages/CreateRoomPage.dart';
 import 'package:itu_app/Pages/BEtestPages/CreateShoppingList.dart';
 
+import '../Database/DataClasses/Room.dart';
 import 'BEtestPages/CreateTaskPage.dart';
 
 class MyBEtestPage extends StatefulWidget {
@@ -66,6 +67,15 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
       print("Item $index: $item");
       index++;
     }
+  }
+
+  Future<void> getAllRooms() async {
+    List<Room> rooms = await databaseHandler.getRooms();
+
+    for(var room in rooms) {
+      room.debugPrint();
+    }
+
   }
 
   @override
@@ -203,6 +213,21 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text("createShoppingList()"),
+                )
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Divider(),
+          ),
+          InkWell(
+            onTap: getAllRooms,
+            child: const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text("getAllRooms()"),
                 )
               ],
             ),
