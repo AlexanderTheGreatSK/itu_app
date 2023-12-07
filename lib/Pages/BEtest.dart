@@ -53,7 +53,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
   }
 
   Future<void> getTasksForAlex() async {
-    List<Task> alexTasks = await databaseHandler.getTaskForUser("ApWjem5KL7OekZhSToV1rBv99My1");
+    List<Task> alexTasks = await databaseHandler.getTaskForUser();
     int index = 0;
     for(var task in alexTasks) {
       print("Task $index ----------");
@@ -180,7 +180,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Text("getTasksForUser(Alex)"),
+                    child: Text("getTasksForUser(actualUser)"),
                   )
                 ],
               ),

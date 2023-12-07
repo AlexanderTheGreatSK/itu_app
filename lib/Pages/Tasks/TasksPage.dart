@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:itu_app/Pages/TodayTasksPage.dart';
-import 'package:itu_app/Pages/WeekTasksPage.dart';
+import 'package:itu_app/Pages/Tasks/TodayTasksPage.dart';
+import 'package:itu_app/Pages/Tasks/WeekTasksPage.dart';
 
 import 'CalendarTasksPage.dart';
 
