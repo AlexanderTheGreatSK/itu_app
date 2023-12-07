@@ -91,7 +91,8 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
   }
 
   Widget roomWidget(String imageId) {
-    return FutureBuilder(
+    return Image.asset(imageHandler.getLocalImage(imageId));
+    /*return FutureBuilder(
       future: imageHandler.getRoomImage(imageId),
       builder: (context, snapshotImage) {
         if (snapshotImage.hasData) {
@@ -100,7 +101,7 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
           return const Center(child: CircularProgressIndicator());
         }
       },
-    );
+    );*/
   }
 
   void toAddNewRoomPage() {

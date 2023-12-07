@@ -11,6 +11,10 @@ class ImageHandler {
     Uint8List? imageData = await FirebaseStorage.instance.ref("rewards/$imageId.png").getData();
     return imageData;
   }
+
+  String getLocalImage(String imageId) {
+    return "res/images/$imageId.png";
+  }
 }
 
 // /b/nashhouse-6656c.appspot.com/o/rooms/10.png
