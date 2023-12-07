@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hexagon/hexagon.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Pages/AddNewRoom.dart';
+import 'package:itu_app/Pages/BEtestPages/CreateRoomPage.dart';
 import '../Database/DataClasses/Room.dart';
 import '../Database/ImageHandler.dart';
 
@@ -35,53 +36,68 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
 
   Widget _buildMore(Size size) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10),
       child: FutureBuilder(
           future: databaseHandler.getRooms(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
 
-              List<Room> room = snapshot.data!;
-              int oddRow = 0;
-              int evenRow = 0;
+              List<Room> rooms = snapshot.data!;
+
               double width = MediaQuery.of(context).size.width;
-              double height = MediaQuery.of(context).size.height;
 
               double midWidth = width / 2;
 
-              print("Height: $height");
-              print("Width: $width");
-              print("Width: $midWidth");
-              print(room[0].imageId);
+              List<Widget> stackChildren = [];
+              int numberOfRows = ((rooms.length / 3) * 2).round();
+              int evenRow = 0;
+              int oddRow = 0;
+
+
+              for(int i = 0; i < numberOfRows; i++) {
+                if(i.isEven) {
+                  evenRow++;
+
+                  Widget positioned1 = Positioned(
+                    child: roomWidget(rooms[i+oddRow].imageId),
+                    width: midWidth - (midWidth/20),
+                    top: (midWidth - (midWidth/20)*5) * (i),
+                    right: midWidth - (midWidth/20),
+                  );
+                  stackChildren.add(positioned1);
+
+                  if(i+oddRow+1 < rooms.length) {
+                    Widget positioned2 = Positioned(
+                      child: roomWidget(rooms[i+oddRow+1].imageId),
+                      width: midWidth - (midWidth/20),
+                      top: (midWidth - (midWidth/20)*5) * (i),
+                      left: midWidth - (midWidth/20),
+                    );
+
+                    stackChildren.add(positioned2);
+                  }
+                } else {
+                  oddRow++;
+                  Widget positioned = Positioned(
+                    child: roomWidget(rooms[i+evenRow].imageId),
+                    width: midWidth - (midWidth/20),
+                    top:(midWidth - (midWidth/20)*5) * (i),
+                  );
+                  stackChildren.add(positioned);
+                }
+              }
 
               return SingleChildScrollView(
                 child: SizedBox(
-                  height: 5000,
+                  height: (midWidth - (midWidth/20)*5) * (numberOfRows + 1),
                   child: Stack(
                     fit: StackFit.expand,
                     alignment: AlignmentDirectional.center,
-                    children: [
-                      Positioned(
-                        child: roomWidget(room[0].imageId),
-                        width: midWidth - (midWidth/20),
-                        top: 10,
-                        right: midWidth - (midWidth/20),
-                      ),
-                      Positioned(
-                        child: roomWidget(room[1].imageId),
-                        width: midWidth - (midWidth/20),
-                        top: 10,
-                        left: midWidth - (midWidth/20),
-                      ),
-                      Positioned(
-                        child: roomWidget(room[2].imageId),
-                        width : midWidth - (midWidth/20),
-                        top: (height/(5.5)),
-                      ),
-                    ],
+                    children: stackChildren,
                   ),
                 ),
               );
+
             } else {
               return const Center(child: CircularProgressIndicator());
             }
@@ -107,7 +123,7 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
   void toAddNewRoomPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AddNewRoom()),
+      MaterialPageRoute(builder: (context) => const MyCreateRoomPage()),
     );
   }
 }
