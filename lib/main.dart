@@ -116,7 +116,7 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
           borderRadius: BorderRadius.circular(30.0),
           child: BottomAppBar(
             elevation: 10.0,
-            color: Colors.deepPurpleAccent,
+            color: Colors.deepPurple[300],
             child: SizedBox(
               height: 60,
               child: Row(

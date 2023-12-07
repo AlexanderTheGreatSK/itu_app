@@ -27,7 +27,11 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
           onPressed: (){
             toAddNewRoomPage();
           },
-          child: const Icon(Icons.add),
+          backgroundColor: Colors.deepPurple[300],
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0))
+          ),
+          child: const Icon(Icons.add, color: Colors.white,),
         ),
       ),
       body: _buildMore(MediaQuery.of(context).size),
