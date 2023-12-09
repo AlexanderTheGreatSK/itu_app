@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:itu_app/Database/DataClasses/FrequencyUnits.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:itu_app/Database/DataClasses/Task.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';
@@ -23,9 +24,17 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
   double currentSliderValue = 5;
   List<DropdownMenuEntry<String>> entries = [];
   String chosenRoom = "";
+  String chosenFrequencyUnit = "";
   bool loadingRooms = true;
   DateTime lastDoneDate = DateTime.now();
   String formatedLastDoneDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
+  List<DropdownMenuEntry<String>> frequencyEntries = [
+    const DropdownMenuEntry(value: "1", label: "Day"),
+    const DropdownMenuEntry(value: "7", label: "Week"),
+    const DropdownMenuEntry(value: "31", label: "Month"),
+    const DropdownMenuEntry(value: "365", label: "Year"),
+  ];
+
 
   /// PLS do not be lazy as me and use FormTextField -> one controller for group of TextFields :))
   TextEditingController nameController = TextEditingController();
@@ -167,6 +176,55 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
                 ),
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 150,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: TextField(
+                        controller: daysController,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: "Frequency",
+                            labelStyle: TextStyle(color: Colors.deepPurple[400]),
+                            fillColor: Colors.grey[300],
+                            filled: true,
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+                      ),
+                    ),
+                  ),
+                ),
+                //const Spacer(),
+                Expanded(
+                  child: DropdownMenu<String>(
+                    label: const Text("Frequency units"),
+                    inputDecorationTheme: InputDecorationTheme(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[300],
+                      labelStyle: TextStyle(color: Colors.deepPurple[400]),
+                      alignLabelWithHint: true
+                    ),
+                    trailingIcon: Icon(Icons.arrow_drop_down, color: Colors.deepPurple[400]),
+                    dropdownMenuEntries: frequencyEntries,
+                    onSelected: (String? value) {
+                      setState(() {
+                        chosenFrequencyUnit = value!;
+                        print(chosenFrequencyUnit);
+                      });
+                    },
+                  ),
+                )
+              ],
+            ),
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -206,134 +264,6 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
                     ],
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                controller: daysController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Days"
-                ),
-                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                controller: lastDoneController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "LastDoneDate"
-                ),
-                keyboardType: TextInputType.text,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                controller: targetDateController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "TargetDate"
-                ),
-                keyboardType: TextInputType.text,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                controller: priorityController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Priority"
-                ),
-                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                controller: rewardController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Reward"
-                ),
-                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                controller: taskIsDoneController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "TaskIsDone"
-                ),
-                keyboardType: TextInputType.text,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                controller: roomController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Room"
-                ),
-                keyboardType: TextInputType.text,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: RadioListTile(
-                        title: const Text("Alex"),
-                        value: "ApWjem5KL7OekZhSToV1rBv99My1",
-                        groupValue: chosenID,
-                        onChanged: (newValue) {
-                          setState(() {
-                            chosenID = newValue.toString();
-                          });
-                        }),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: RadioListTile(
-                        title: const Text("Džejn"),
-                        value: "4ZmwxEOSUBSXKnfiCzGmH8EaP1Z2",
-                        groupValue: chosenID,
-                        onChanged: (newValue) {
-                          setState(() {
-                            chosenID = newValue.toString();
-                          });
-                        }),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: RadioListTile(
-                        title: const Text("Elinka"),
-                        value: "QYxII6KeZYNGBsAtEWVsKy57X2B3",
-                        groupValue: chosenID,
-                        onChanged: (newValue) {
-                          setState(() {
-                            chosenID = newValue.toString();
-                          });
-                        }),
-                  ),
-                ],
-              )
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: MaterialButton(
-                onPressed: crateNewTask,
-                color: Colors.lightGreenAccent,
-                child: const Text("Create"),
               ),
             ),
           ],
