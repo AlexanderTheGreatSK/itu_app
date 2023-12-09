@@ -44,6 +44,8 @@ dependencies:
   hexagon: ^0.2.0
   firebase_storage: ^11.5.3
   shared_preferences: ^2.2.2
+  shimmer: ^3.0.0
+  syncfusion_flutter_datepicker: ^23.2.7
 
 dev_dependencies:
   flutter_test:

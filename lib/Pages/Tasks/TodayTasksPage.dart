@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
+import 'package:itu_app/Pages/Tasks/TaskDetails.dart';
 
 import '../../Database/DataClasses/Task.dart';
 
@@ -33,7 +34,7 @@ class _TodayTasksPage extends State<TodayTasksPage> {
             );
           }
         },
-      )
+      ),
     );
   }
 
@@ -68,7 +69,10 @@ class _TodayTasksPage extends State<TodayTasksPage> {
             borderRadius: BorderRadius.circular(15.0),
             child: InkWell(
               onTap: () {
-                print("YAY");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TaskDetailsPage(task: task)),
+                );
               },
               child: Container(
                 height: 70,
@@ -93,15 +97,18 @@ class _TodayTasksPage extends State<TodayTasksPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(right: 10.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Material(
-                              elevation: 10.0,
-                              child: Container(
-                                color: Colors.deepPurple[300],
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 10.0, right: 10.0),
-                                  child: Text("🏆 ${task.reward}", style: const TextStyle(color: Colors.white),),
+                          child: InkWell(
+                            onTap: () {},
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Material(
+                                elevation: 10.0,
+                                child: Container(
+                                  color: Colors.deepPurple[300],
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 10.0, right: 10.0),
+                                    child: Text("🏆 ${task.reward}", style: const TextStyle(color: Colors.white),),
+                                  ),
                                 ),
                               ),
                             ),

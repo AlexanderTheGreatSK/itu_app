@@ -8,7 +8,7 @@ import 'package:itu_app/Pages/BEtestPages/CreateRoomPage.dart';
 import 'package:itu_app/Pages/BEtestPages/CreateShoppingList.dart';
 
 import '../Database/DataClasses/Room.dart';
-import 'BEtestPages/CreateTaskPage.dart';
+import 'Tasks/CreateTaskPage.dart';
 
 class MyBEtestPage extends StatefulWidget {
   const MyBEtestPage({super.key});
