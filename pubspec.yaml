@@ -44,6 +44,7 @@ dependencies:
   hexagon: ^0.2.0
   firebase_storage: ^11.5.3
   shared_preferences: ^2.2.2
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
