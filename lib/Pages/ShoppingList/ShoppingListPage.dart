@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
-import 'package:itu_app/Pages/FamilyListPage.dart';
-import 'package:itu_app/Pages/MyListPage.dart';
-import 'package:itu_app/Pages/ListOverviewPage.dart';
-import 'package:itu_app/Widgets/ListsWidget.dart';
+import 'package:itu_app/Pages/ShoppingList/FamilyListPage.dart';
+import 'package:itu_app/Pages/ShoppingList/MyListPage.dart';
+import 'package:itu_app/Pages/ShoppingList/ListOverviewPage.dart';
+import 'package:itu_app/Pages/ShoppingList/ListsWidget.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 
 class MyShoppingListPage extends StatefulWidget {
