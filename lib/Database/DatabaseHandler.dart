@@ -354,7 +354,9 @@ class DatabaseHandler {
     }
   }
 
-  Future<List<Task>> getTaskForUser(String userId) async {
+  Future<List<Task>> getTaskForUser() async {
+    String userId = await getCurrentUserId();
+
     List<Task> tasks = [];
     if(isMobilePlatform()) {
 
