@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Pages/ShoppingList/FamilyListPage.dart';
 import 'package:itu_app/Pages/ShoppingList/MyListPage.dart';
-import 'package:itu_app/Pages/ShoppingList/ListOverviewPage.dart';
-import 'package:itu_app/Pages/ShoppingList/ListsWidget.dart';
-import 'package:itu_app/Database/DatabaseHandler.dart';
+
 
 class MyShoppingListPage extends StatefulWidget {
   const MyShoppingListPage({super.key});

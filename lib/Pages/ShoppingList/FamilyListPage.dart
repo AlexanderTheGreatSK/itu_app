@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
-import 'package:itu_app/Pages/ShoppingList/ListOverviewPage.dart';
-import 'package:itu_app/Pages/ShoppingList/ListsWidget.dart';
+import 'package:itu_app/Pages/ShoppingList/ListWidget.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 
 class FamilyListPage extends StatefulWidget {

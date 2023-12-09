@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
-import 'package:itu_app/Database/DatabaseHandler.dart';
 
 class ListOverviewPage extends StatefulWidget {
   const ListOverviewPage({super.key, required this.list});
