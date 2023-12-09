@@ -3,27 +3,19 @@ import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 
 class ListOverviewPage extends StatefulWidget {
-  const ListOverviewPage({super.key});
+  const ListOverviewPage({super.key, required this.list});
+  final ShoppingList list;
 
   @override
-  State<ListOverviewPage> createState() => _ListOverviewPage(list: []);
+  State<ListOverviewPage> createState() => _ListOverviewPage();
 }
 
 class _ListOverviewPage extends State<ListOverviewPage> {
-  final List<ShoppingList> list;
 
-  _ListOverviewPage({required this.list});
-
-  DatabaseHandler databaseHandler = DatabaseHandler();
   bool isActive = false;
 
   @override
   Widget build(BuildContext context) {
-    return listOverview(context);
-  }
-
-  @override
-  Widget listOverview(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -48,21 +40,13 @@ class _ListOverviewPage extends State<ListOverviewPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FutureBuilder(
-                      future: databaseHandler.getShoppingLists(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if(snapshot.hasData) {
-                          return Text(
-                            snapshot.data[0].name,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          );
-                        } else {
-                          return const CircularProgressIndicator();
-                        }
-                      }),
+                  Text(
+                    widget.list.name,
+                    style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    ),
+                  ),
                   IconButton(
                     onPressed: () {
                       showModalBottomSheet(
@@ -113,7 +97,6 @@ class _ListOverviewPage extends State<ListOverviewPage> {
   }
 
   // vyskakovaci obrazovka spodku
-  @override
   Widget bottomBarWidget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),

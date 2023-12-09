@@ -19,38 +19,22 @@ class _FamilyListPageState extends State<FamilyListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          alignment: Alignment.topCenter,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FutureBuilder<List<ShoppingList>>(
-                  future: databaseHandler.getShoppingLists(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<ShoppingList>?> snapshot) {
-                    if (snapshot.hasData) {
-                      return Flexible(
-                        child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data?.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return const ListOverviewPage();
-                          },
-                        ),
-                      );
-                    } else {
-                      return const CircularProgressIndicator(
-                          color: Colors.deepPurpleAccent);
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
+      body: FutureBuilder(
+        future: databaseHandler.getShoppingLists(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            List<ShoppingList> lists = snapshot.data!;
+            return ListView.builder(
+              itemCount: lists.length,
+              itemBuilder: (context, index) {
+                return ListOverviewPage(list: lists[index]);
+              },
+            );
+          } else {
+            return const CircularProgressIndicator(
+                color: Colors.deepPurpleAccent);
+          }
+        },
       ),
     );
   }
