@@ -117,13 +117,13 @@ class DatabaseHandler {
   }
 
   // SHOPPING LISTS end-points--------------------------------------------------------------
-  Future<List<ShoppingList>> getShoppingLists() async {
+  Future<List<ShoppingList>> getShoppingLists(bool isPrivate) async {
     List<ShoppingList> shoppingLists = [];
 
     String userId = await getCurrentUserId();
 
     if(isMobilePlatform()) {
-      await FirebaseFirestore.instance.collection("shoppingLists").where("assignedUsers", arrayContains: userId).get().then((snapshot) async {
+      await FirebaseFirestore.instance.collection("shoppingLists").where("assignedUsers", arrayContains: userId).where("private", isEqualTo: isPrivate).get().then((snapshot) async {
         var docsMap = snapshot.docs;
         for(var item in docsMap) {
           List<String> boughtItems = [];
@@ -162,27 +162,29 @@ class DatabaseHandler {
         List<String> boughtItems = [];
         List<OurUser> assignedUsers = [];
 
-        var rawItems = fields["items"]["arrayValue"]["values"];
-        for(var item in rawItems) {
-          items.add(item["stringValue"]);
-        }
-        var rawBoughtItems = fields["boughtItems"]["arrayValue"];
-        if(rawBoughtItems.isNotEmpty) {
-          rawBoughtItems = rawBoughtItems["values"];
-          for(var item in rawBoughtItems) {
-            boughtItems.add(item["stringValue"]);
+        if(private == isPrivate) {
+          var rawItems = fields["items"]["arrayValue"]["values"];
+          for(var item in rawItems) {
+            items.add(item["stringValue"]);
           }
-        }
-
-        var rawUsers = fields["assignedUsers"]["arrayValue"];
-        if(rawUsers.isNotEmpty) {
-          rawUsers = rawUsers["values"];
-          for(var item in rawUsers) {
-            assignedUsers.add(await getUserById(item["stringValue"]));
+          var rawBoughtItems = fields["boughtItems"]["arrayValue"];
+          if(rawBoughtItems.isNotEmpty) {
+            rawBoughtItems = rawBoughtItems["values"];
+            for(var item in rawBoughtItems) {
+              boughtItems.add(item["stringValue"]);
+            }
           }
-        }
 
-        shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type, private));
+          var rawUsers = fields["assignedUsers"]["arrayValue"];
+          if(rawUsers.isNotEmpty) {
+            rawUsers = rawUsers["values"];
+            for(var item in rawUsers) {
+              assignedUsers.add(await getUserById(item["stringValue"]));
+            }
+          }
+
+          shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type, private));
+        }
       }
     }
 

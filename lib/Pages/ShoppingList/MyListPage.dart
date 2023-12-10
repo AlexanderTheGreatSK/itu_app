@@ -17,7 +17,7 @@ class _MyListPageState extends State<MyListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: databaseHandler.getShoppingLists(),
+        future: databaseHandler.getShoppingLists(true),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<ShoppingList> lists = snapshot.data!;

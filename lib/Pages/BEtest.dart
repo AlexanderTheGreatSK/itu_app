@@ -23,7 +23,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
   ImageHandler imageHandler = ImageHandler();
 
   Future<void> getShoppingLists() async {
-    List<ShoppingList> shoppingLists = await databaseHandler.getShoppingLists();
+    List<ShoppingList> shoppingLists = await databaseHandler.getShoppingLists(true);
     int index = 0;
     for(ShoppingList shoppingList in shoppingLists) {
       print("ShoppingList $index ----------");
