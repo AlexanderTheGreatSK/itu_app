@@ -273,6 +273,33 @@ class DatabaseHandler {
     }
   }
 
+  Future<void> deleteShoppingList(String shoppingListId) async {
+    if(isMobilePlatform()) {
+      FirebaseFirestore.instance.collection("shoppingList").doc(shoppingListId).delete();
+    }
+  }
+
+  Future<void> updateShoppingList(ShoppingList newShoppingList) async {
+    List<String> userId = [];
+
+    for(var user in newShoppingList.assignedUsers) {
+      userId.add(user.userId);
+    }
+
+    if(isMobilePlatform()) {
+      final dataMap = <String, dynamic> {
+        "name" : newShoppingList.name,
+        "private" : newShoppingList.private,
+        "type" : newShoppingList.type,
+        "items" : newShoppingList.items,
+        "boughtItems" : newShoppingList.boughtItems,
+        "assignedUsers" : userId,
+      };
+
+      FirebaseFirestore.instance.collection("shoppingList").doc(newShoppingList.shoppingListId).update(dataMap);
+    }
+  }
+
   // ROOMS end-points--------------------------------------------------------------
   Future<void> createRoom(Room newRoom) async {
     if(isMobilePlatform()) {
