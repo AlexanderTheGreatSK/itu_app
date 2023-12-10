@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itu_app/Pages/RoomsPage.dart';
+import 'package:itu_app/Pages/Rooms/RoomsPage.dart';
 import 'package:itu_app/Pages/Tasks/TasksPage.dart';
 
 class MyHomePage extends StatefulWidget {

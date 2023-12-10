@@ -4,7 +4,7 @@ import 'package:itu_app/Database/DataClasses/Task.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Database/ImageHandler.dart';
-import 'package:itu_app/Pages/BEtestPages/CreateRoomPage.dart';
+import 'package:itu_app/Pages/Rooms/CreateRoomPage.dart';
 import 'package:itu_app/Pages/BEtestPages/CreateShoppingList.dart';
 
 import '../Database/DataClasses/Room.dart';

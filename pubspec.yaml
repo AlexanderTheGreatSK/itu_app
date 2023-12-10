@@ -45,6 +45,7 @@ dependencies:
   firebase_storage: ^11.5.3
   shared_preferences: ^2.2.2
   google_fonts: ^6.1.0
+  carousel_slider: ^4.2.1
   shimmer: ^3.0.0
   syncfusion_flutter_datepicker: ^23.2.7
 
