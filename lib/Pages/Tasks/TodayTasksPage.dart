@@ -46,7 +46,7 @@ class _TodayTasksPage extends State<TodayTasksPage> {
     } else if(task.priority == 2) {
       colorPriority = Colors.orange;
     } else {
-      colorPriority = Colors.yellow;
+      colorPriority = Colors.green;
     }
 
     return Padding(

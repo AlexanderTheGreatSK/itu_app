@@ -34,26 +34,20 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
     const DropdownMenuEntry(value: "31", label: "Month"),
     const DropdownMenuEntry(value: "365", label: "Year"),
   ];
-
+  double currentPriorityValue = 1;
 
   /// PLS do not be lazy as me and use FormTextField -> one controller for group of TextFields :))
   TextEditingController nameController = TextEditingController();
   TextEditingController daysController = TextEditingController();
-  TextEditingController lastDoneController = TextEditingController();
-  TextEditingController targetDateController = TextEditingController();
-  TextEditingController priorityController = TextEditingController();
-  TextEditingController rewardController = TextEditingController();
-  TextEditingController taskIsDoneController = TextEditingController();
-  TextEditingController roomController = TextEditingController();
 
   Future<void> crateNewTask() async {
     List<String> users = [];
     users.add(chosenID);
 
-    Task newTask = Task(nameController.text, int.parse(rewardController.text), int.parse(daysController.text), int.parse(priorityController.text), bool.parse(taskIsDoneController.text),
+    /*Task newTask = Task(nameController.text, int.parse(rewardController.text), int.parse(daysController.text), int.parse(priorityController.text), bool.parse(taskIsDoneController.text),
         roomController.text, DateTime.parse(lastDoneController.text), DateTime.parse(targetDateController.text), users);
 
-    await databaseHandler.createTask(newTask);
+    await databaseHandler.createTask(newTask);*/
   }
 
   Widget buildEffect(BuildContext context) {
@@ -67,7 +61,10 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
 
   Widget roomPickerWidget(BuildContext context) {
     return DropdownMenu<String>(
-      label: const Text("Assigned room"),
+      label: const Padding(
+        padding: EdgeInsets.only(top: 20.0),
+        child: Text("Assigned room"),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),
@@ -179,8 +176,9 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 150,
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ClipRRect(
@@ -200,9 +198,14 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
                   ),
                 ),
                 //const Spacer(),
-                Expanded(
+                Flexible(
+                  flex: 2,
                   child: DropdownMenu<String>(
-                    label: const Text("Frequency units"),
+                    expandedInsets: const EdgeInsets.only(right: 10),
+                    label: const Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                      child: Text("Frequency units"),
+                    ),
                     inputDecorationTheme: InputDecorationTheme(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -225,6 +228,45 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
                 )
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Choose priority:", style: TextStyle(fontSize: 20.0)),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(["Low", "Medium", "High"][currentPriorityValue.round()],
+                      style: TextStyle(fontSize: 20.0, color: [Colors.green, Colors.orange, Colors.red][currentPriorityValue.round()])),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Container(
+                  //color: Colors.grey[300],
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Slider(
+                          value: currentPriorityValue,
+                          min: 0,
+                          max: 2,
+                          divisions: 2,
+                          label: ["Low", "Medium", "High"][currentPriorityValue.round()],
+                          onChanged: (double value) {
+                            setState(() {
+                              currentPriorityValue = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -243,22 +285,21 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
                         padding: const EdgeInsets.all(10.0),
                         child: Slider(
                           value: currentSliderValue,
-                          min: 1,
-                          max: 10,
-                          divisions: 10,
-                          label: currentSliderValue.round().toString(),
+                          min: 0,
+                          max: 9,
+                          divisions: 9,
+                          label: (currentSliderValue.round()+1).toString(),
                           onChanged: (double value) {
                             setState(() {
                               currentSliderValue = value;
                             });
                           },
-
                         ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("${currentSliderValue.round().toString()} 🏆", style: const TextStyle(fontSize: 20.0)),
+                          Text("${(currentSliderValue.round()+1).toString()} 🏆", style: const TextStyle(fontSize: 20.0)),
                         ],
                       ),
                     ],
