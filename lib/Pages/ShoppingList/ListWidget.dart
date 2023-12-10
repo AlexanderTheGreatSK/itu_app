@@ -10,7 +10,6 @@ class ListOverviewPage extends StatefulWidget {
 }
 
 class _ListOverviewPage extends State<ListOverviewPage> {
-
   bool isActive = false;
 
   @override
@@ -42,8 +41,8 @@ class _ListOverviewPage extends State<ListOverviewPage> {
                   Text(
                     widget.list.name,
                     style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
+                      color: Colors.white,
+                      fontSize: 20,
                     ),
                   ),
                   IconButton(
@@ -165,5 +164,4 @@ class _ListOverviewPage extends State<ListOverviewPage> {
           ]),
     );
   }
-
 }

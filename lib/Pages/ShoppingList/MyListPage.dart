@@ -12,7 +12,6 @@ class MyListPage extends StatefulWidget {
 
 class _MyListPageState extends State<MyListPage> {
   DatabaseHandler databaseHandler = DatabaseHandler();
-  List<bool> isActive = [];
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +19,24 @@ class _MyListPageState extends State<MyListPage> {
       body: FutureBuilder(
         future: databaseHandler.getShoppingLists(),
         builder: (context, snapshot) {
-          if(snapshot.hasData) {
+          if (snapshot.hasData) {
             List<ShoppingList> lists = snapshot.data!;
             return ListView.builder(
               itemCount: lists.length,
               itemBuilder: (context, index) {
-                return ListOverviewPage(list: lists[index]);
+                if(lists[index].private == true){
+                  return ListOverviewPage(list: lists[index]);
+                }
               },
             );
           } else {
-            return const CircularProgressIndicator(
-                color: Colors.deepPurpleAccent);
+            return const Center(
+              child: CircularProgressIndicator(
+                  color: Colors.deepPurpleAccent),
+            );
           }
         },
       ),
     );
   }
-
-
 }

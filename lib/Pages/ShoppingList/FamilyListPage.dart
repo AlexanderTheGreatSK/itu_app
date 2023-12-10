@@ -19,17 +19,21 @@ class _FamilyListPageState extends State<FamilyListPage> {
       body: FutureBuilder(
         future: databaseHandler.getShoppingLists(),
         builder: (context, snapshot) {
-          if(snapshot.hasData) {
+          if (snapshot.hasData) {
             List<ShoppingList> lists = snapshot.data!;
             return ListView.builder(
               itemCount: lists.length,
               itemBuilder: (context, index) {
-                return ListOverviewPage(list: lists[index]);
+                if(lists[index].private == false){
+                  return ListOverviewPage(list: lists[index]);
+                }
               },
             );
           } else {
-            return const CircularProgressIndicator(
-                color: Colors.deepPurpleAccent);
+            return const Center(
+              child: CircularProgressIndicator(
+                  color: Colors.deepPurpleAccent),
+            );
           }
         },
       ),

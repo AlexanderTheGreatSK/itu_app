@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:itu_app/Pages/ShoppingList/FamilyListPage.dart';
 import 'package:itu_app/Pages/ShoppingList/MyListPage.dart';
 
-
 class MyShoppingListPage extends StatefulWidget {
   const MyShoppingListPage({super.key});
 
@@ -10,8 +9,7 @@ class MyShoppingListPage extends StatefulWidget {
   State<MyShoppingListPage> createState() => _MyShoppingListPageState();
 }
 
-class _MyShoppingListPageState extends State<MyShoppingListPage>
-    with TickerProviderStateMixin {
+class _MyShoppingListPageState extends State<MyShoppingListPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -44,4 +42,3 @@ class _MyShoppingListPageState extends State<MyShoppingListPage>
     );
   }
 }
-
