@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
+import 'package:itu_app/Pages/ShoppingList/ItemWidget.dart';
 
 class ListOverviewPage extends StatefulWidget {
   const ListOverviewPage({super.key, required this.list});
@@ -72,27 +73,31 @@ class _ListOverviewPage extends State<ListOverviewPage> {
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: Container(
                   padding: const EdgeInsets.all(16),
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20)),
                   ),
-                  // tady budou jednotlive itemy a checboxy, musim to dat mimo po jednom
-                  child: const Row(
+                  child: Column(
                     children: [
-                      Text(
-                        "Banana",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                        ListView.builder(
+                            itemCount: widget.list.items.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                            return ItemWidget(item: widget.list.items[index]);
+                          },
                         ),
-                      ),
-                    ],
-                  ))),
+                    ]
+                  )
+              )
+          ),
       ],
     );
   }
+
+
 
   // vyskakovaci obrazovka spodku
   Widget bottomBarWidget(BuildContext context) {
