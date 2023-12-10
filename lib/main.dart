@@ -75,7 +75,6 @@ class MyBottomNavigationPage extends StatefulWidget {
 }
 
 class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
-  OurWidgets ourWidgets = OurWidgets();
   List<Widget> pages = [const MyHomePage(), const MyShoppingListPage(), const MyReservationsPage(), const MyFridgePage(), const MyProblemsPage()];
   List<bool> selectedPage = [true, false, false, false, false];
   int index = 0;

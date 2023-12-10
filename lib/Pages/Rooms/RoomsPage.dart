@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hexagon/hexagon.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Pages/Rooms/CreateRoomPage.dart';
+import 'package:itu_app/Widgets/RoomWidget.dart';
 import '../../Database/DataClasses/Room.dart';
 import '../../Database/ImageHandler.dart';
-import 'ViewRoomPage.dart';
 
 class MyRoomsPage extends StatefulWidget {
   const MyRoomsPage({super.key});
@@ -66,15 +65,7 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
                     width: midWidth - (midWidth/20),
                     top: (midWidth - (midWidth/20)*5) * (i),
                     right: midWidth - (midWidth/20),
-                    child: InkWell(
-                        child: roomWidget(rooms[i+oddRow].imageId),
-                      onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ViewRoomPage(room: rooms[i+oddRow])),
-                        );
-                      },
-                    ),
+                    child: RoomWidget(room: rooms[i+oddRow])
                   );
                   stackChildren.add(positioned1);
 
@@ -83,15 +74,7 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
                       width: midWidth - (midWidth/20),
                       top: (midWidth - (midWidth/20)*5) * (i),
                       left: midWidth - (midWidth/20),
-                      child: InkWell(
-                        child: roomWidget(rooms[i+oddRow+1].imageId),
-                        onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ViewRoomPage(room: rooms[i+oddRow+1])),
-                          );
-                        },
-                      ),
+                      child: RoomWidget(room: rooms[i+oddRow+1])
                     );
 
                     stackChildren.add(positioned2);
@@ -101,15 +84,7 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
                   Widget positioned = Positioned(
                     width: midWidth - (midWidth/20),
                     top:(midWidth - (midWidth/20)*5) * (i),
-                    child: InkWell(
-                      child: roomWidget(rooms[i+evenRow].imageId),
-                      onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ViewRoomPage(room: rooms[i+evenRow])),
-                        );
-                      },
-                    ),
+                    child: RoomWidget(room: rooms[i+evenRow])
                   );
                   stackChildren.add(positioned);
                 }
@@ -132,20 +107,6 @@ class _MyRoomsPageState extends State<MyRoomsPage> {
           }
       ),
     );
-  }
-
-  Widget roomWidget(String imageId) {
-    return Image.asset(imageHandler.getLocalImage(imageId));
-    /*return FutureBuilder(
-      future: imageHandler.getRoomImage(imageId),
-      builder: (context, snapshotImage) {
-        if (snapshotImage.hasData) {
-          return InkWell(onTap: () {}, child: Image.memory(snapshotImage.data!));
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    );*/
   }
 
   void toAddNewRoomPage() {
