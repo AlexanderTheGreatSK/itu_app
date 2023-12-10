@@ -273,6 +273,23 @@ class DatabaseHandler {
     }
   }
 
+  Future<void> deleteItem(String shoppingListId, String itemName, bool bought) async {
+    if(isMobilePlatform()) {
+      if(bought) {
+        FirebaseFirestore.instance.collection("shoppingLists").doc(shoppingListId).update({
+          "boughtItems":FieldValue.arrayRemove([itemName]),
+        });
+      } else {
+        FirebaseFirestore.instance.collection("shoppingLists").doc(
+            shoppingListId).update({
+          "items": FieldValue.arrayRemove([itemName]),
+        });
+      }
+    } else {
+
+    }
+  }
+
   Future<void> deleteShoppingList(String shoppingListId) async {
     if(isMobilePlatform()) {
       FirebaseFirestore.instance.collection("shoppingList").doc(shoppingListId).delete();

@@ -81,7 +81,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
   }
   
   void update() {
-    databaseHandler.addItemToShoppingList("ntj427fnfm4DvDe4LKL1", "update TEST");
+    databaseHandler.setItemAsBought("ntj427fnfm4DvDe4LKL1", "update TEST", true);
   }
 
   @override
