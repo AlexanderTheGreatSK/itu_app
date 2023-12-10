@@ -39,7 +39,7 @@ class _MyCreateShoppingListPageState extends State<MyCreateShoppingListPage> {
     List<String> items = [];
     items.add(itemsController.text);
 
-    ShoppingList shoppingList = ShoppingList(nameController.text, boughtItems, items, assignedUsers, typeController.text, private);
+    ShoppingList shoppingList = ShoppingList("", nameController.text, boughtItems, items, assignedUsers, typeController.text, private);
 
     databaseHandler.createNewShoppingList(shoppingList);
   }

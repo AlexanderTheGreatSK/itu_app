@@ -8,7 +8,7 @@ import 'package:itu_app/Pages/BEtestPages/CreateRoomPage.dart';
 import 'package:itu_app/Pages/BEtestPages/CreateShoppingList.dart';
 
 import '../Database/DataClasses/Room.dart';
-import 'BEtestPages/CreateTaskPage.dart';
+import 'Tasks/CreateTaskPage.dart';
 
 class MyBEtestPage extends StatefulWidget {
   const MyBEtestPage({super.key});
@@ -23,7 +23,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
   ImageHandler imageHandler = ImageHandler();
 
   Future<void> getShoppingLists() async {
-    List<ShoppingList> shoppingLists = await databaseHandler.getShoppingLists();
+    List<ShoppingList> shoppingLists = await databaseHandler.getShoppingLists(true);
     int index = 0;
     for(ShoppingList shoppingList in shoppingLists) {
       print("ShoppingList $index ----------");
@@ -53,7 +53,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
   }
 
   Future<void> getTasksForAlex() async {
-    List<Task> alexTasks = await databaseHandler.getTaskForUser("ApWjem5KL7OekZhSToV1rBv99My1");
+    List<Task> alexTasks = await databaseHandler.getTaskForUser();
     int index = 0;
     for(var task in alexTasks) {
       print("Task $index ----------");
@@ -78,6 +78,10 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
       room.debugPrint();
     }
 
+  }
+  
+  void update() {
+    databaseHandler.setItemAsBought("ntj427fnfm4DvDe4LKL1", "update TEST", true);
   }
 
   @override
@@ -180,7 +184,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Text("getTasksForUser(Alex)"),
+                    child: Text("getTasksForUser(actualUser)"),
                   )
                 ],
               ),
@@ -231,6 +235,21 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                   Padding(
                     padding: EdgeInsets.all(10.0),
                     child: Text("getAllRooms()"),
+                  )
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
+            ),
+            InkWell(
+              onTap: update,
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("updateshoppingList()"),
                   )
                 ],
               ),
