@@ -48,6 +48,7 @@ dependencies:
   carousel_slider: ^4.2.1
   shimmer: ^3.0.0
   syncfusion_flutter_datepicker: ^23.2.7
+  flutter_animation_progress_bar: ^2.3.1
 
 dev_dependencies:
   flutter_test:
