@@ -79,6 +79,10 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
     }
 
   }
+  
+  void update() {
+    databaseHandler.addItemToShoppingList("ntj427fnfm4DvDe4LKL1", "update TEST");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,6 +235,21 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                   Padding(
                     padding: EdgeInsets.all(10.0),
                     child: Text("getAllRooms()"),
+                  )
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
+            ),
+            InkWell(
+              onTap: update,
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("updateshoppingList()"),
                   )
                 ],
               ),

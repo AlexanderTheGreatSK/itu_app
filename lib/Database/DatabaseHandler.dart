@@ -143,10 +143,11 @@ class DatabaseHandler {
               assignedUsers.add(ourUser);
             }
           }
+          String shoppingListId = item.data()["shoppingListId"];
           String name = item.data()["name"];
           String type = item.data()["type"];
           bool private = item.data()["private"];
-          shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type, private));
+          shoppingLists.add(ShoppingList(shoppingListId, name, boughtItems, items, assignedUsers, type, private));
         }
       });
     } else {
@@ -155,6 +156,7 @@ class DatabaseHandler {
       Map data = json.decode(response.body);
       for(var item in data["documents"]) {
         var fields = item["fields"];
+        String shoppingListId = fields["shoppingListId"]["stringValue"];
         String name = fields["name"]["stringValue"];
         String type = fields["type"]["stringValue"];
         bool private = fields["private"]["booleanValue"];
@@ -183,7 +185,7 @@ class DatabaseHandler {
             }
           }
 
-          shoppingLists.add(ShoppingList(name, boughtItems, items, assignedUsers, type, private));
+          shoppingLists.add(ShoppingList(shoppingListId, name, boughtItems, items, assignedUsers, type, private));
         }
       }
     }
@@ -216,6 +218,10 @@ class DatabaseHandler {
     }
 
     if(isMobilePlatform()) {
+
+      var ref = FirebaseFirestore.instance.collection("shoppingLists").doc();
+      String shoppingListId = ref.id;
+
       final dataMap = <String, dynamic> {
         "name" : newShoppingList.name,
         "private" : newShoppingList.private,
@@ -223,21 +229,45 @@ class DatabaseHandler {
         "items" : newShoppingList.items,
         "boughtItems" : newShoppingList.boughtItems,
         "assignedUsers" : userId,
+        "shoppingListId" : shoppingListId,
       };
 
-      if(isMobilePlatform()) {
-        await FirebaseFirestore.instance.collection("shoppingLists").doc().set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
-      }
+      await ref.set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
     } else {
       // TODO
     }
   }
 
-  Future<void> addItemToShoppingList(String shoppingListName, String newItem) async {
+  Future<void> addItemToShoppingList(String shoppingListId, String newItem) async {
     if(isMobilePlatform()) {
-      FirebaseFirestore.instance.collection("shoppingLists").where("name", isEqualTo: shoppingListName).get().then((snapshot) {
-        // TODO WIP
+      FirebaseFirestore.instance.collection("shoppingLists").doc(shoppingListId).update({
+        "items":FieldValue.arrayUnion([newItem])
       });
+    } else {
+      // TODO
+    }
+  }
+
+  /*
+  * if bought is true, item will be removed from items and added to boughtItems
+  *
+  * if bought is false, item will be removed from boughtItems to items
+  *
+  * */
+  Future<void> setItemAsBought(String shoppingListId, String itemName, bool bought) async {
+    if(isMobilePlatform()) {
+      if(bought) {
+        FirebaseFirestore.instance.collection("shoppingLists").doc(shoppingListId).update({
+          "items":FieldValue.arrayRemove([itemName]),
+          "boughtItems":FieldValue.arrayUnion([itemName]),
+        });
+      } else {
+        FirebaseFirestore.instance.collection("shoppingLists").doc(shoppingListId).update({
+          "boughtItems":FieldValue.arrayRemove([itemName]),
+          "items":FieldValue.arrayUnion([itemName]),
+        });
+      }
+
     } else {
       // TODO
     }
