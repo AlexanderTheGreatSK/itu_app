@@ -38,11 +38,8 @@ class _MyProfilePage extends State<MyProfilePage> {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 30),
-            ),
             onPressed: toLeaderBoardPage,
-            child: const Text("🏆 100 pt"),
+            child: const Text("🏆 100 pt", style: TextStyle(fontSize: 30),),
         //child: Text("🏆 100 pt", style: TextStyle(fontSize: 30)),
         ),
       ),

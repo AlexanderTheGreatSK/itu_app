@@ -5,9 +5,10 @@ import 'package:itu_app/Pages/FridgePage.dart';
 import 'package:itu_app/Pages/HomePage.dart';
 import 'package:itu_app/Pages/ProblemsPage.dart';
 import 'package:itu_app/Pages/ReservationsPage.dart';
-import 'package:itu_app/Pages/ShoppingListPage.dart';
+import 'package:itu_app/Pages/ShoppingList/ShoppingListPage.dart';
 import 'package:itu_app/Widgets/ItemWidget.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'Pages/ProfilePage.dart';
 import 'Pages/SignUpPage.dart';
@@ -46,10 +47,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'My home',
+    return MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple.shade300,
+          // ···
+          brightness: Brightness.light,
+        ),
+
+        textTheme: GoogleFonts.offsideTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
+
       debugShowCheckedModeBanner: false,
-      home: MyLoginPage(),
+      home: const MyLoginPage(),
     );
   }
 }
@@ -116,7 +129,7 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
           borderRadius: BorderRadius.circular(30.0),
           child: BottomAppBar(
             elevation: 10.0,
-            color: Colors.deepPurpleAccent,
+            color: Colors.deepPurple[300],
             child: SizedBox(
               height: 60,
               child: Row(

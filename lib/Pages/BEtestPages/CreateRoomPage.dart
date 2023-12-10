@@ -24,7 +24,12 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
       print(error);
       print(stackTrace);
     });
+
+    Navigator.pop(context);
+
   }
+
+  final FixedExtentScrollController controller = FixedExtentScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +63,36 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
+            child: Container(
+              height: 400,
+              //width: double.infinity,
+              child: ListWheelScrollView(
+                //scrollDirection: Axis.horizontal,
+                controller: controller,
+                physics: const FixedExtentScrollPhysics(),
+                itemExtent: MediaQuery.of(context).size.width,
+                children: [
+                  Image.asset("res/images/1.png"),
+                  Image.asset("res/images/2.png"),
+                  Image.asset("res/images/3.png"),
+                  Image.asset("res/images/4.png"),
+                  Image.asset("res/images/5.png"),
+                  Image.asset("res/images/6.png"),
+                  Image.asset("res/images/7.png"),
+                  Image.asset("res/images/8.png"),
+                  Image.asset("res/images/9.png"),
+                  Image.asset("res/images/10.png"),
+                  Image.asset("res/images/11.png"),
+                  Image.asset("res/images/12.png"),
+                  Image.asset("res/images/13.png"),
+                  Image.asset("res/images/14.png"),
+                  Image.asset("res/images/15.png"),
+                ]
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
             child: TextField(
               controller: progressBarController,
               decoration: const InputDecoration(
@@ -71,7 +106,8 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
             padding: const EdgeInsets.all(20.0),
             child: MaterialButton(
               onPressed: crateNewRoom,
-              color: Colors.lightGreenAccent,
+              color: Colors.deepPurple[300],
+              textColor: Colors.white,
               child: const Text("Create"),
             ),
           ),
