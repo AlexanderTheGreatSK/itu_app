@@ -31,21 +31,25 @@ class _AddListPageState extends State<AddListPage> {
       actions: <Widget>[
         Center(
           child: ElevatedButton(
-            onPressed: () async {
-              if(widget.isPrivate == true){
-                newShoppingList.assignedUsers.add(await databaseHandler.getCurrentUser());
-              } else {
-                newShoppingList.assignedUsers = await databaseHandler.getUsers();
-              }
-              newShoppingList.private = widget.isPrivate;
-              databaseHandler.createNewShoppingList(newShoppingList);
-              
+            onPressed: (){
+              createShoppingList();
+              Navigator.of(context).pop();
             },
-            child: const Text('Create'),
+              child: const Text('Create')
           ),
         ),
       ],
     );
+  }
+
+  void createShoppingList() async {
+    if(widget.isPrivate == true){
+      newShoppingList.assignedUsers.add(await databaseHandler.getCurrentUser());
+    } else {
+      newShoppingList.assignedUsers = await databaseHandler.getUsers();
+    }
+    newShoppingList.private = widget.isPrivate;
+    databaseHandler.createNewShoppingList(newShoppingList);
   }
 
 

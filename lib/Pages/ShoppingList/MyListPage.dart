@@ -44,7 +44,7 @@ class _MyListPageState extends State<MyListPage> {
               itemCount: lists.length,
               itemBuilder: (context, index) {
                 if(lists[index].private == true){
-                  return ListOverviewPage(list: lists[index]);
+                  return ListWidget(list: lists[index]);
                 }
               },
             );

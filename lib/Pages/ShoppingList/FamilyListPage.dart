@@ -47,7 +47,7 @@ class _FamilyListPageState extends State<FamilyListPage> {
               itemCount: lists.length,
               itemBuilder: (context, index) {
                 if (lists[index].private == false) {
-                  return ListOverviewPage(list: lists[index]);
+                  return ListWidget(list: lists[index]);
                 }
               },
             );

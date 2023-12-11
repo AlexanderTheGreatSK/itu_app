@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Pages/ShoppingList/ItemWidget.dart';
 
-class ListOverviewPage extends StatefulWidget {
-  const ListOverviewPage({super.key, required this.list});
+class ListWidget extends StatefulWidget {
+  const ListWidget({super.key, required this.list});
   final ShoppingList list;
 
   @override
-  State<ListOverviewPage> createState() => _ListOverviewPage();
+  State<ListWidget> createState() => _ListWidget();
 }
 
-class _ListOverviewPage extends State<ListOverviewPage> {
+class _ListWidget extends State<ListWidget> {
   bool isActive = false;
 
   @override
@@ -70,34 +70,76 @@ class _ListOverviewPage extends State<ListOverviewPage> {
         ),
         if (isActive)
           Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-              child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20)),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                boxShadow: [BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 2,
+                    spreadRadius: 1
+                )],
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)),
+              ),
+              child: Column(
+                children: [
+                  ListView.builder(
+                    itemCount: widget.list.items.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return ItemWidget(item: widget.list.items[index]);
+                    },
                   ),
-                  child: Column(
-                    children: [
-                        ListView.builder(
-                            itemCount: widget.list.items.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                            return ItemWidget(item: widget.list.items[index]);
-                          },
-                        ),
-                    ]
-                  )
-              )
+                  addNewItemBar(context),
+                ],
+              ),
+            ),
           ),
       ],
     );
   }
 
-
+  Widget addNewItemBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SearchAnchor(
+          builder: (BuildContext context, SearchController controller) {
+        return SearchBar(
+            controller: controller,
+            onTap: () {
+              controller.openView();
+            },
+            onChanged: (_) {
+              controller.openView();
+            },
+            padding: const MaterialStatePropertyAll<EdgeInsets>(
+                EdgeInsets.symmetric(horizontal: 10.0)),
+            shape: const MaterialStatePropertyAll<OutlinedBorder>(
+                RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+            backgroundColor: const MaterialStatePropertyAll<Color>( Colors.white70),
+            hintText: "Add new item",
+        );
+      }, suggestionsBuilder:
+              (BuildContext context, SearchController controller) {
+        const Text("data");
+        return List<ListTile>.generate(5, (int index) {
+          final String item = 'item $index';
+          return ListTile(
+            title: Text(item),
+            onTap: () {
+              setState(() {
+                controller.closeView(item);
+              });
+            },
+          );
+        });
+      }),
+    );
+  }
 
   // vyskakovaci obrazovka spodku
   Widget bottomBarWidget(BuildContext context) {
