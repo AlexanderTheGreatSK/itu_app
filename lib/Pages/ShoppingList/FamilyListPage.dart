@@ -3,6 +3,8 @@ import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Pages/ShoppingList/ListWidget.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 
+import 'package:itu_app/Pages/ShoppingList/AddListPage.dart';
+
 class FamilyListPage extends StatefulWidget {
   const FamilyListPage({super.key});
 
@@ -16,6 +18,26 @@ class _FamilyListPageState extends State<FamilyListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 100),
+        child: FloatingActionButton(
+          onPressed: (){
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AddListPage(isPrivate: false);
+              },
+            );
+          },
+          backgroundColor: Colors.deepPurple[300],
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0))),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+      ),
       body: FutureBuilder(
         future: databaseHandler.getShoppingLists(false),
         builder: (context, snapshot) {
@@ -24,19 +46,20 @@ class _FamilyListPageState extends State<FamilyListPage> {
             return ListView.builder(
               itemCount: lists.length,
               itemBuilder: (context, index) {
-                if(lists[index].private == false){
+                if (lists[index].private == false) {
                   return ListOverviewPage(list: lists[index]);
                 }
               },
             );
           } else {
             return const Center(
-              child: CircularProgressIndicator(
-                  color: Colors.deepPurpleAccent),
+              child: CircularProgressIndicator(color: Colors.deepPurpleAccent),
             );
           }
         },
       ),
     );
   }
+
+
 }
