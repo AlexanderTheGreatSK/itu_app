@@ -31,27 +31,15 @@ class _AddListPageState extends State<AddListPage> {
       actions: <Widget>[
         Center(
           child: ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if(widget.isPrivate == true){
-                FutureBuilder(
-                    future: databaseHandler.getCurrentUser(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      newShoppingList.assignedUsers.add(snapshot.data);
-                      return Container();
-                    }
-                );
+                newShoppingList.assignedUsers.add(await databaseHandler.getCurrentUser());
               } else {
-                FutureBuilder(
-                    future: databaseHandler.getUsers(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      newShoppingList.assignedUsers = snapshot.data;
-                      return Container();
-                    }
-                );
+                newShoppingList.assignedUsers = await databaseHandler.getUsers();
               }
               newShoppingList.private = widget.isPrivate;
               databaseHandler.createNewShoppingList(newShoppingList);
-              Navigator.of(context).pop();
+              
             },
             child: const Text('Create'),
           ),
