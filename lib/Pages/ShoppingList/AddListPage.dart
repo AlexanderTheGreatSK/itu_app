@@ -32,8 +32,10 @@ class _AddListPageState extends State<AddListPage> {
         Center(
           child: ElevatedButton(
             onPressed: (){
-              createShoppingList();
-              Navigator.of(context).pop();
+              setState(() {
+                createShoppingList();
+                Navigator.of(context).pop();
+              });
             },
               child: const Text('Create')
           ),
