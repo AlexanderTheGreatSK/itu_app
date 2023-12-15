@@ -121,7 +121,7 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
       ),*/
       body: pages[index],
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(9.0),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30.0),
           child: BottomAppBar(
@@ -134,7 +134,7 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
                   const Spacer(),
                   customBottomNavBarItem(const Icon(Icons.home, color: Colors.white), "Home", 0),
                   const Spacer(),
-                  customBottomNavBarItem(const Icon(Icons.list, color: Colors.white), "Shopping lists", 1),
+                  customBottomNavBarItem(const Icon(Icons.list, color: Colors.white), "Shopping list", 1),
                   const Spacer(),
                   customBottomNavBarItem(const Icon(Icons.access_time, color: Colors.white), "Reservations", 2),
                   const Spacer(),
