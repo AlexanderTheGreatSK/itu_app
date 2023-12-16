@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
+import 'package:itu_app/Database/DataClasses/Reward.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'DataClasses/Room.dart';
@@ -465,4 +466,22 @@ class DatabaseHandler {
       return tasks;
     }
   }
+
+// TASKS end-points--------------------------------------------------------------
+Future<List<Reward>> getRewards() async {
+    List<Reward> rewards = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("rewards").where("isActive", isEqualTo: true).get().then((snapshot) {
+        for(var docSnapshot in snapshot.docs) {
+          var data = docSnapshot.data();
+          rewards.add(Reward(data["name"], data["price"], data["image"], data["isActive"]));
+        }
+        return rewards;
+      });
+    } else {
+      return rewards;
+    }
+    return rewards;
+}
 }
