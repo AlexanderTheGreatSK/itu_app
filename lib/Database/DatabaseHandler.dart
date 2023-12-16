@@ -210,7 +210,7 @@ class DatabaseHandler {
     }
   }
 
-  Future<void> createNewShoppingList(ShoppingList newShoppingList) async {
+  Future<ShoppingList> createNewShoppingList(ShoppingList newShoppingList) async {
     List<String> userId = [];
 
     for(var user in newShoppingList.assignedUsers) {
@@ -233,8 +233,11 @@ class DatabaseHandler {
       };
 
       await ref.set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+
+      newShoppingList.shoppingListId = shoppingListId;
+      return newShoppingList;
     } else {
-      // TODO
+      return newShoppingList; // TODO
     }
   }
 
