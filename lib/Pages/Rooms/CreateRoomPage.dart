@@ -65,8 +65,8 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
             child: TextField(
               controller: nameController,
               decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Name"
+                  border: OutlineInputBorder(),
+                  labelText: "Name"
               ),
               keyboardType: TextInputType.text,
             ),
