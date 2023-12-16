@@ -497,4 +497,24 @@ Future<List<Reward>> getRewards() async {
     }
     return rewards;
 }
+
+// REWARDS end-points--------------------------------------------------------------
+  Future<void> createReward(Reward newReward) async {
+    if(isMobilePlatform()) {
+      final dataMap = <String, dynamic> {
+        "name" : newReward.name,
+        "price" : newReward.price,
+        "imageId" : newReward.imageId,
+        "isAvailable" : newReward.isAvailable,
+      };
+
+      print(dataMap.toString());
+
+      await FirebaseFirestore.instance.collection("rewards").doc().set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+
+    } else {
+      // TODO
+    }
+  }
+
 }

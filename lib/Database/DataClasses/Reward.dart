@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 class Reward {
   late String name;
   late int price;
-  late String image;
+  late String imageId;
   late bool isAvailable;
 
-  Reward(this.name, this.price, this.image, this.isAvailable);
+  Reward(this.name, this.price, this.imageId, this.isAvailable);
 }

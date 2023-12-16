@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Database/ImageHandler.dart';
+import 'package:itu_app/Pages/CreateRewardPage.dart';
 
 import '../Database/DataClasses/Reward.dart';
 
@@ -23,6 +24,19 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text("Leader board", style: TextStyle(color: Colors.black)),
+      ),
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 100),
+        child: FloatingActionButton(
+          onPressed: (){
+            toAddRewardPage();
+          },
+          backgroundColor: Colors.deepPurple[300],
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0))
+          ),
+          child: const Icon(Icons.add, color: Colors.white,),
+        ),
       ),
       body: ListView(
         children:[
@@ -70,7 +84,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
               child: Column(
                 children: [
                   FutureBuilder(
-                      future: imageHandler.getRewardImage(reward.image),
+                      future: imageHandler.getRewardImage(reward.imageId),
                       builder: (context, snapshot) {
                         if(snapshot.hasData) {
                           return Image.memory(snapshot.data!, fit: BoxFit.contain);
@@ -157,4 +171,10 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     );
   }
 
+  void toAddRewardPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MyCreateRewardPage()),
+    );
+  }
 }
