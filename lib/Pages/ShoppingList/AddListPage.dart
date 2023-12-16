@@ -86,22 +86,20 @@ class _AddListPageState extends State<AddListPage> {
           Center(
             child: ElevatedButton(
                 onPressed: () => {
-                  setState(() {
-                    if (_formKey.currentState!.validate()) {
-                      newShoppingList.name = _nameController.text;
-                      createShoppingList();
-                      Navigator.pop(context);
-                    } else {
-                    }
-                  }),
-                },
+                      setState(() {
+                        if (_formKey.currentState!.validate()) {
+                          newShoppingList.name = _nameController.text;
+                          createShoppingList();
+                          Navigator.pop(context);
+                        }
+                      }),
+                    },
                 child: const Text('Create')),
           ),
         ],
       ),
     );
   }
-
 
   void createShoppingList() async {
     if (widget.isPrivate == true) {

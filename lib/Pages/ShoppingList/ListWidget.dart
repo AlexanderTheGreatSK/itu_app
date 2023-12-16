@@ -74,11 +74,9 @@ class _ListWidget extends State<ListWidget> {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: const BoxDecoration(
-                boxShadow: [BoxShadow(
-                    color: Colors.grey,
-                    blurRadius: 2,
-                    spreadRadius: 1
-                )],
+                boxShadow: [
+                  BoxShadow(color: Colors.grey, blurRadius: 2, spreadRadius: 1)
+                ],
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -109,19 +107,21 @@ class _ListWidget extends State<ListWidget> {
       child: SearchAnchor(
           builder: (BuildContext context, SearchController controller) {
         return SearchBar(
-            controller: controller,
-            onTap: () {
-              controller.openView();
-            },
-            onChanged: (_) {
-              controller.openView();
-            },
-            padding: const MaterialStatePropertyAll<EdgeInsets>(
-                EdgeInsets.symmetric(horizontal: 10.0)),
-            shape: const MaterialStatePropertyAll<OutlinedBorder>(
-                RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0)))),
-            backgroundColor: const MaterialStatePropertyAll<Color>( Colors.white70),
-            hintText: "Add new item",
+          controller: controller,
+          onTap: () {
+            controller.openView();
+          },
+          onChanged: (_) {
+            controller.openView();
+          },
+          padding: const MaterialStatePropertyAll<EdgeInsets>(
+              EdgeInsets.symmetric(horizontal: 10.0)),
+          shape: const MaterialStatePropertyAll<OutlinedBorder>(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+          backgroundColor:
+              const MaterialStatePropertyAll<Color>(Colors.white70),
+          hintText: "Add new item",
         );
       }, suggestionsBuilder:
               (BuildContext context, SearchController controller) {
