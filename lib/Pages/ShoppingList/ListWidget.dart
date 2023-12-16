@@ -15,9 +15,25 @@ class ListWidget extends StatefulWidget {
 }
 
 class _ListWidget extends State<ListWidget> {
+  final TextEditingController _nameController = TextEditingController();
   bool isActive = false;
   bool isDeleting = false;
   DatabaseHandler databaseHandler = DatabaseHandler();
+
+  // Action buttons style
+  ButtonStyle smallButtonsStyle(Color backgroundColor) {
+    return ButtonStyle(
+      shape: MaterialStateProperty.all<OutlinedBorder>(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+        const EdgeInsets.all(15.0),
+      ),
+      backgroundColor: MaterialStateProperty.all<Color>(backgroundColor),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +123,7 @@ class _ListWidget extends State<ListWidget> {
     );
   }
 
+  // TODO
   Widget addNewItemBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -158,30 +175,26 @@ class _ListWidget extends State<ListWidget> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text('Delete ${widget.list.name}?'),
+              padding: const EdgeInsets.all(14.0),
+              child: Text('Delete ${widget.list.name}?',
+                  style: TextStyle(fontSize: 20)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
-                          EdgeInsets.all(20.0)),
-                      backgroundColor: MaterialStatePropertyAll<Color>(
-                          Colors.grey), // Change the color as needed
-                    ),
+                    style: smallButtonsStyle(Colors.grey),
                     child: const Text('Cancel',
                         style: TextStyle(color: Colors.white)),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: TextButton(
                     onPressed: () {
                       databaseHandler
@@ -189,12 +202,7 @@ class _ListWidget extends State<ListWidget> {
                       Navigator.pop(context);
                       widget.callback();
                     },
-                    style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
-                          EdgeInsets.all(20.0)),
-                      backgroundColor: MaterialStatePropertyAll<Color>(
-                          Colors.redAccent), // Change the color as needed
-                    ),
+                    style: smallButtonsStyle(Colors.redAccent),
                     child: const Text('Delete',
                         style: TextStyle(color: Colors.white)),
                   ),
@@ -207,7 +215,155 @@ class _ListWidget extends State<ListWidget> {
     );
   }
 
-  // vyskakovaci obrazovka spodku
+  // rename list
+  Widget renameList(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+
+    return Form(
+      key: formKey,
+      child: AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        content: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  controller: _nameController,
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return 'Name is empty';
+                    } else {
+                      return null;
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'New name',
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: smallButtonsStyle(Colors.grey),
+                      child: const Text('Cancel',
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          if (formKey.currentState!.validate()) {
+                            widget.list.name = _nameController.text;
+                            databaseHandler.updateShoppingList(widget.list);
+                            Navigator.pop(context);
+                            widget.callback();
+                          }
+                        });
+                      },
+                      style: smallButtonsStyle(Colors.green),
+                      child: const Text('Rename',
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // update list
+  Widget updateList(BuildContext context) {
+    List<String> list = <String>[
+      'Grocery',
+      'Pet shop',
+      'Drugstore',
+      'Hobby market',
+      'Add my type'
+    ];
+    String dropdownValue = 'Grocery';
+
+    return AlertDialog(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+      content: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: DropdownButton<String>(
+                value: dropdownValue,
+                icon: const Icon(Icons.arrow_drop_down_outlined),
+                underline: Container(
+                  height: 2,
+                  color: Colors.grey,
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    widget.list.type = value!;
+                    dropdownValue = value;
+                  });
+                },
+                items: list.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: smallButtonsStyle(Colors.grey),
+                    child: const Text('Cancel',
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextButton(
+                    onPressed: () {
+                      databaseHandler.updateShoppingList(widget.list);
+                      Navigator.pop(context);
+                      widget.callback();
+                    },
+                    style: smallButtonsStyle(Colors.green),
+                    child: const Text('Update',
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  // vyskakovaci obrazovka spodku - delete, update, change
   Widget bottomBarWidget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -215,8 +371,13 @@ class _ListWidget extends State<ListWidget> {
           Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         InkWell(
           onTap: () {
-            setState(() {});
             Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return renameList(context);
+              },
+            );
           },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -242,6 +403,12 @@ class _ListWidget extends State<ListWidget> {
         InkWell(
           onTap: () {
             Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return updateList(context);
+              },
+            );
           },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
