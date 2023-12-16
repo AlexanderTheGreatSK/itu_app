@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
+import 'package:itu_app/Pages/ShoppingList/FamilyListPage.dart';
 import 'package:itu_app/Pages/ShoppingList/ItemWidget.dart';
 
 import '../../Database/DatabaseHandler.dart';
 
 class ListWidget extends StatefulWidget {
-  const ListWidget({super.key, required this.list});
+  const ListWidget({super.key, required this.list, required this.callback});
+  final VoidCallback callback;
   final ShoppingList list;
 
   @override
@@ -148,8 +150,8 @@ class _ListWidget extends State<ListWidget> {
   // delete list
   Widget deleteList(BuildContext context) {
     return AlertDialog(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
       content: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -169,25 +171,32 @@ class _ListWidget extends State<ListWidget> {
                       Navigator.pop(context);
                     },
                     style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(20.0)),
-                      backgroundColor:  MaterialStatePropertyAll<Color>(Colors.grey), // Change the color as needed
+                      padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
+                          EdgeInsets.all(20.0)),
+                      backgroundColor: MaterialStatePropertyAll<Color>(
+                          Colors.grey), // Change the color as needed
                     ),
-                    child: const Text('Cancel', style: TextStyle(color: Colors.white)),
+                    child: const Text('Cancel',
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
                     onPressed: () {
-                      print(widget.list.shoppingListId);
-                      databaseHandler.deleteShoppingList(widget.list.shoppingListId);
+                      databaseHandler
+                          .deleteShoppingList(widget.list.shoppingListId);
                       Navigator.pop(context);
+                      widget.callback();
                     },
                     style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(20.0)),
-                      backgroundColor:  MaterialStatePropertyAll<Color>(Colors.redAccent), // Change the color as needed
+                      padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
+                          EdgeInsets.all(20.0)),
+                      backgroundColor: MaterialStatePropertyAll<Color>(
+                          Colors.redAccent), // Change the color as needed
                     ),
-                    child: const Text('Delete', style: TextStyle(color: Colors.white)),
+                    child: const Text('Delete',
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ],
@@ -204,60 +213,71 @@ class _ListWidget extends State<ListWidget> {
       padding: const EdgeInsets.all(20),
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Icon(
-                Icons.edit,
-                color: Colors.white,
-                size: 35,
+        InkWell(
+          onTap: () {
+            setState(() {});
+            Navigator.pop(context);
+          },
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                  size: 35,
+                ),
               ),
-            ),
-            Text(
-              "Rename",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
+              Text(
+                "Rename",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
               ),
-            ),
-          ],
-        ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Icon(
-                Icons.change_circle,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),
-            Text(
-              "Change category",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
         InkWell(
           onTap: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return deleteList(context);
-                },
-              );
+            Navigator.pop(context);
           },
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Padding(
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(
+                  Icons.change_circle,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ),
+              Text(
+                "Change category",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return deleteList(context);
+              },
+            );
+          },
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
                 padding: EdgeInsets.all(10),
                 child: Icon(
                   Icons.delete_forever,
@@ -265,7 +285,7 @@ class _ListWidget extends State<ListWidget> {
                   size: 35,
                 ),
               ),
-              const Text(
+              Text(
                 "Delete List",
                 style: TextStyle(
                   color: Colors.white,
