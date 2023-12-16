@@ -305,7 +305,7 @@ class DatabaseHandler {
 
   Future<void> deleteShoppingList(String shoppingListId) async {
     if(isMobilePlatform()) {
-      FirebaseFirestore.instance.collection("shoppingList").doc(shoppingListId).delete();
+      FirebaseFirestore.instance.collection("shoppingLists").doc(shoppingListId).delete();
     }
   }
 
@@ -326,7 +326,7 @@ class DatabaseHandler {
         "assignedUsers" : userId,
       };
 
-      FirebaseFirestore.instance.collection("shoppingList").doc(newShoppingList.shoppingListId).update(dataMap);
+      FirebaseFirestore.instance.collection("shoppingLists").doc(newShoppingList.shoppingListId).update(dataMap);
     }
   }
 
