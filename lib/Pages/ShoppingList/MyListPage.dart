@@ -20,7 +20,7 @@ class _MyListPageState extends State<MyListPage> {
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 100),
         child: FloatingActionButton(
-          onPressed: (){
+          onPressed: () {
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -30,9 +30,11 @@ class _MyListPageState extends State<MyListPage> {
           },
           backgroundColor: Colors.deepPurple[300],
           shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30.0))
+              borderRadius: BorderRadius.all(Radius.circular(30.0))),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
           ),
-          child: const Icon(Icons.add, color: Colors.white,),
         ),
       ),
       body: FutureBuilder(
@@ -43,15 +45,12 @@ class _MyListPageState extends State<MyListPage> {
             return ListView.builder(
               itemCount: lists.length,
               itemBuilder: (context, index) {
-                if(lists[index].private == true){
-                  return ListWidget(list: lists[index]);
-                }
+                return ListWidget(list: lists[index]);
               },
             );
           } else {
             return const Center(
-              child: CircularProgressIndicator(
-                  color: Colors.deepPurpleAccent),
+              child: CircularProgressIndicator(color: Colors.deepPurpleAccent),
             );
           }
         },
