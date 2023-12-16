@@ -52,7 +52,14 @@ class _FamilyListPageState extends State<FamilyListPage> {
                 return ListView.builder(
                   itemCount: lists.length,
                   itemBuilder: (context, index) {
-                    return ListWidget(list: lists[index]);
+                    return ListWidget(
+                      list: lists[index],
+                      callback: () {
+                        setState(() {
+                          update.value = !update.value;
+                        });
+                      },
+                    );
                   },
                 );
               } else {
