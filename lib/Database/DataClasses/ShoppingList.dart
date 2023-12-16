@@ -1,6 +1,7 @@
 import 'User.dart';
 
 class ShoppingList {
+  late String shoppingListId;
   late String name;
   late List<String> boughtItems;
   late List<String> items;
@@ -8,9 +9,21 @@ class ShoppingList {
   late String type;
   late bool private;
 
-  ShoppingList(this.name, this.boughtItems, this.items, this.assignedUsers, this.type, this.private);
+  // pridano pro vytvareni noveho listu
+  ShoppingList.empty() {
+    shoppingListId = "";
+    name = "";
+    boughtItems = [];
+    items = [];
+    assignedUsers = [];
+    type = "";
+    private = false;
+  }
+
+  ShoppingList(this.shoppingListId, this.name, this.boughtItems, this.items, this.assignedUsers, this.type, this.private);
 
   void debugPrint() {
+    print("shoppingListId: $shoppingListId");
     print("Name: $name");
     print("Type: $type");
     print("Private: $private");

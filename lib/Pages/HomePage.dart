@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:itu_app/Pages/RoomsPage.dart';
-import 'package:itu_app/Pages/TasksPage.dart';
+import 'package:itu_app/Pages/Rooms/RoomsPage.dart';
+import 'package:itu_app/Pages/Tasks/TasksPage.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -32,7 +32,7 @@ class _TabBarState extends State<TabBarHomePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -44,18 +44,21 @@ class _TabBarState extends State<TabBarHomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Container(),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const <Widget>[
-            Tab(
-              text: "Tasks",
-            ),
-            Tab(
-              text: "Rooms",
-            ),
-          ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50.0),
+        child: AppBar(
+          leading: Container(),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const <Widget>[
+              Tab(
+                text: "Tasks",
+              ),
+              Tab(
+                text: "Rooms",
+              ),
+            ],
+          ),
         ),
       ),
       body: TabBarView(

@@ -1,15 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:itu_app/Pages/FridgePage.dart';
 import 'package:itu_app/Pages/HomePage.dart';
 import 'package:itu_app/Pages/ProblemsPage.dart';
 import 'package:itu_app/Pages/ReservationsPage.dart';
-import 'package:itu_app/Pages/ShoppingListPage.dart';
-import 'package:itu_app/Widgets/ItemWidget.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:itu_app/Pages/ShoppingList/ShoppingListPage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'Pages/ProfilePage.dart';
 import 'Pages/SignUpPage.dart';
@@ -18,15 +15,6 @@ import 'Database/firebase_options.dart';
 
 Future<void> main() async {
 
-  /// Hive local database initialization is not needed at the moment
-  /// maybe we will need it later for some setting or themes, idk
-  /// so we can delete it later :D
-  /*if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-    final document = await getApplicationDocumentsDirectory();
-    await Hive.initFlutter(document.path);
-  } else {
-    await Hive.initFlutter();
-  }*/
   WidgetsFlutterBinding.ensureInitialized();
   if(Platform.isAndroid || Platform.isIOS) {
     await Firebase.initializeApp(name: "dev project", options: DefaultFirebaseOptions.currentPlatform);
@@ -57,10 +45,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'My home',
+    return MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple.shade300,
+          // ···
+          brightness: Brightness.light,
+        ),
+
+        textTheme: GoogleFonts.offsideTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
+
       debugShowCheckedModeBanner: false,
-      home: MyLoginPage(),
+      home: const MyLoginPage(),
     );
   }
 }
@@ -73,7 +73,6 @@ class MyBottomNavigationPage extends StatefulWidget {
 }
 
 class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
-  OurWidgets ourWidgets = OurWidgets();
   List<Widget> pages = [const MyHomePage(), const MyShoppingListPage(), const MyReservationsPage(), const MyFridgePage(), const MyProblemsPage()];
   List<bool> selectedPage = [true, false, false, false, false];
   int index = 0;
@@ -115,21 +114,19 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
           ),
         ],
       ),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-          onPressed: (){
-          },
-          child: const Icon(Icons.add),
-        ),
-      ),
+      /*floatingActionButton: FloatingActionButton(
+        onPressed: (){
+        },
+        child: const Icon(Icons.add),
+      ),*/
       body: pages[index],
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(9.0),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30.0),
           child: BottomAppBar(
             elevation: 10.0,
-            color: Colors.deepPurpleAccent,
+            color: Colors.deepPurple[300],
             child: SizedBox(
               height: 60,
               child: Row(
@@ -137,7 +134,7 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
                   const Spacer(),
                   customBottomNavBarItem(const Icon(Icons.home, color: Colors.white), "Home", 0),
                   const Spacer(),
-                  customBottomNavBarItem(const Icon(Icons.list, color: Colors.white), "Shopping lists", 1),
+                  customBottomNavBarItem(const Icon(Icons.list, color: Colors.white), "Shopping list", 1),
                   const Spacer(),
                   customBottomNavBarItem(const Icon(Icons.access_time, color: Colors.white), "Reservations", 2),
                   const Spacer(),
