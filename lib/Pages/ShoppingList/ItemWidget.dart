@@ -18,15 +18,13 @@ class _ItemWidget extends State<ItemWidget> {
         Checkbox(
             value: isChecked,
             activeColor: Colors.grey,
-            onChanged: (newBool){
+            onChanged: (newBool) {
               setState(() {
                 isChecked = newBool!;
               });
-            }
-        ),
+            }),
         Text(widget.item),
       ],
     );
   }
-
 }

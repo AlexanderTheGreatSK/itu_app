@@ -21,7 +21,7 @@ class _FamilyListPageState extends State<FamilyListPage> {
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 100),
         child: FloatingActionButton(
-          onPressed: (){
+          onPressed: () {
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -46,9 +46,7 @@ class _FamilyListPageState extends State<FamilyListPage> {
             return ListView.builder(
               itemCount: lists.length,
               itemBuilder: (context, index) {
-                if (lists[index].private == false) {
-                  return ListWidget(list: lists[index]);
-                }
+                return ListWidget(list: lists[index]);
               },
             );
           } else {
@@ -60,6 +58,4 @@ class _FamilyListPageState extends State<FamilyListPage> {
       ),
     );
   }
-
-
 }
