@@ -210,6 +210,16 @@ class DatabaseHandler {
     }
   }
 
+  Stream<QuerySnapshot>? getShoppingListsUpdate(bool isPrivate, String userId) {
+    print("Received: $userId");
+    return FirebaseFirestore.instance.collection("shoppingLists").where("assignedUsers", arrayContains: userId).where("private", isEqualTo: isPrivate).snapshots();
+    /*getCurrentUserId().then((userId) {
+      print("USUSUSUSU:$userId");
+      return FirebaseFirestore.instance.collection("shoppingLists").where("assignedUsers", arrayContains: userId).where("private", isEqualTo: isPrivate).snapshots();
+    });
+    print("hahaha");*/
+  }
+
   Future<ShoppingList> createNewShoppingList(ShoppingList newShoppingList) async {
     List<String> userId = [];
 
