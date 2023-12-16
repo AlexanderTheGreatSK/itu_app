@@ -36,13 +36,20 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
   ];
   double currentPriorityValue = 1;
 
-  /// PLS do not be lazy as me and use FormTextField -> one controller for group of TextFields :))
   TextEditingController nameController = TextEditingController();
   TextEditingController daysController = TextEditingController();
 
   Future<void> crateNewTask() async {
     List<String> users = [];
     users.add(chosenID);
+
+    print("Name: ${nameController.text}");
+    print("Room: $chosenRoom");
+    print("Last done: $formatedLastDoneDate");
+    print("Frequency: ${daysController.text}");
+    print("Frequency units: $chosenFrequencyUnit");
+    print("Priority: ${currentPriorityValue.round()}");
+    print("Priority: ${currentSliderValue.round()}");
 
     /*Task newTask = Task(nameController.text, int.parse(rewardController.text), int.parse(daysController.text), int.parse(priorityController.text), bool.parse(taskIsDoneController.text),
         roomController.text, DateTime.parse(lastDoneController.text), DateTime.parse(targetDateController.text), users);
@@ -307,6 +314,30 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Material(
+                  elevation: 10.0,
+                  child: Container(
+                    height: 50,
+                    color: Colors.deepPurple,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("CREATE", style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
