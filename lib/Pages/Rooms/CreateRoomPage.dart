@@ -33,10 +33,10 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
   DatabaseHandler databaseHandler = DatabaseHandler();
 
   TextEditingController nameController = TextEditingController();
-  TextEditingController progressBarController = TextEditingController();
+  //TextEditingController progressBarController = TextEditingController();
 
   void crateNewRoom() {
-    Room room = Room(nameController.text, imgIndex.toString(), int.parse(progressBarController.text, radix: 10));
+    Room room = Room(nameController.text, imgIndex.toString(), currentTidinessValue.toInt()*50);
 
     databaseHandler.createRoom(room).onError((error, stackTrace) {
       print("ERROR OCCURED");
@@ -51,6 +51,7 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
   final FixedExtentScrollController controller = FixedExtentScrollController();
   CarouselController buttonCarouselController = CarouselController();
   int imgIndex = 0;
+  double currentTidinessValue = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -58,55 +59,65 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
       appBar: AppBar(
         title: const Text("Create new room"),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Name"
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Name"
+                ),
+                keyboardType: TextInputType.text,
               ),
-              keyboardType: TextInputType.text,
             ),
-          ),
-          /*Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              controller: imageController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "ImageId"
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: myF(),
+            ),
+            /*Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: TextField(
+                controller: progressBarController,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "StatusBarNumber"
+                ),
+                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
               ),
-              keyboardType: TextInputType.text,
+            ),*/
+            const Padding(
+              padding: EdgeInsets.only(top: 20.0),
+              child: Text("Current tidiness:", style: TextStyle(fontSize: 20.0))
             ),
-          ),*/
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: myF(),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              controller: progressBarController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "StatusBarNumber"
+            Padding(
+                padding: const EdgeInsets.all(10.0),
+              child: Slider(
+                value: currentTidinessValue,
+                min: 0,
+                max: 2,
+                divisions: 2,
+                label: ["Low", "Medium", "High"][currentTidinessValue.round()],
+                onChanged: (double value) {
+                  setState(() {
+                    currentTidinessValue = value;
+                  });
+                },
               ),
-              keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: MaterialButton(
-              onPressed: crateNewRoom,
-              color: Colors.deepPurple[300],
-              textColor: Colors.white,
-              child: const Text("Create"),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: MaterialButton(
+                onPressed: crateNewRoom,
+                color: Colors.deepPurple[300],
+                textColor: Colors.white,
+                child: const Text("Create"),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
