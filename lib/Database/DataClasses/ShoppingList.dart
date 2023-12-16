@@ -9,6 +9,8 @@ class ShoppingList {
   late String type;
   late bool private;
 
+  ShoppingList(this.shoppingListId, this.name, this.boughtItems, this.items, this.assignedUsers, this.type, this.private);
+
   // pridano pro vytvareni noveho listu
   ShoppingList.empty() {
     shoppingListId = "";
@@ -19,8 +21,6 @@ class ShoppingList {
     type = "";
     private = false;
   }
-
-  ShoppingList(this.shoppingListId, this.name, this.boughtItems, this.items, this.assignedUsers, this.type, this.private);
 
   void debugPrint() {
     print("shoppingListId: $shoppingListId");
