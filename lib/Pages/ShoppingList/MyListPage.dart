@@ -14,7 +14,6 @@ class MyListPage extends StatefulWidget {
 
 class _MyListPageState extends State<MyListPage> {
   DatabaseHandler databaseHandler = DatabaseHandler();
-  List<ShoppingList> lists = [];
   final ValueNotifier<bool> update = ValueNotifier<bool>(false);
 
   @override
@@ -27,7 +26,7 @@ class _MyListPageState extends State<MyListPage> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AddListPage(isPrivate: true);
+                  return const AddListPage(isPrivate: true);
                 },
               ).then((value) {
                 update.value = !update.value;
@@ -49,7 +48,7 @@ class _MyListPageState extends State<MyListPage> {
               future: databaseHandler.getShoppingLists(true),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  lists = snapshot.data!;
+                  List<ShoppingList> lists = snapshot.data!;
                   return ListView.builder(
                     itemCount: lists.length,
                     itemBuilder: (context, index) {

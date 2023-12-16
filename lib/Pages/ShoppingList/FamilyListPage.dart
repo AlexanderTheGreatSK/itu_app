@@ -26,7 +26,7 @@ class _FamilyListPageState extends State<FamilyListPage> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AddListPage(isPrivate: false);
+                return const AddListPage(isPrivate: false);
               },
             ).then((value) {
               update.value = !update.value;
