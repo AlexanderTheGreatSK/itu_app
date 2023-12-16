@@ -14,6 +14,7 @@ class FamilyListPage extends StatefulWidget {
 
 class _FamilyListPageState extends State<FamilyListPage> {
   DatabaseHandler databaseHandler = DatabaseHandler();
+  final ValueNotifier<bool> update = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,9 @@ class _FamilyListPageState extends State<FamilyListPage> {
               builder: (BuildContext context) {
                 return AddListPage(isPrivate: false);
               },
-            );
+            ).then((value) {
+              update.value = !update.value;
+            });
           },
           backgroundColor: Colors.deepPurple[300],
           shape: const RoundedRectangleBorder(
@@ -38,22 +41,28 @@ class _FamilyListPageState extends State<FamilyListPage> {
           ),
         ),
       ),
-      body: FutureBuilder(
-        future: databaseHandler.getShoppingLists(false),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<ShoppingList> lists = snapshot.data!;
-            return ListView.builder(
-              itemCount: lists.length,
-              itemBuilder: (context, index) {
-                return ListWidget(list: lists[index]);
-              },
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(color: Colors.deepPurpleAccent),
-            );
-          }
+      body: ValueListenableBuilder<bool>(
+        valueListenable: update,
+        builder: (context, value, child) {
+          return FutureBuilder(
+            future: databaseHandler.getShoppingLists(false),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<ShoppingList> lists = snapshot.data!;
+                return ListView.builder(
+                  itemCount: lists.length,
+                  itemBuilder: (context, index) {
+                    return ListWidget(list: lists[index]);
+                  },
+                );
+              } else {
+                return const Center(
+                  child:
+                      CircularProgressIndicator(color: Colors.deepPurpleAccent),
+                );
+              }
+            },
+          );
         },
       ),
     );
