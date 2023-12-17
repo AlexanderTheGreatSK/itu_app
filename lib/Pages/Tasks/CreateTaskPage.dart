@@ -46,7 +46,7 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController daysController = TextEditingController();
 
-  void crateNewTask() {
+  Future<void> crateNewTask() async {
     print(chosenFrequencyUnit);
     if(nameController.text != "" && chosenRoom != "" && daysController.text != "" && chosenFrequencyUnit != "" && users.isNotEmpty) {
       int days = int.parse(daysController.text) * int.parse(chosenFrequencyUnit);
@@ -61,7 +61,7 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
       Task newTask = Task(nameController.text, currentSliderValue.round() + 1, int.parse(daysController.text), currentPriorityValue.round() + 1, done,
           chosenRoom, lastDoneDate, next, userChooserController.getUserIds(), "");
 
-      databaseHandler.createTask(newTask);
+      await databaseHandler.createTask(newTask);
       Navigator.pop(context);
     }
   }
