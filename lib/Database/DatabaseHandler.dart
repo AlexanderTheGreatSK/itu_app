@@ -76,7 +76,6 @@ class DatabaseHandler {
       await FirebaseFirestore.instance.collection("users").get().then((snapshot) {
         var docsMap = snapshot.docs;
         for(var item in docsMap) {
-          print(item.data());
           var data = item.data();
           users.add(OurUser(data["username"], data["userId"], data["profilePicture"], data["points"]));
         }
