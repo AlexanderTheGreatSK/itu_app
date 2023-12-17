@@ -39,6 +39,7 @@ class _ListWidget extends State<ListWidget> {
   }
 
   @override
+
   /// vzhled a funkcionalita seznamu
   Widget build(BuildContext context) {
     return Column(
@@ -151,6 +152,7 @@ class _ListWidget extends State<ListWidget> {
                       );
                     },
                   ),
+
                   /// ozavrena cast pro pridavani nove polozky
                   if (addIsOpen)
                     AddItemWidget(
@@ -161,6 +163,7 @@ class _ListWidget extends State<ListWidget> {
                         });
                       },
                     ),
+
                   /// otevrena cast pro pridavani nove polozky
                   if (!addIsOpen)
                     Padding(
@@ -389,99 +392,101 @@ class _ListWidget extends State<ListWidget> {
       padding: const EdgeInsets.all(20),
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              /// rename
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return renameList(context);
-                    },
-                  );
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                        size: 35,
-                      ),
-                    ),
-                    Text(
-                      "Rename",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
+        /// rename
+        InkWell(
+          onTap: () {
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return renameList(context);
+              },
+            );
+          },
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                  size: 35,
                 ),
               ),
-              /// change category
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return updateList(context);
-                    },
-                  );
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.change_circle,
-                        color: Colors.white,
-                        size: 35,
-                      ),
-                    ),
-                    Text(
-                      "Change category",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
+              Text(
+                "Rename",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
                 ),
               ),
-              /// delete
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return deleteList(context);
-                    },
-                  );
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.delete_forever,
-                        color: Color(0xFFD50000),
-                        size: 35,
-                      ),
-                    ),
-                    Text(
-                      "Delete List",
-                      style: TextStyle(
-                        color: Color(0xFFD50000),
-                        fontSize: 20,
-                      ),
-                    ),
+            ],
+          ),
+        ),
+
+        /// change category
+        InkWell(
+          onTap: () {
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return updateList(context);
+              },
+            );
+          },
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(
+                  Icons.change_circle,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ),
+              Text(
+                "Change category",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        /// delete
+        InkWell(
+          onTap: () {
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return deleteList(context);
+              },
+            );
+          },
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(
+                  Icons.delete_forever,
+                  color: Color(0xFFD50000),
+                  size: 35,
+                ),
+              ),
+              Text(
+                "Delete List",
+                style: TextStyle(
+                  color: Color(0xFFD50000),
+                  fontSize: 20,
+                ),
+              ),
             ],
           ),
         ),
