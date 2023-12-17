@@ -2,10 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/calendar/v3.dart' as GoogleAPI;
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:itu_app/Database/DataClasses/Reward.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Pages/Tasks/CalendarTasksPage.dart';
 import 'DataClasses/Room.dart';
 import 'DataClasses/ShoppingList.dart';
 import 'DataClasses/Task.dart';
@@ -431,6 +436,67 @@ class DatabaseHandler {
     }
   }
 
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: "152393665335-pnvkvg510fudheejggp66niaecfh8210.apps.googleusercontent.com",
+    scopes: <String>[
+      "https://www.googleapis.com/auth/calendar",
+    ],
+  );
+
+  Future<void> addTaskToCalendar(Task task) async {
+    GoogleAPI.Event event = GoogleAPI.Event();
+
+    event.summary = task.name;
+    event.colorId = "MAUVE";
+
+    GoogleAPI.EventDateTime start = GoogleAPI.EventDateTime();
+    start.date = task.targetDate;
+
+    GoogleAPI.EventDateTime end = GoogleAPI.EventDateTime();
+    end.date = task.targetDate;
+
+    event.start = start;
+    event.end = end;
+    String eD = DateFormat('dd.MM.yyyy').format(task.targetDate);
+    final dataMap = <String, dynamic> {
+      "end": {
+        "date": eD,
+      },
+      "start": {
+        "date": eD,
+      },
+      "summary": task.name
+    };
+
+    /*await _googleSignIn.signIn();
+    final token = (await _googleSignIn.currentUser!.authentication).accessToken;*/
+
+
+
+    /*http.Response response = await http.post(
+      Uri.parse("https://www.googleapis.com/calendar/v3/calendars/primary/events?maxAttendees=1&sendNotifications=true&sendUpdates=none&key=$token"),
+      headers: <String, String>{
+        "Authorization": "Bearer $token",
+        "Accept": "application/json",
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(dataMap)
+    );
+
+    print(response.body);*/
+
+
+    await _googleSignIn.signIn();
+    //final headers = await _googleSignIn.currentUser!.authHeaders;
+    var user = _googleSignIn.currentUser!;
+    final httpClient = GoogleAPIClient(await user.authHeaders);
+    final GoogleAPI.CalendarApi calendarAPI = GoogleAPI.CalendarApi(httpClient);
+
+    await calendarAPI.events.insert(event,"primary", conferenceDataVersion: 0, maxAttendees: 1, sendNotifications: true, sendUpdates: null, supportsAttachments: false).then((value) {
+      print(value.status);
+    });
+  }
+
   // ROOMS end-points--------------------------------------------------------------
   Future<void> createRoom(Room newRoom) async {
     if (isMobilePlatform()) {
@@ -487,22 +553,26 @@ class DatabaseHandler {
 
   // TASKS end-points--------------------------------------------------------------
   Future<void> createTask(Task newTask) async {
-    if (isMobilePlatform()) {
-      final dataMap = <String, dynamic>{
-        "name": newTask.name,
-        "reward": newTask.reward,
-        "days": newTask.days,
-        "priority": newTask.priority,
-        "taskIsDone": newTask.taskIsDone,
-        "room": newTask.room,
-        "lastDone": newTask.lastDone,
-        "targetDate": newTask.targetDate,
-        "assignedUsers": newTask.assignedUsers,
+
+    if(isMobilePlatform()) {
+
+      DocumentReference documentReference = FirebaseFirestore.instance.collection("tasks").doc();
+
+      final dataMap = <String, dynamic> {
+        "name" : newTask.name,
+        "reward" : newTask.reward,
+        "days" : newTask.days,
+        "priority" : newTask.priority,
+        "taskIsDone" : newTask.taskIsDone,
+        "room" : newTask.room,
+        "lastDone" : newTask.lastDone,
+        "targetDate" : newTask.targetDate,
+        "assignedUsers" : newTask.assignedUsers,
+        "taskId" : documentReference.id,
       };
 
-      if (isMobilePlatform()) {
-        DocumentReference documentReference =
-            FirebaseFirestore.instance.collection("tasks").doc();
+
+
 
         documentReference.set(dataMap).then((value) async {
           print(documentReference.id);
@@ -517,7 +587,7 @@ class DatabaseHandler {
         }).onError((error, stackTrace) {
           print("Error: $error, $stackTrace");
         });
-      }
+
     } else {
       // TODO
     }
@@ -548,16 +618,11 @@ class DatabaseHandler {
             userIds.add(item);
           }
 
-          Task task = Task(
-              data["name"],
-              data["reward"],
-              data["days"],
-              data["priority"],
-              data["taskIsDone"],
-              data["room"],
-              lastDone,
-              targetDate,
-              userIds);
+
+          Task task = Task(data["name"], data["reward"], data["days"],
+              data["priority"], data["taskIsDone"], data["room"],
+              lastDone, targetDate, userIds, data["taskId"]);
+
 
           tasks.add(task);
         }
@@ -579,40 +644,33 @@ class DatabaseHandler {
       await FirebaseFirestore.instance
           .collection("tasks")
           .orderBy('targetDate')
+          .where('taskIsDone', isEqualTo: false)
           .startAt([DateTime(today.year, today.month, today.day)])
           .endAt([DateTime(today.year, today.month, today.day, 23, 59, 59)])
-          .where("assignedUsers", arrayContains: userId)
-          .get()
-          .then((snapshot) {
-            for (var docSnapshot in snapshot.docs) {
-              var data = docSnapshot.data();
+          .where("assignedUsers", arrayContains: userId).get().then((snapshot) {
+        for(var docSnapshot in snapshot.docs) {
+          var data = docSnapshot.data();
 
-              Timestamp timestamp = data["lastDone"];
-              DateTime lastDone = timestamp.toDate();
+          Timestamp timestamp = data["lastDone"];
+          DateTime lastDone = timestamp.toDate();
 
-              timestamp = data["targetDate"];
-              DateTime targetDate = timestamp.toDate();
+          timestamp = data["targetDate"];
+          DateTime targetDate = timestamp.toDate();
 
-              List<String> userIds = [];
+          List<String> userIds = [];
 
-              for (var item in data["assignedUsers"]) {
-                userIds.add(item);
-              }
+          for(var item in data["assignedUsers"]) {
+            userIds.add(item);
+          }
 
-              Task task = Task(
-                  data["name"],
-                  data["reward"],
-                  data["days"],
-                  data["priority"],
-                  data["taskIsDone"],
-                  data["room"],
-                  lastDone,
-                  targetDate,
-                  userIds);
+          Task task = Task(data["name"], data["reward"], data["days"],
+              data["priority"], data["taskIsDone"], data["room"],
+              lastDone, targetDate, userIds, data["taskId"]);
 
-              tasks.add(task);
-            }
-          });
+          tasks.add(task);
+        }
+      });
+
       return tasks;
     } else {
       // TODO
@@ -634,49 +692,74 @@ class DatabaseHandler {
     print("END: ${endDate.toString()}");
 
     List<Task> tasks = [];
-    if (isMobilePlatform()) {
-      await FirebaseFirestore.instance
-          .collection("tasks")
+
+    if(isMobilePlatform()) {
+
+      await FirebaseFirestore.instance.collection("tasks")
+          .where('taskIsDone', isEqualTo: false)
           .orderBy('targetDate')
           .startAt([DateTime(startDate.year, startDate.month, startDate.day)])
-          .endAt(
-              [DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59)])
-          .where("assignedUsers", arrayContains: userId)
-          .get()
-          .then((snapshot) {
-            for (var docSnapshot in snapshot.docs) {
-              var data = docSnapshot.data();
+          .endAt([DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59)])
+          .where("assignedUsers", arrayContains: userId).get().then((snapshot) {
+        for(var docSnapshot in snapshot.docs) {
+          var data = docSnapshot.data();
 
-              Timestamp timestamp = data["lastDone"];
-              DateTime lastDone = timestamp.toDate();
+          Timestamp timestamp = data["lastDone"];
+          DateTime lastDone = timestamp.toDate();
 
-              timestamp = data["targetDate"];
-              DateTime targetDate = timestamp.toDate();
+          timestamp = data["targetDate"];
+          DateTime targetDate = timestamp.toDate();
 
-              List<String> userIds = [];
+          List<String> userIds = [];
 
-              for (var item in data["assignedUsers"]) {
-                userIds.add(item);
-              }
+          for(var item in data["assignedUsers"]) {
+            userIds.add(item);
+          }
 
-              Task task = Task(
-                  data["name"],
-                  data["reward"],
-                  data["days"],
-                  data["priority"],
-                  data["taskIsDone"],
-                  data["room"],
-                  lastDone,
-                  targetDate,
-                  userIds);
+          Task task = Task(data["name"], data["reward"], data["days"],
+              data["priority"], data["taskIsDone"], data["room"],
+              lastDone, targetDate, userIds, data["taskId"]);
 
-              tasks.add(task);
-            }
-          });
+          tasks.add(task);
+        }
+      });
       return tasks;
     } else {
       // TODO
       return tasks;
+    }
+  }
+
+  Future<void> taskIsDone(Task task) async {
+    if(isMobilePlatform()) {
+      String userId = await getCurrentUserId();
+
+      DateTime today = DateTime.now();
+
+      DateTime targetDate = DateTime(today.year, today.month, today.day + task.days);
+
+      final taskUpdate = <String, dynamic> {
+        "taskIsDone" : false,
+        "lastDone" : today,
+        "targetDate" : targetDate,
+      };
+
+      FirebaseFirestore.instance.collection("tasks").doc(task.taskId).update(taskUpdate);
+      FirebaseFirestore.instance.collection("rooms").doc(task.room).collection("roomTasks").doc(task.taskId).update(taskUpdate);
+
+      updateUserPoints(userId, task.reward);
+    }
+  }
+
+  Future<void> updateUserPoints(String userId, int points) async {
+    if(isMobilePlatform()) {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection("users").doc(userId).get();
+      var data = snapshot.data() as Map<String, dynamic>;
+
+      int oldPoints = data["points"];
+      int newPoints = oldPoints + points;
+
+      FirebaseFirestore.instance.collection("users").doc(userId).update({"points": newPoints});
     }
   }
 

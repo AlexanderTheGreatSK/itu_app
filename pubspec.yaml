@@ -49,6 +49,8 @@ dependencies:
   shimmer: ^3.0.0
   syncfusion_flutter_datepicker: ^23.2.7
   flutter_animation_progress_bar: ^2.3.1
+  googleapis: ^12.0.0
+  googleapis_auth: ^1.4.1
 
 dev_dependencies:
   flutter_test:

@@ -10,8 +10,9 @@ class Task {
   late DateTime lastDone;
   late DateTime targetDate;
   late List<String> assignedUsers;
+  late String taskId;
 
-  Task(this.name, this.reward, this.days, this.priority, this.taskIsDone, this.room, this.lastDone, this.targetDate, this.assignedUsers);
+  Task(this.name, this.reward, this.days, this.priority, this.taskIsDone, this.room, this.lastDone, this.targetDate, this.assignedUsers, this.taskId);
 
   void debugPrint() {
     print("Task name: $name");
@@ -22,6 +23,7 @@ class Task {
     print("Task room: $room");
     print("Task lastDone: $lastDone");
     print("Task targetDate: $targetDate");
+    print("Task id: $taskId");
 
     print("Assigned users:");
     for(var userId in assignedUsers) {
