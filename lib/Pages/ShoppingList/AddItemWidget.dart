@@ -26,13 +26,14 @@ class _AddItemWidget extends State<AddItemWidget> {
           padding: const EdgeInsets.all(10.0),
           child: TextButton(
             onPressed: () {
-              print('presse');
+              print('pressed');
             },
             child: TextField(
               controller: _nameController,
               onEditingComplete: () {
                 databaseHandler.addItemToShoppingList(
                     widget.list.shoppingListId, _nameController.text);
+                _nameController.clear();
                 widget.callback();
               },
               decoration: const InputDecoration(
@@ -73,8 +74,9 @@ class _AddItemWidget extends State<AddItemWidget> {
                 return ListView.builder(
                   itemCount: listByID.boughtItems.length,
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Text(listByID.boughtItems[index]);
+                    return itemOffer(context, listByID.boughtItems[index]);
                   },
                 );
               } else {
@@ -94,8 +96,9 @@ class _AddItemWidget extends State<AddItemWidget> {
                 return ListView.builder(
                   itemCount: favList.length,
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Text(favList[index]);
+                    return itemOffer(context, favList[index]);
                   },
                 );
               } else {
@@ -107,6 +110,27 @@ class _AddItemWidget extends State<AddItemWidget> {
             },
           ),
       ],
+    );
+  }
+
+  Widget itemOffer(BuildContext context, String offer) {
+    return TextButton(
+      onPressed: () {
+        databaseHandler.addItemToShoppingList(
+            widget.list.shoppingListId, offer);
+        databaseHandler.setItemAsBought(
+            widget.list.shoppingListId, offer, false);
+        widget.callback();
+      },
+      child: Row(
+        children: [
+          Icon(Icons.add),
+          Text(
+            offer,
+            style: TextStyle(),
+          ),
+        ],
+      ),
     );
   }
 }
