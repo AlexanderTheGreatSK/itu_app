@@ -1,3 +1,5 @@
+/// Authors: Alena Klimecká (xklime47), Jana Kováčiková (xkovac59), Alexander Rastislav Okrucký (xokruc00)
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -17,6 +19,15 @@ import 'DataClasses/Task.dart';
 import 'DataClasses/User.dart';
 
 class DatabaseHandler {
+  /*
+  * This class has methods for interactions with our Firestore database
+  **/
+
+  /*
+  * Author: Alexander Rastislav Okrucký (xokruc00)
+  *
+  * This method checks if actual platform is iOS or Android
+  **/
   bool isMobilePlatform() {
     if (Platform.isIOS || Platform.isAndroid) {
       return true;
@@ -26,6 +37,11 @@ class DatabaseHandler {
   }
 
   // LOCAL USER end-points--------------------------------------------------------------
+  /*
+  * Author: Alexander Rastislav Okrucký (xokruc00)
+  *
+  * This section
+  **/
   Future<void> safeUserId(String userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("userId", userId);

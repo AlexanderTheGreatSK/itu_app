@@ -1,3 +1,5 @@
+//Authors: Alexander Okrucký (xokruc00)
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';

@@ -1,3 +1,4 @@
+///Author: Alena Klimecká - xklime47
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Pages/ShoppingList/FamilyListPage.dart';
@@ -23,7 +24,7 @@ class _ListWidget extends State<ListWidget> {
   bool addIsOpen = false;
   DatabaseHandler databaseHandler = DatabaseHandler();
 
-  // Action buttons style
+  /// styl pro tlacitka uprav
   ButtonStyle smallButtonsStyle(Color backgroundColor) {
     return ButtonStyle(
       shape: MaterialStateProperty.all<OutlinedBorder>(
@@ -39,10 +40,13 @@ class _ListWidget extends State<ListWidget> {
   }
 
   @override
+
+  /// vzhled a funkcionalita seznamu
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        /// vrchni cast s nazvem a ikonou tecek
         Padding(
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: InkWell(
@@ -95,7 +99,7 @@ class _ListWidget extends State<ListWidget> {
           ),
         ),
 
-        /// Open when click on the list
+        /// spodni cast otevrena po kliknuti
         if (isActive)
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -112,7 +116,7 @@ class _ListWidget extends State<ListWidget> {
               ),
               child: Column(
                 children: [
-                  /// Items of list
+                  /// jednotlive polozky seznamu
                   ValueListenableBuilder<bool>(
                     valueListenable: updateItems,
                     builder: (context, value, child) {
@@ -150,7 +154,7 @@ class _ListWidget extends State<ListWidget> {
                     },
                   ),
 
-                  /// Adding new item
+                  /// ozavrena cast pro pridavani nove polozky
                   if (addIsOpen)
                     AddItemWidget(
                       list: widget.list,
@@ -160,6 +164,8 @@ class _ListWidget extends State<ListWidget> {
                         });
                       },
                     ),
+
+                  /// otevrena cast pro pridavani nove polozky
                   if (!addIsOpen)
                     Padding(
                       padding: const EdgeInsets.only(top: 14),
@@ -182,7 +188,7 @@ class _ListWidget extends State<ListWidget> {
     );
   }
 
-  // delete list
+  /// okno pro smazani seznamu
   Widget deleteList(BuildContext context) {
     return AlertDialog(
       shape: const RoundedRectangleBorder(
@@ -233,7 +239,7 @@ class _ListWidget extends State<ListWidget> {
     );
   }
 
-  // rename list
+  /// okno pro prejmenovani seznamu
   Widget renameList(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
@@ -304,7 +310,7 @@ class _ListWidget extends State<ListWidget> {
     );
   }
 
-  // update list
+  /// okno pro zmenu typu seznamu
   Widget updateList(BuildContext context) {
     List<String> list = <String>[
       'Grocery',
@@ -381,12 +387,13 @@ class _ListWidget extends State<ListWidget> {
     );
   }
 
-  // vyskakovaci obrazovka spodku - delete, update, change
+  /// vyskakovaci obrazovka spodni casti - delete, update, change
   Widget bottomBarWidget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        /// rename
         InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -418,6 +425,8 @@ class _ListWidget extends State<ListWidget> {
             ],
           ),
         ),
+
+        /// change category
         InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -449,6 +458,8 @@ class _ListWidget extends State<ListWidget> {
             ],
           ),
         ),
+
+        /// delete
         InkWell(
           onTap: () {
             Navigator.pop(context);

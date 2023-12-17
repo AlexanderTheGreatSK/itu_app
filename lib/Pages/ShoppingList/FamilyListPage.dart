@@ -1,3 +1,4 @@
+///Author: Alena Klimecká - xklime47
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Pages/ShoppingList/ListWidget.dart';
@@ -17,8 +18,11 @@ class _FamilyListPageState extends State<FamilyListPage> {
   final ValueNotifier<bool> update = ValueNotifier<bool>(false);
 
   @override
+
+  /// Souhrny pohled na sdilene seznamy
   Widget build(BuildContext context) {
     return Scaffold(
+      /// Tlacitko pro pridani noveho seznamu
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 100),
         child: FloatingActionButton(
@@ -41,6 +45,8 @@ class _FamilyListPageState extends State<FamilyListPage> {
           ),
         ),
       ),
+
+      /// Vypisuje na obrazovku vsechny sdilene seznamy
       body: ValueListenableBuilder<bool>(
         valueListenable: update,
         builder: (context, value, child) {

@@ -1,3 +1,4 @@
+///Author: Alena Klimecká - xklime47
 import 'package:flutter/material.dart';
 
 import '../../Database/DataClasses/ShoppingList.dart';
@@ -30,6 +31,8 @@ class _ItemWidget extends State<ItemWidget> {
   }
 
   @override
+
+  /// polozka seznamu
   Widget build(BuildContext context) {
     return Column(
       children: [

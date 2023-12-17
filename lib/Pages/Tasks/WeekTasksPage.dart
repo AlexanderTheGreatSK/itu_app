@@ -1,3 +1,6 @@
+//Authors: Alexander Okrucký (xokruc00)
+
+
 import 'package:flutter/material.dart';
 
 import '../../Database/DataClasses/Task.dart';

@@ -1,3 +1,5 @@
+//Authors: Alexander Okrucký (xokruc00)
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Pages/Tasks/TaskDetails.dart';

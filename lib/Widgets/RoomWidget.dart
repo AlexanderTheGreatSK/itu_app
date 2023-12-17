@@ -1,3 +1,6 @@
+//Authors: Jana Kováčiková (xkovac59)
+
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/ImageHandler.dart';
 
@@ -23,7 +26,18 @@ class RoomWidgetState extends State<RoomWidget> {
             context,
             MaterialPageRoute(builder: (context) => ViewRoomPage(room: widget.room)));
       },
-      child: Image.asset(imageHandler.getLocalImage(widget.room.imageId)),
+      child:
+      FutureBuilder(
+        future: imageHandler.getRoomImage(widget.room.imageId),
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            return Image.memory(snapshot.data!);
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
+      )
+
     );
   }
 

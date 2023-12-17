@@ -95,7 +95,16 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
   Widget imageWidget() {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Image.asset(imageHandler.getLocalImage(widget.room.imageId)),
+      child: FutureBuilder(
+        future: imageHandler.getRoomImage(widget.room.imageId),
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            return Image.memory(snapshot.data!);
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
 

@@ -1,3 +1,4 @@
+///Author: Alena Klimecká - xklime47
 import 'package:flutter/material.dart';
 import 'package:itu_app/Pages/ShoppingList/FamilyListPage.dart';
 import 'package:itu_app/Pages/ShoppingList/MyListPage.dart';
@@ -11,6 +12,8 @@ class MyShoppingListPage extends StatefulWidget {
 
 class _MyShoppingListPageState extends State<MyShoppingListPage> {
   @override
+
+  /// Lista karet pro navigaci mezi soukromymi a sdilenymi seznamy
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
