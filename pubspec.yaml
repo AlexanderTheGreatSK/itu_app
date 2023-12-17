@@ -41,7 +41,6 @@ dependencies:
   http: ^1.1.0
   cloud_firestore: ^4.13.1
   google_sign_in: ^6.1.6
-  hexagon: ^0.2.0
   firebase_storage: ^11.5.3
   shared_preferences: ^2.2.2
   google_fonts: ^6.1.0
