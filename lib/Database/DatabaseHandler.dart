@@ -2,10 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/calendar/v3.dart' as GoogleAPI;
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:itu_app/Database/DataClasses/Reward.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Pages/Tasks/CalendarTasksPage.dart';
 import 'DataClasses/Room.dart';
 import 'DataClasses/ShoppingList.dart';
 import 'DataClasses/Task.dart';
@@ -328,6 +333,67 @@ class DatabaseHandler {
 
       FirebaseFirestore.instance.collection("shoppingLists").doc(newShoppingList.shoppingListId).update(dataMap);
     }
+  }
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: "152393665335-pnvkvg510fudheejggp66niaecfh8210.apps.googleusercontent.com",
+    scopes: <String>[
+      "https://www.googleapis.com/auth/calendar",
+    ],
+  );
+
+  Future<void> addTaskToCalendar(Task task) async {
+    GoogleAPI.Event event = GoogleAPI.Event();
+
+    event.summary = task.name;
+    event.colorId = "MAUVE";
+
+    GoogleAPI.EventDateTime start = GoogleAPI.EventDateTime();
+    start.date = task.targetDate;
+
+    GoogleAPI.EventDateTime end = GoogleAPI.EventDateTime();
+    end.date = task.targetDate;
+
+    event.start = start;
+    event.end = end;
+    String eD = DateFormat('dd.MM.yyyy').format(task.targetDate);
+    final dataMap = <String, dynamic> {
+      "end": {
+        "date": eD,
+      },
+      "start": {
+        "date": eD,
+      },
+      "summary": task.name
+    };
+
+    /*await _googleSignIn.signIn();
+    final token = (await _googleSignIn.currentUser!.authentication).accessToken;*/
+
+
+
+    /*http.Response response = await http.post(
+      Uri.parse("https://www.googleapis.com/calendar/v3/calendars/primary/events?maxAttendees=1&sendNotifications=true&sendUpdates=none&key=$token"),
+      headers: <String, String>{
+        "Authorization": "Bearer $token",
+        "Accept": "application/json",
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(dataMap)
+    );
+
+    print(response.body);*/
+
+
+    await _googleSignIn.signIn();
+    //final headers = await _googleSignIn.currentUser!.authHeaders;
+    var user = _googleSignIn.currentUser!;
+    final httpClient = GoogleAPIClient(await user.authHeaders);
+    final GoogleAPI.CalendarApi calendarAPI = GoogleAPI.CalendarApi(httpClient);
+
+    await calendarAPI.events.insert(event,"primary", conferenceDataVersion: 0, maxAttendees: 1, sendNotifications: true, sendUpdates: null, supportsAttachments: false).then((value) {
+      print(value.status);
+    });
   }
 
   // ROOMS end-points--------------------------------------------------------------

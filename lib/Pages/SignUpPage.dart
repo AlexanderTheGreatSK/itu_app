@@ -17,7 +17,12 @@ class _MyLoginPageState extends State<MyLoginPage> {
   DatabaseHandler databaseHandler = DatabaseHandler();
 
   Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+      clientId: "152393665335-pnvkvg510fudheejggp66niaecfh8210.apps.googleusercontent.com",
+      scopes: <String>[
+        "https://www.googleapis.com/auth/calendar",
+      ],
+    ).signIn();
 
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 

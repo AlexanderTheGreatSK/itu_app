@@ -35,6 +35,7 @@ class UserChooserState extends State<UserChooser> {
     }
     return ListView.builder(
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: widget.users.length,
       itemBuilder: (context, index) {
         return Padding(
