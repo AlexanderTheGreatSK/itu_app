@@ -16,8 +16,10 @@ class ListWidget extends StatefulWidget {
 
 class _ListWidget extends State<ListWidget> {
   final TextEditingController _nameController = TextEditingController();
+  final ValueNotifier<bool> updateItems = ValueNotifier<bool>(false);
   bool isActive = false;
   bool isDeleting = false;
+  bool addIsOpen = false;
   DatabaseHandler databaseHandler = DatabaseHandler();
 
   // Action buttons style
@@ -111,10 +113,21 @@ class _ListWidget extends State<ListWidget> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      return ItemWidget(item: widget.list.items[index]);
+                      return Column(
+                        children: [
+                          ItemWidget(item: widget.list.items[index], list: widget.list,),
+                          const Divider(
+                            color: Colors.grey,
+                            height: 10,
+                            thickness: 1,
+                            indent: 10,
+                            endIndent: 10,
+                          ),
+                        ],
+                      );
                     },
                   ),
-                  addNewItemBar(context),
+                  newAddItem(context),
                 ],
               ),
             ),
@@ -162,6 +175,35 @@ class _ListWidget extends State<ListWidget> {
         });
       }),
     );
+  }
+
+  Widget newAddItem(BuildContext context){
+    if(addIsOpen){
+      return TextButton(
+          onPressed: () {
+            setState(() {
+              addIsOpen = !addIsOpen;
+              print('add');
+            });
+          },
+          child: TextField(
+            controller: _nameController,
+            decoration: const InputDecoration(
+              hintText: 'New Item',
+            ),
+          ),
+      );
+    } else {
+      return TextButton(
+          onPressed: () {
+            setState(() {
+              addIsOpen = !addIsOpen;
+              print('add');
+            });
+          },
+          child:Icon(Icons.add_circle_outline_rounded, size: 30,)
+      );
+    }
   }
 
   // delete list
@@ -448,14 +490,14 @@ class _ListWidget extends State<ListWidget> {
                 padding: EdgeInsets.all(10),
                 child: Icon(
                   Icons.delete_forever,
-                  color: Colors.white,
+                  color: Color(0xFFD50000),
                   size: 35,
                 ),
               ),
               Text(
                 "Delete List",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFFD50000),
                   fontSize: 20,
                 ),
               ),
