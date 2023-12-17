@@ -1,3 +1,5 @@
+///Author: Jana Kováčiková (xkovac59)
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Pages/Rooms/RoomsPage.dart';
 import 'package:itu_app/Pages/Tasks/TasksPage.dart';
@@ -25,8 +27,10 @@ class TabBarHomePage extends StatefulWidget {
   State<TabBarHomePage> createState() => _TabBarState();
 }
 
-class _TabBarState extends State<TabBarHomePage>
-    with TickerProviderStateMixin {
+class _TabBarState extends State<TabBarHomePage> with TickerProviderStateMixin {
+  ///TabBar for page swap between MyTasksPage and MyRoomsPage
+  ///default option is the Tasks page
+
   late final TabController _tabController;
 
   @override

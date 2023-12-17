@@ -1,10 +1,12 @@
+///Author: Jana Kováčiková (xkovac59)
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Database/ImageHandler.dart';
 import 'package:itu_app/Pages/CreateRewardPage.dart';
-import 'package:itu_app/Widgets/LeaderBoardWidget.dart';
 import 'package:itu_app/Widgets/RewardWidget.dart';
 import '../Database/DataClasses/Reward.dart';
+
 
 class LeaderBoardPage extends StatefulWidget {
   const LeaderBoardPage({super.key});
@@ -14,6 +16,10 @@ class LeaderBoardPage extends StatefulWidget {
 }
 
 class _LeaderBoardPage extends State<LeaderBoardPage> {
+  ///Leaderboard page divided between 3 parts:
+    ///First 3 users with most points
+    ///Shop with the rewards with custom brick layout
+    ///Create new reward ('+')
   DatabaseHandler databaseHandler = DatabaseHandler();
   ImageHandler imageHandler = ImageHandler();
 
@@ -48,6 +54,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     );
   }
 
+  ///Reward shop FE handling
   Widget _buildMore(Size size, int points) {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 30.0, top: 30.0),
@@ -70,8 +77,6 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
               int numberOfRows = (rewards.length / 2).round();
 
               for (int i = 0; i <= numberOfRows + 1; i += 2) {
-
-                print(rewards[i].name);
 
                 Widget positioned1 = Positioned(
                     width: midWidth - (midWidth / 20),
@@ -124,6 +129,9 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
     );
   }
 
+  ///First 3 users with most points
+  ///Added custom emojis to the Profile Pictures based on the winning position
+  ///Number of points of winning users
   Widget leaderBoardWidget() {
     return FutureBuilder(
       future: databaseHandler.getLeaderBoardUsers(),

@@ -1,3 +1,5 @@
+///Authors: Jana Kováčiková (xkovac59), Alexander Okrucký (xokruc00)
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
@@ -14,6 +16,9 @@ class MyRoomsPage extends StatefulWidget {
 }
 
 class _MyRoomsPageState extends State<MyRoomsPage> {
+  ///This class is used for custom rooms layout.
+  ///We display the rooms in the following hexagon layout: 2 rooms, 1 room, ...
+
   ImageHandler imageHandler = ImageHandler();
   DatabaseHandler databaseHandler = DatabaseHandler();
 

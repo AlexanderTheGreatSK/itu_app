@@ -1,3 +1,5 @@
+///Authors: Jana Kováčiková (xkovac59), Alexander Okrucký (xokruc00)
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:itu_app/Pages/FridgePage.dart';
@@ -14,7 +16,7 @@ import 'Database/firebase_options.dart';
 
 
 Future<void> main() async {
-
+  ///Firebase init
   WidgetsFlutterBinding.ensureInitialized();
   if(Platform.isAndroid || Platform.isIOS) {
     await Firebase.initializeApp(name: "dev project", options: DefaultFirebaseOptions.currentPlatform);
@@ -25,6 +27,9 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  /// entry point for the application
+  ///
+  /// theme for the application (color + text)
   const MyApp({super.key});
 
   static MaterialColor deepPurple = const MaterialColor(
@@ -43,6 +48,7 @@ class MyApp extends StatelessWidget {
     },
   );
 
+  ///Global theme of the application
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,6 +72,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyBottomNavigationPage extends StatefulWidget {
+  ///Main page of the application, bottom navigation bar is present
+  ///Page swap handling
   const MyBottomNavigationPage({super.key});
 
   @override
@@ -109,7 +117,7 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
             fillColor: const Color(0xFFF5F6F9),
             shape: const CircleBorder(),
             child: const CircleAvatar(
-              backgroundImage: NetworkImage("https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+              backgroundImage: AssetImage("res/users/1.png"),
             ),
           ),
         ],
@@ -150,6 +158,8 @@ class _MyBottomNavigationPageState extends State<MyBottomNavigationPage> {
       ),
     );
   }
+
+  ///This function returns fully customized bottom navigation bar
   Widget customBottomNavBarItem(Icon icon, String text, int newIndex) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
