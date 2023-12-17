@@ -58,8 +58,8 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
         done = true;
       }
 
-      Task newTask = Task(nameController.text, currentSliderValue.round(), int.parse(daysController.text), currentPriorityValue.round(), done,
-          chosenRoom, lastDoneDate, next, userChooserController.getUserIds());
+      Task newTask = Task(nameController.text, currentSliderValue.round() + 1, int.parse(daysController.text), currentPriorityValue.round() + 1, done,
+          chosenRoom, lastDoneDate, next, userChooserController.getUserIds(), "");
 
       databaseHandler.createTask(newTask);
       Navigator.pop(context);

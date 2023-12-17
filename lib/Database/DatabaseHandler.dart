@@ -381,6 +381,8 @@ class DatabaseHandler {
   Future<void> createTask(Task newTask) async {
     if(isMobilePlatform()) {
 
+      DocumentReference documentReference = FirebaseFirestore.instance.collection("tasks").doc();
+
       final dataMap = <String, dynamic> {
         "name" : newTask.name,
         "reward" : newTask.reward,
@@ -391,10 +393,10 @@ class DatabaseHandler {
         "lastDone" : newTask.lastDone,
         "targetDate" : newTask.targetDate,
         "assignedUsers" : newTask.assignedUsers,
+        "taskId" : documentReference.id,
       };
 
-      if(isMobilePlatform()) {
-        DocumentReference documentReference = FirebaseFirestore.instance.collection("tasks").doc();
+
 
         documentReference.set(dataMap).then((value) async {
           print(documentReference.id);
@@ -402,7 +404,7 @@ class DatabaseHandler {
         }).onError((error, stackTrace) {
           print("Error: $error, $stackTrace");
         });
-      }
+
     } else {
       // TODO
     }
@@ -430,7 +432,7 @@ class DatabaseHandler {
 
           Task task = Task(data["name"], data["reward"], data["days"],
               data["priority"], data["taskIsDone"], data["room"],
-              lastDone, targetDate, userIds);
+              lastDone, targetDate, userIds, data["taskId"]);
 
           tasks.add(task);
         }
@@ -452,6 +454,7 @@ class DatabaseHandler {
 
       await FirebaseFirestore.instance.collection("tasks")
           .orderBy('targetDate')
+          .where('taskIsDone', isEqualTo: false)
           .startAt([DateTime(today.year, today.month, today.day)])
           .endAt([DateTime(today.year, today.month, today.day, 23, 59, 59)])
           .where("assignedUsers", arrayContains: userId).get().then((snapshot) {
@@ -472,7 +475,7 @@ class DatabaseHandler {
 
           Task task = Task(data["name"], data["reward"], data["days"],
               data["priority"], data["taskIsDone"], data["room"],
-              lastDone, targetDate, userIds);
+              lastDone, targetDate, userIds, data["taskId"]);
 
           tasks.add(task);
         }
@@ -499,6 +502,7 @@ class DatabaseHandler {
     if(isMobilePlatform()) {
 
       await FirebaseFirestore.instance.collection("tasks")
+          .where('taskIsDone', isEqualTo: false)
           .orderBy('targetDate')
           .startAt([DateTime(startDate.year, startDate.month, startDate.day)])
           .endAt([DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59)])
@@ -520,7 +524,7 @@ class DatabaseHandler {
 
           Task task = Task(data["name"], data["reward"], data["days"],
               data["priority"], data["taskIsDone"], data["room"],
-              lastDone, targetDate, userIds);
+              lastDone, targetDate, userIds, data["taskId"]);
 
           tasks.add(task);
         }
@@ -529,6 +533,39 @@ class DatabaseHandler {
     } else {
       // TODO
       return tasks;
+    }
+  }
+
+  Future<void> taskIsDone(Task task) async {
+    if(isMobilePlatform()) {
+      String userId = await getCurrentUserId();
+
+      DateTime today = DateTime.now();
+
+      DateTime targetDate = DateTime(today.year, today.month, today.day + task.days);
+
+      final taskUpdate = <String, dynamic> {
+        "taskIsDone" : false,
+        "lastDone" : today,
+        "targetDate" : targetDate,
+      };
+
+      FirebaseFirestore.instance.collection("tasks").doc(task.taskId).update(taskUpdate);
+      FirebaseFirestore.instance.collection("rooms").doc(task.room).collection("roomTasks").doc(task.taskId).update(taskUpdate);
+
+      updateUserPoints(userId, task.reward);
+    }
+  }
+
+  Future<void> updateUserPoints(String userId, int points) async {
+    if(isMobilePlatform()) {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection("users").doc(userId).get();
+      var data = snapshot.data() as Map<String, dynamic>;
+
+      int oldPoints = data["points"];
+      int newPoints = oldPoints + points;
+
+      FirebaseFirestore.instance.collection("users").doc(userId).update({"points": newPoints});
     }
   }
 

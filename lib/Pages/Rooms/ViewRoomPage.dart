@@ -19,7 +19,7 @@ class ViewRoomPage extends StatefulWidget {
 class _ViewRoomPageState extends State<ViewRoomPage> {
   ImageHandler imageHandler = ImageHandler();
   DatabaseHandler databaseHandler = DatabaseHandler();
-
+  final ValueNotifier<bool> update = ValueNotifier<bool>(false);
   int itemCnt = 3;
 
   @override
@@ -31,24 +31,28 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
       body: ListView(
         children: [
           imageWidget(),
-          FutureBuilder<List<Task>>(
-            future: databaseHandler.getTasksForRoom(widget.room.name),
-            builder: (context, snapshot) {
-              if(snapshot.hasData) {
-                List<Task> tasks = snapshot.data!;
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  itemCount: tasks.length,
-                  itemBuilder: (context, index) {
-                    return TaskWidget(task: tasks[index]);
-                  },
-                );
-              } else {
-                return const CircularProgressIndicator();
-              }
-            },
-          ),
+          ValueListenableBuilder<bool>(
+            valueListenable: update,
+            builder: (context, value, child) {
+              return FutureBuilder<List<Task>>(
+                future: databaseHandler.getTasksForRoom(widget.room.name),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    List<Task> tasks = snapshot.data!;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: tasks.length,
+                      itemBuilder: (context, index) {
+                        return TaskWidget(task: tasks[index], update: update);
+                      },
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              );
+            }),
         ]
       ),
       bottomNavigationBar: Padding(
