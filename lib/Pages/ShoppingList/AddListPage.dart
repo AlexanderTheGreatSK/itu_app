@@ -21,12 +21,12 @@ class _AddListPageState extends State<AddListPage> {
     'Grocery',
     'Pet shop',
     'Drugstore',
-    'Hobby market',
-    'Add my type'
+    'Hobby market'
   ];
   String dropdownValue = 'Grocery';
 
   @override
+  /// Okno pro pridani noveho seznamu
   Widget build(BuildContext context) {
     return Form(
         key: _formKey,
@@ -38,6 +38,7 @@ class _AddListPageState extends State<AddListPage> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              /// Zadani jmena seznamu
               TextFormField(
                 controller: _nameController,
                 validator: (text) {
@@ -53,6 +54,7 @@ class _AddListPageState extends State<AddListPage> {
               ),
               Row(
                 children: [
+                  /// Zadani typu seznamu
                   const Text('Type: '),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
@@ -82,6 +84,7 @@ class _AddListPageState extends State<AddListPage> {
               ),
             ],
           ),
+          /// Tlacitko pro vytvoreni noveho seznamu
           actions: <Widget>[
             Center(
               child: ElevatedButton(
@@ -100,6 +103,7 @@ class _AddListPageState extends State<AddListPage> {
         ));
   }
 
+  /// Vyrvoreni noveho seznamu
   void createShoppingList() async {
     if (widget.isPrivate == true) {
       newShoppingList.assignedUsers.add(await databaseHandler.getCurrentUser());

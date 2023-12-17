@@ -17,8 +17,10 @@ class _MyListPageState extends State<MyListPage> {
   final ValueNotifier<bool> update = ValueNotifier<bool>(false);
 
   @override
+  /// Souhrny pohled na soukrome seznamy
   Widget build(BuildContext context) {
     return Scaffold(
+        /// Tlacitko pro pridani noveho seznamu
         floatingActionButton: Container(
           margin: const EdgeInsets.only(bottom: 100),
           child: FloatingActionButton(
@@ -41,6 +43,7 @@ class _MyListPageState extends State<MyListPage> {
             ),
           ),
         ),
+        /// Vypisuje na obrazovku vsechny soukrome seznamy
         body: ValueListenableBuilder<bool>(
           valueListenable: update,
           builder: (context, value, child) {

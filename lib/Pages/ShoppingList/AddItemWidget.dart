@@ -19,9 +19,11 @@ class _AddItemWidget extends State<AddItemWidget> {
   bool isRecent = true;
 
   @override
+  /// pridani nove polozky
   Widget build(BuildContext context) {
     return Column(
       children: [
+        /// pridani pomoci vepsani
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TextButton(
@@ -43,8 +45,7 @@ class _AddItemWidget extends State<AddItemWidget> {
             ),
           ),
         ),
-
-        /// Navigation Recent / Favorites
+        /// Navigace recent / suggested
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -54,16 +55,17 @@ class _AddItemWidget extends State<AddItemWidget> {
                     isRecent = true;
                   });
                 },
-                child: Text('RECENT')),
+                child: const Text('RECENT')),
             TextButton(
                 onPressed: () {
                   setState(() {
                     isRecent = false;
                   });
                 },
-                child: Text('FAVOURITES')),
+                child: const Text('SUGGESTED')),
           ],
         ),
+        /// pridani z recent
         if (isRecent)
           FutureBuilder(
             future:
@@ -87,6 +89,7 @@ class _AddItemWidget extends State<AddItemWidget> {
               }
             },
           ),
+        /// pridani z suggested
         if (!isRecent)
           FutureBuilder(
             future: databaseHandler.getFavouriteShoppingItems(widget.list.type),
@@ -113,6 +116,7 @@ class _AddItemWidget extends State<AddItemWidget> {
     );
   }
 
+  /// nabizena polozka
   Widget itemOffer(BuildContext context, String offer) {
     return TextButton(
       onPressed: () {
