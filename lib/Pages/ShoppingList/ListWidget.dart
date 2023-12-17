@@ -115,7 +115,10 @@ class _ListWidget extends State<ListWidget> {
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          ItemWidget(item: widget.list.items[index], list: widget.list,),
+                          ItemWidget(
+                            item: widget.list.items[index],
+                            list: widget.list,
+                          ),
                           const Divider(
                             color: Colors.grey,
                             height: 10,
@@ -177,21 +180,21 @@ class _ListWidget extends State<ListWidget> {
     );
   }
 
-  Widget newAddItem(BuildContext context){
-    if(addIsOpen){
+  Widget newAddItem(BuildContext context) {
+    if (addIsOpen) {
       return TextButton(
-          onPressed: () {
-            setState(() {
-              addIsOpen = !addIsOpen;
-              print('add');
-            });
-          },
-          child: TextField(
-            controller: _nameController,
-            decoration: const InputDecoration(
-              hintText: 'New Item',
-            ),
+        onPressed: () {
+          setState(() {
+            addIsOpen = !addIsOpen;
+            print('add');
+          });
+        },
+        child: TextField(
+          controller: _nameController,
+          decoration: const InputDecoration(
+            hintText: 'New Item',
           ),
+        ),
       );
     } else {
       return TextButton(
@@ -201,8 +204,10 @@ class _ListWidget extends State<ListWidget> {
               print('add');
             });
           },
-          child:Icon(Icons.add_circle_outline_rounded, size: 30,)
-      );
+          child: Icon(
+            Icons.add_circle_outline_rounded,
+            size: 30,
+          ));
     }
   }
 

@@ -23,19 +23,16 @@ class _ItemWidget extends State<ItemWidget> {
         tileColor: Colors.grey, //?
         value: isChecked,
         onChanged: (bool? value) {
-        setState(() {
-          isChecked = value!;
-        });
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.0)),
-      title: Text(
-        widget.item,
-        style: const TextStyle(
-          fontSize: 16
-        ),
-      )
-    );
-
+          setState(() {
+            isChecked = value!;
+          });
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        checkboxShape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.0)),
+        title: Text(
+          widget.item,
+          style: const TextStyle(fontSize: 16),
+        ));
   }
 }
