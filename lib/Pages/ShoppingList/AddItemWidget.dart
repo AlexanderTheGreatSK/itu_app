@@ -19,6 +19,7 @@ class _AddItemWidget extends State<AddItemWidget> {
   bool isRecent = true;
 
   @override
+
   /// pridani nove polozky
   Widget build(BuildContext context) {
     return Column(
@@ -45,6 +46,7 @@ class _AddItemWidget extends State<AddItemWidget> {
             ),
           ),
         ),
+
         /// Navigace recent / suggested
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -65,6 +67,7 @@ class _AddItemWidget extends State<AddItemWidget> {
                 child: const Text('SUGGESTED')),
           ],
         ),
+
         /// pridani z recent
         if (isRecent)
           FutureBuilder(
@@ -89,6 +92,7 @@ class _AddItemWidget extends State<AddItemWidget> {
               }
             },
           ),
+
         /// pridani z suggested
         if (!isRecent)
           FutureBuilder(

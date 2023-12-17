@@ -17,6 +17,7 @@ class _FamilyListPageState extends State<FamilyListPage> {
   final ValueNotifier<bool> update = ValueNotifier<bool>(false);
 
   @override
+
   /// Souhrny pohled na sdilene seznamy
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +44,7 @@ class _FamilyListPageState extends State<FamilyListPage> {
           ),
         ),
       ),
+
       /// Vypisuje na obrazovku vsechny sdilene seznamy
       body: ValueListenableBuilder<bool>(
         valueListenable: update,

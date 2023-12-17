@@ -26,6 +26,7 @@ class _AddListPageState extends State<AddListPage> {
   String dropdownValue = 'Grocery';
 
   @override
+
   /// Okno pro pridani noveho seznamu
   Widget build(BuildContext context) {
     return Form(
@@ -84,6 +85,7 @@ class _AddListPageState extends State<AddListPage> {
               ),
             ],
           ),
+
           /// Tlacitko pro vytvoreni noveho seznamu
           actions: <Widget>[
             Center(

@@ -30,6 +30,7 @@ class _ItemWidget extends State<ItemWidget> {
   }
 
   @override
+
   /// polozka seznamu
   Widget build(BuildContext context) {
     return Column(
