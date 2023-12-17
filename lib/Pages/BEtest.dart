@@ -53,7 +53,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
   }
 
   Future<void> getTasksForAlex() async {
-    List<Task> alexTasks = await databaseHandler.getTaskForUser();
+    List<Task> alexTasks = await databaseHandler.getTaskForUserToday();
     int index = 0;
     for(var task in alexTasks) {
       print("Task $index ----------");

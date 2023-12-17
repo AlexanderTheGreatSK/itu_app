@@ -443,13 +443,66 @@ class DatabaseHandler {
     }
   }
 
-  Future<List<Task>> getTaskForUser() async {
+  Future<List<Task>> getTaskForUserToday() async {
     String userId = await getCurrentUserId();
+    DateTime today = DateTime.now();
 
     List<Task> tasks = [];
     if(isMobilePlatform()) {
 
-      await FirebaseFirestore.instance.collection("tasks").where("assignedUsers", arrayContains: userId).get().then((snapshot) {
+      await FirebaseFirestore.instance.collection("tasks")
+          .orderBy('targetDate')
+          .startAt([DateTime(today.year, today.month, today.day)])
+          .endAt([DateTime(today.year, today.month, today.day, 23, 59, 59)])
+          .where("assignedUsers", arrayContains: userId).get().then((snapshot) {
+        for(var docSnapshot in snapshot.docs) {
+          var data = docSnapshot.data();
+
+          Timestamp timestamp = data["lastDone"];
+          DateTime lastDone = timestamp.toDate();
+
+          timestamp = data["targetDate"];
+          DateTime targetDate = timestamp.toDate();
+
+          List<String> userIds = [];
+
+          for(var item in data["assignedUsers"]) {
+            userIds.add(item);
+          }
+
+          Task task = Task(data["name"], data["reward"], data["days"],
+              data["priority"], data["taskIsDone"], data["room"],
+              lastDone, targetDate, userIds);
+
+          tasks.add(task);
+        }
+      });
+      return tasks;
+    } else {
+      // TODO
+      return tasks;
+    }
+  }
+
+  Future<List<Task>> getTaskForUserWeek() async {
+    String userId = await getCurrentUserId();
+    DateTime today = DateTime.now();
+    int weekDay = today.weekday;
+
+    DateTime startDate = DateTime(today.year, today.month, today.day - (weekDay - 1));
+    DateTime endDate = DateTime(today.year, today.month, today.day + (7 - weekDay));
+
+    print("START: ${startDate.toString()}");
+    print("END: ${endDate.toString()}");
+
+    List<Task> tasks = [];
+    if(isMobilePlatform()) {
+
+      await FirebaseFirestore.instance.collection("tasks")
+          .orderBy('targetDate')
+          .startAt([DateTime(startDate.year, startDate.month, startDate.day)])
+          .endAt([DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59)])
+          .where("assignedUsers", arrayContains: userId).get().then((snapshot) {
         for(var docSnapshot in snapshot.docs) {
           var data = docSnapshot.data();
 

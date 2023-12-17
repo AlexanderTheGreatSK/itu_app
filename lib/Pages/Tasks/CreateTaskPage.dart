@@ -185,6 +185,7 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
                 child: Container(
                   //color: Colors.grey[300],
                   child: SfDateRangePicker(
+                    showNavigationArrow: true,
                     todayHighlightColor: Colors.deepPurple[400],
                     selectionColor: Colors.deepPurple[400],
                     onSelectionChanged: onSelectionDateChanged,

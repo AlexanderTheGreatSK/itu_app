@@ -19,7 +19,7 @@ class _TodayTasksPage extends State<TodayTasksPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: databaseHandler.getTaskForUser(),
+        future: databaseHandler.getTaskForUserToday(),
         builder: (context, snapshot) {
           if(snapshot.hasData) {
             List<Task> tasks = snapshot.data!;
