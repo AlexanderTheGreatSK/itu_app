@@ -4,6 +4,7 @@ import 'package:itu_app/Pages/ShoppingList/FamilyListPage.dart';
 import 'package:itu_app/Pages/ShoppingList/ItemWidget.dart';
 
 import '../../Database/DatabaseHandler.dart';
+import 'AddItemWidget.dart';
 
 class ListWidget extends StatefulWidget {
   const ListWidget({super.key, required this.list, required this.callback});
@@ -48,6 +49,7 @@ class _ListWidget extends State<ListWidget> {
             onTap: () {
               setState(() {
                 isActive = !isActive;
+                addIsOpen = false;
               });
             },
             child: Container(
@@ -92,6 +94,8 @@ class _ListWidget extends State<ListWidget> {
             ),
           ),
         ),
+
+        /// Open when click on the list
         if (isActive)
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -108,29 +112,67 @@ class _ListWidget extends State<ListWidget> {
               ),
               child: Column(
                 children: [
-                  ListView.builder(
-                    itemCount: widget.list.items.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          ItemWidget(
-                            item: widget.list.items[index],
-                            list: widget.list,
-                          ),
-                          const Divider(
-                            color: Colors.grey,
-                            height: 10,
-                            thickness: 1,
-                            indent: 10,
-                            endIndent: 10,
-                          ),
-                        ],
+                  /// Items of list
+                  ValueListenableBuilder<bool>(
+                    valueListenable: updateItems,
+                    builder: (context, value, child) {
+                      return FutureBuilder(
+                        future: databaseHandler
+                            .getShoppingListByID(widget.list.shoppingListId),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            ShoppingList listByID = snapshot.data!;
+                            return ListView.builder(
+                              itemCount: listByID.items.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return ItemWidget(
+                                  item: listByID.items[index],
+                                  list: listByID,
+                                  bought: false,
+                                  callback: () {
+                                    setState(() {
+                                      updateItems.value = !updateItems.value;
+                                    });
+                                  },
+                                );
+                              },
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                  color: Colors.deepPurpleAccent),
+                            );
+                          }
+                        },
                       );
                     },
                   ),
-                  newAddItem(context),
+                  /// Adding new item
+                  if (addIsOpen)
+                    AddItemWidget(
+                      list: widget.list,
+                      callback: () {
+                        setState(() {
+                          updateItems.value = !updateItems.value;
+                        });
+                      },
+                    ),
+                  if (!addIsOpen)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 14),
+                      child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              addIsOpen = true;
+                            });
+                          },
+                          child: const Icon(
+                            Icons.add_circle_outline_rounded,
+                            size: 30,
+                          )),
+                    ),
                 ],
               ),
             ),
@@ -139,7 +181,7 @@ class _ListWidget extends State<ListWidget> {
     );
   }
 
-  // TODO
+  /// old thing
   Widget addNewItemBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -204,7 +246,7 @@ class _ListWidget extends State<ListWidget> {
               print('add');
             });
           },
-          child: Icon(
+          child: const Icon(
             Icons.add_circle_outline_rounded,
             size: 30,
           ));
