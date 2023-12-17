@@ -1,3 +1,4 @@
+///Author: Alena Klimecká - xklime47
 import 'package:flutter/material.dart';
 
 import '../../Database/DataClasses/ShoppingList.dart';

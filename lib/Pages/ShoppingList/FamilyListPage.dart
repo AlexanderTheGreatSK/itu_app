@@ -1,3 +1,4 @@
+///Author: Alena Klimecká - xklime47
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/ShoppingList.dart';
 import 'package:itu_app/Pages/ShoppingList/ListWidget.dart';
