@@ -15,6 +15,10 @@ class ImageHandler {
   String getLocalImage(String imageId) {
     return "res/images/$imageId.png";
   }
+
+  String getLocalReward(String imageId) {
+    return "res/rewards/$imageId.png";
+  }
 }
 
 // /b/nashhouse-6656c.appspot.com/o/rooms/10.png

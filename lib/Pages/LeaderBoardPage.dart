@@ -1,10 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Database/ImageHandler.dart';
 import 'package:itu_app/Pages/CreateRewardPage.dart';
-
+import 'package:itu_app/Widgets/RewardWidget.dart';
 import '../Database/DataClasses/Reward.dart';
 
 class LeaderBoardPage extends StatefulWidget {
@@ -26,7 +24,7 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
         title: const Text("Leader board", style: TextStyle(color: Colors.black)),
       ),
       floatingActionButton: Container(
-        margin: const EdgeInsets.only(bottom: 100),
+        margin: const EdgeInsets.only(bottom: 10),
         child: FloatingActionButton(
           onPressed: (){
             toAddRewardPage();
@@ -41,71 +39,84 @@ class _LeaderBoardPage extends State<LeaderBoardPage> {
       body: ListView(
         children:[
           leaderBoardWidget(),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: FutureBuilder<List<Reward>>(
-              future: databaseHandler.getRewards(),
-              builder: (context, snapshot) {
-                if(snapshot.hasData) {
-                  List<Reward> rewards = snapshot.data!;
-
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: rewards.length,
-                    itemBuilder: (context, index) {
-                      return rewardWidget(rewards[index]);
-                    },
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              },
-            ),
-          ),
+          _buildMore(MediaQuery.of(context).size)
         ]
       )
     );
   }
 
-  Widget rewardWidget(Reward reward) {
-    double width = MediaQuery.of(context).size.width / 2;
+  Widget _buildMore(Size size) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 30.0, top: 30.0),
+      child: FutureBuilder(
+          future: databaseHandler.getRewards(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
 
-    return UnconstrainedBox(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(15.0),
-          child: Material(
-            elevation: 10.0,
-            child: Container(
-              width: width,
-              color: Colors.deepPurple[200],
-              child: Column(
-                children: [
-                  FutureBuilder(
-                      future: imageHandler.getRewardImage(reward.imageId),
-                      builder: (context, snapshot) {
-                        if(snapshot.hasData) {
-                          return Image.memory(snapshot.data!, fit: BoxFit.contain);
-                        } else {
-                          return const CircularProgressIndicator();
-                        }
-                      }
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, bottom: 10.0),
-                        child: Text("${reward.price.toString()} pt", style: const TextStyle(fontSize: 20)),
+              List<Reward> rewards = snapshot.data!;
+
+              double width = MediaQuery
+                  .of(context)
+                  .size
+                  .width;
+
+              double midWidth = width / 2;
+
+              List<Widget> stackChildren = [];
+
+              int numberOfRows = (rewards.length / 2).round();
+
+              for (int i = 0; i <= numberOfRows + 1; i += 2) {
+
+                print(rewards[i].name);
+
+                Widget positioned1 = Positioned(
+                    width: midWidth - (midWidth / 20),
+                    height: 250,
+                    top: 130.0 * (i),
+                    right: midWidth - (midWidth / 20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: RewardWidget(reward: rewards[i]),
                       ),
-                    ],
+                    ),
+                );
+                stackChildren.add(positioned1);
+
+                if (i + 1 < rewards.length) {
+                  Widget positioned2 = Positioned(
+                      width: midWidth - (midWidth / 20),
+                      height: 250,
+                      top: 130.0 * (i) + 25,
+                      left: midWidth - (midWidth / 20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: RewardWidget(reward: rewards[i+1]),
+                      ),
+                    ),
+                  );
+                  stackChildren.add(positioned2);
+                }
+              }
+
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: 250.0 * (numberOfRows) + 50,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      alignment: AlignmentDirectional.center,
+                      children: stackChildren,
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
+                );
+              } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }
       ),
     );
   }

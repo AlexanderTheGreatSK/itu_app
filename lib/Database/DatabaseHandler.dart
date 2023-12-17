@@ -480,24 +480,6 @@ class DatabaseHandler {
     }
   }
 
-// TASKS end-points--------------------------------------------------------------
-Future<List<Reward>> getRewards() async {
-    List<Reward> rewards = [];
-
-    if(isMobilePlatform()) {
-      await FirebaseFirestore.instance.collection("rewards").where("isActive", isEqualTo: true).get().then((snapshot) {
-        for(var docSnapshot in snapshot.docs) {
-          var data = docSnapshot.data();
-          rewards.add(Reward(data["name"], data["price"], data["image"], data["isActive"]));
-        }
-        return rewards;
-      });
-    } else {
-      return rewards;
-    }
-    return rewards;
-}
-
 // REWARDS end-points--------------------------------------------------------------
   Future<void> createReward(Reward newReward) async {
     if(isMobilePlatform()) {
@@ -517,4 +499,22 @@ Future<List<Reward>> getRewards() async {
     }
   }
 
+  Future<List<Reward>> getRewards() async {
+    List<Reward> rewards = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("rewards").where("isAvailable", isEqualTo: true).get().then((snapshot) {
+        print(snapshot.size);
+        for(var docSnapshot in snapshot.docs) {
+          var data = docSnapshot.data();
+          print(data);
+          rewards.add(Reward(data["name"], data["price"], data["imageId"], data["isAvailable"]));
+        }
+        return rewards;
+      });
+    } else {
+      return rewards;
+    }
+    return rewards;
+  }
 }
