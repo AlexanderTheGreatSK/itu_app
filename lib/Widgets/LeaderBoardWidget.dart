@@ -1,3 +1,5 @@
+//Authors: Jana Kováčiková (xkovac59)
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/ImageHandler.dart';
@@ -20,7 +22,15 @@ class LeaderBoardWidgetState extends State<LeaderBoardWidget> {
     return InkWell(
       child: Column(
         children: [
-          Image.asset(imageHandler.getLocalUsers(widget.user.profilePicture)),
+          FutureBuilder(
+              future: imageHandler.getUserImage(widget.user.profilePicture),
+              builder: (context, snapshot) {
+                if(snapshot.hasData) {
+                  return Image.memory(snapshot.data!);
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              }),
           Row(
             children: [
               Padding(

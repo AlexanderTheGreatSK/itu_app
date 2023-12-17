@@ -1,3 +1,5 @@
+//Authors: Jana Kováčiková (xkovac59)
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/ImageHandler.dart';
 
@@ -30,7 +32,15 @@ class RewardWidgetState extends State<RewardWidget> {
         color: bought ? Colors.lightGreen[300] : widget.reward.price < widget.points ? Colors.deepPurple[200] : Colors.grey[400],
         child: Column(
           children: [
-            Image.asset(imageHandler.getLocalReward(widget.reward.imageId), color: widget.reward.price > widget.points  ? Colors.grey : null,),
+            FutureBuilder(
+                future: imageHandler.getRewardImage(widget.reward.imageId),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    return Image.memory(snapshot.data!, color: widget.reward.price > widget.points  ? Colors.grey : null,);
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                }),
             Row(
               children: [
                 Padding(

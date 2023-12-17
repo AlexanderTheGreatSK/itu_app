@@ -1,11 +1,9 @@
+//Authors: Alexander Okrucký (xokruc00)
+
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';
 
-/*
-*
-* @input
-*
-* */
 class UserChooser extends StatefulWidget {
   UserChooser({super.key, required this.users, required this.controller});
 

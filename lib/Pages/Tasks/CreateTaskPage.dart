@@ -1,3 +1,5 @@
+//Authors: Alexander Okrucký (xokruc00)
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';

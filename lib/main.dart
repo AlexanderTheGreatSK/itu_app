@@ -1,4 +1,4 @@
-///Authors: Jana Kováčiková (xkovac59), Alexander Okrucký (xokruc00)
+//Authors: Jana Kováčiková (xkovac59), Alexander Okrucký (xokruc00)
 
 import 'dart:io';
 import 'package:flutter/material.dart';
