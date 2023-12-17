@@ -12,12 +12,21 @@ class ImageHandler {
     return imageData;
   }
 
+  Future<Uint8List?> getUserImage(String imageId) async {
+    Uint8List? imageData = await FirebaseStorage.instance.ref("users/$imageId.png").getData();
+    return imageData;
+  }
+
   String getLocalImage(String imageId) {
     return "res/images/$imageId.png";
   }
 
   String getLocalReward(String imageId) {
     return "res/rewards/$imageId.png";
+  }
+
+  String getLocalUsers(String imageId) {
+    return "res/users/$imageId.png";
   }
 }
 

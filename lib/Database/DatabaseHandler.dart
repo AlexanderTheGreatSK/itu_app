@@ -100,6 +100,24 @@ class DatabaseHandler {
     }
   }
 
+  Future<List<OurUser>> getLeaderBoardUsers() async {
+    List<OurUser> users = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("users").orderBy("points", descending: true).limit(3).get().then((snapshot) {
+        var docsMap = snapshot.docs;
+        for(var item in docsMap) {
+          print(item.data());
+          var data = item.data();
+          users.add(OurUser(data["username"], data["userId"], data["profilePicture"], data["points"]));
+        }
+      });
+      return users;
+    } else {
+      return users;
+    }
+  }
+
   Future<OurUser> getUserById(String userId) async {
     OurUser user;
 

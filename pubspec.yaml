@@ -101,6 +101,9 @@ flutter:
     - res/rewards/10.png
     - res/rewards/11.png
     - res/rewards/12.png
+    - res/users/1.png
+    - res/users/2.png
+    - res/users/3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

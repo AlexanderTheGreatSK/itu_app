@@ -4,8 +4,9 @@ import 'package:itu_app/Database/ImageHandler.dart';
 import '../Database/DataClasses/Reward.dart';
 
 class RewardWidget extends StatefulWidget {
-  const RewardWidget({super.key, required this.reward});
+  const RewardWidget({super.key, required this.reward, required this.points});
   final Reward reward;
+  final int points;
 
   @override
   RewardWidgetState createState() => RewardWidgetState();
@@ -17,31 +18,35 @@ class RewardWidgetState extends State<RewardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
+    return GestureDetector(
+      onTap: widget.reward.price > widget.points
+          ? null : () {
         setState(() {
           bought = true;
         });
       },
+
       child: Container(
-        color: bought? Colors.lightGreen[300] : Colors.deepPurple[200],
+        color: bought ? Colors.lightGreen[300] : widget.reward.price < widget.points ? Colors.deepPurple[200] : Colors.grey[400],
         child: Column(
           children: [
-            Image.asset(imageHandler.getLocalReward(widget.reward.imageId)),
-            const Row(
+            Image.asset(imageHandler.getLocalReward(widget.reward.imageId), color: widget.reward.price > widget.points  ? Colors.grey : null,),
+            Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 10.0, bottom: 10.0),
-                  child: Text("100 pt", style: TextStyle(fontSize: 20)),
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text(
+                    "${widget.reward.price} 🏆",
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ),
               ],
             ),
           ],
         ),
       ),
-
-      //Image.asset(imageHandler.getLocalReward(widget.reward.imageId)),
     );
+
   }
 
 }
