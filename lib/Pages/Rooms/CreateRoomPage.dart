@@ -1,7 +1,10 @@
+///Author: Jana Kováčiková (xkovac59)
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/Room.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
 
 final List<String> imgList = [
   "res/images/1.png",
@@ -30,10 +33,10 @@ class MyCreateRoomPage extends StatefulWidget {
 }
 
 class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
+  ///Creating a new room with error handling
   DatabaseHandler databaseHandler = DatabaseHandler();
 
   TextEditingController nameController = TextEditingController();
-  //TextEditingController progressBarController = TextEditingController();
 
   void crateNewRoom() {
     Room room = Room(nameController.text, imgIndex.toString(), currentTidinessValue.toInt()*50);
@@ -52,6 +55,10 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
   CarouselController buttonCarouselController = CarouselController();
   int imgIndex = 0;
   double currentTidinessValue = 1;
+
+  ///Widget with text field for the name of a room
+  ///CarouselSlider for choosing the room image
+  ///Current tidiness of the room slider
 
   @override
   Widget build(BuildContext context) {
@@ -77,17 +84,6 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
               padding: const EdgeInsets.all(10.0),
               child: myF(),
             ),
-            /*Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                controller: progressBarController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "StatusBarNumber"
-                ),
-                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-              ),
-            ),*/
             const Padding(
               padding: EdgeInsets.only(top: 20.0),
               child: Text("Current tidiness:", style: TextStyle(fontSize: 20.0))
@@ -159,12 +155,6 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
       imgIndex = i+1;
     });
     print(imgIndex);
-  }
-
-  _getIndex(){
-    setState(() {
-      imgIndex++;
-    });
   }
 }
 

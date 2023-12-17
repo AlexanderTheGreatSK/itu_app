@@ -1,3 +1,5 @@
+///Author: Jana Kováčiková (xkovac59)
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
@@ -6,6 +8,7 @@ import 'package:itu_app/Widgets/TaskWidget.dart';
 import '../../Database/DataClasses/Room.dart';
 import '../../Database/DataClasses/Task.dart';
 import '../../Database/ImageHandler.dart';
+
 
 class ViewRoomPage extends StatefulWidget {
   const ViewRoomPage({super.key, required this.room});
@@ -17,6 +20,8 @@ class ViewRoomPage extends StatefulWidget {
 }
 
 class _ViewRoomPageState extends State<ViewRoomPage> {
+  ///View the selected room with room name, image,
+  ///tasks and progress bar (based on the current tidiness of the room)
   ImageHandler imageHandler = ImageHandler();
   DatabaseHandler databaseHandler = DatabaseHandler();
   final ValueNotifier<bool> update = ValueNotifier<bool>(false);
@@ -66,6 +71,7 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
     );
   }
 
+  ///Color of the progressBar based on the tidiness of the room value
   Color getProgressBarBackgroundColor() {
     if(widget.room.progressBarValue <= 33) {
       return Colors.red[200]!;

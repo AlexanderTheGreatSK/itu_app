@@ -1,7 +1,10 @@
+///Author: Jana Kováčiková (xkovac59)
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Pages/LeaderBoardPage.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Database/ImageHandler.dart';
+
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -11,6 +14,8 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePage extends State<MyProfilePage> {
+  ///View the profile of currently logged in user with the profile picture and current points,
+  ///Leaderboard page swap after points button click
   DatabaseHandler databaseHandler = DatabaseHandler();
 
   @override

@@ -1,3 +1,5 @@
+///Author: Jana Kováčiková (xkovac59)
+
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/Reward.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
@@ -32,6 +34,7 @@ class _MyCreateRewardPageState extends State<MyCreateRewardPage> {
   TextEditingController rewardController = TextEditingController();
 
   void crateNewReward() {
+    ///Creating a new reward with error handling
     Reward reward = Reward(nameController.text, int.parse(rewardController.text), imgIndex.toString(), true);
 
     print(nameController.text);
@@ -52,6 +55,10 @@ class _MyCreateRewardPageState extends State<MyCreateRewardPage> {
   CarouselController buttonCarouselController = CarouselController();
   int imgIndex = 0;
   double currentTidinessValue = 1;
+
+  ///Widget with text field for the name of a reward
+  ///CarouselSlider for choosing the reward image
+  ///Text field for the reward price
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +90,7 @@ class _MyCreateRewardPageState extends State<MyCreateRewardPage> {
                 controller: rewardController,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: "Reward value 🏆"
+                    labelText: "Reward price 🏆"
                 ),
                 keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
               ),
