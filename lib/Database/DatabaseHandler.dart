@@ -116,6 +116,24 @@ class DatabaseHandler {
     }
   }
 
+  Future<List<OurUser>> getLeaderBoardUsers() async {
+    List<OurUser> users = [];
+
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("users").orderBy("points", descending: true).limit(3).get().then((snapshot) {
+        var docsMap = snapshot.docs;
+        for(var item in docsMap) {
+          print(item.data());
+          var data = item.data();
+          users.add(OurUser(data["username"], data["userId"], data["profilePicture"], data["points"]));
+        }
+      });
+      return users;
+    } else {
+      return users;
+    }
+  }
+
   Future<OurUser> getUserById(String userId) async {
     OurUser user;
 
@@ -730,6 +748,25 @@ class DatabaseHandler {
     }
   }
 
+// REWARDS end-points--------------------------------------------------------------
+  Future<void> createReward(Reward newReward) async {
+    if(isMobilePlatform()) {
+      final dataMap = <String, dynamic> {
+        "name" : newReward.name,
+        "price" : newReward.price,
+        "imageId" : newReward.imageId,
+        "isAvailable" : newReward.isAvailable,
+      };
+
+      print(dataMap.toString());
+
+      await FirebaseFirestore.instance.collection("rewards").doc().set(dataMap).onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+
+    } else {
+      // TODO
+    }
+  }
+
   Future<void> taskIsDone(Task task) async {
     if(isMobilePlatform()) {
       String userId = await getCurrentUserId();
@@ -763,20 +800,16 @@ class DatabaseHandler {
     }
   }
 
-// TASKS end-points--------------------------------------------------------------
   Future<List<Reward>> getRewards() async {
     List<Reward> rewards = [];
 
-    if (isMobilePlatform()) {
-      await FirebaseFirestore.instance
-          .collection("rewards")
-          .where("isActive", isEqualTo: true)
-          .get()
-          .then((snapshot) {
-        for (var docSnapshot in snapshot.docs) {
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("rewards").where("isAvailable", isEqualTo: true).get().then((snapshot) {
+        print(snapshot.size);
+        for(var docSnapshot in snapshot.docs) {
           var data = docSnapshot.data();
-          rewards.add(Reward(
-              data["name"], data["price"], data["image"], data["isActive"]));
+          print(data);
+          rewards.add(Reward(data["name"], data["price"], data["imageId"], data["isAvailable"]));
         }
         return rewards;
       });
@@ -785,4 +818,6 @@ class DatabaseHandler {
     }
     return rewards;
   }
+
 }
+

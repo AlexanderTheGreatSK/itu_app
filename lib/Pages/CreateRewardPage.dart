@@ -1,44 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:itu_app/Database/DataClasses/Room.dart';
+import 'package:itu_app/Database/DataClasses/Reward.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 final List<String> imgList = [
-  "res/images/1.png",
-  "res/images/2.png",
-  "res/images/3.png",
-  "res/images/4.png",
-  "res/images/5.png",
-  "res/images/6.png",
-  "res/images/7.png",
-  "res/images/8.png",
-  "res/images/9.png",
-  "res/images/10.png",
-  "res/images/11.png",
-  "res/images/12.png",
-  "res/images/13.png",
-  "res/images/14.png",
-  "res/images/15.png",
+  "res/rewards/1.png",
+  "res/rewards/2.png",
+  "res/rewards/3.png",
+  "res/rewards/4.png",
+  "res/rewards/5.png",
+  "res/rewards/6.png",
+  "res/rewards/7.png",
+  "res/rewards/8.png",
+  "res/rewards/9.png",
+  "res/rewards/10.png",
+  "res/rewards/11.png",
+  "res/rewards/12.png",
 ];
 
-
-class MyCreateRoomPage extends StatefulWidget {
-  const MyCreateRoomPage({super.key});
+class MyCreateRewardPage extends StatefulWidget {
+  const MyCreateRewardPage({super.key});
 
   @override
-  State<MyCreateRoomPage> createState() => _MyCreateRoomPageState();
+  State<MyCreateRewardPage> createState() => _MyCreateRewardPageState();
 }
 
-class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
+class _MyCreateRewardPageState extends State<MyCreateRewardPage> {
   DatabaseHandler databaseHandler = DatabaseHandler();
 
   TextEditingController nameController = TextEditingController();
-  //TextEditingController progressBarController = TextEditingController();
+  TextEditingController rewardController = TextEditingController();
 
-  void crateNewRoom() {
-    Room room = Room(nameController.text, imgIndex.toString(), currentTidinessValue.toInt()*50);
-    print("ROOOM IMG : ${room.imageId}");
-    databaseHandler.createRoom(room).onError((error, stackTrace) {
+  void crateNewReward() {
+    Reward reward = Reward(nameController.text, int.parse(rewardController.text), imgIndex.toString(), true);
+
+    print(nameController.text);
+    print(rewardController.text);
+    print(imgIndex);
+
+    databaseHandler.createReward(reward).onError((error, stackTrace) {
       print("ERROR OCCURED");
       print(error);
       print(stackTrace);
@@ -57,7 +57,7 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Create new room"),
+        title: const Text("Create new reward"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -77,40 +77,21 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
               padding: const EdgeInsets.all(10.0),
               child: myF(),
             ),
-            /*Padding(
+            Padding(
               padding: const EdgeInsets.all(10.0),
               child: TextField(
-                controller: progressBarController,
+                controller: rewardController,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: "StatusBarNumber"
+                    labelText: "Reward value 🏆"
                 ),
                 keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-              ),
-            ),*/
-            const Padding(
-              padding: EdgeInsets.only(top: 20.0),
-              child: Text("Current tidiness:", style: TextStyle(fontSize: 20.0))
-            ),
-            Padding(
-                padding: const EdgeInsets.all(10.0),
-              child: Slider(
-                value: currentTidinessValue,
-                min: 0,
-                max: 2,
-                divisions: 2,
-                label: ["Low", "Medium", "High"][currentTidinessValue.round()],
-                onChanged: (double value) {
-                  setState(() {
-                    currentTidinessValue = value;
-                  });
-                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: MaterialButton(
-                onPressed: crateNewRoom,
+                onPressed: crateNewReward,
                 color: Colors.deepPurple[300],
                 textColor: Colors.white,
                 child: const Text("Create"),
@@ -162,9 +143,11 @@ class _MyCreateRoomPageState extends State<MyCreateRoomPage> {
   }
 
   _getIndex(){
-    setState(() {
+    print("Scrolled");
+    print(imgIndex);
+    //setState(() {
       imgIndex++;
-    });
+    //});
   }
 }
 
