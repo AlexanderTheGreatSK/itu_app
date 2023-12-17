@@ -4,7 +4,12 @@ import '../../Database/DataClasses/ShoppingList.dart';
 import '../../Database/DatabaseHandler.dart';
 
 class ItemWidget extends StatefulWidget {
-  const ItemWidget({super.key, required this.list, required this.item, required this.bought, required this.callback});
+  const ItemWidget(
+      {super.key,
+      required this.list,
+      required this.item,
+      required this.bought,
+      required this.callback});
   final ShoppingList list;
   final String item;
   final bool bought;
@@ -31,11 +36,12 @@ class _ItemWidget extends State<ItemWidget> {
         CheckboxListTile(
             value: isChecked,
             onChanged: (bool? value) {
-                setState(() {
-                  isChecked = true;
-                  databaseHandler.setItemAsBought(widget.list.shoppingListId, widget.item, true);
-                  widget.callback();
-                });
+              setState(() {
+                isChecked = true;
+                databaseHandler.setItemAsBought(
+                    widget.list.shoppingListId, widget.item, true);
+                widget.callback();
+              });
             },
             title: Text(
               widget.item,

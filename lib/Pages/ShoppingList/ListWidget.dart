@@ -149,6 +149,7 @@ class _ListWidget extends State<ListWidget> {
                       );
                     },
                   ),
+
                   /// Adding new item
                   if (addIsOpen)
                     AddItemWidget(
@@ -179,78 +180,6 @@ class _ListWidget extends State<ListWidget> {
           ),
       ],
     );
-  }
-
-  /// old thing
-  Widget addNewItemBar(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SearchAnchor(
-          builder: (BuildContext context, SearchController controller) {
-        return SearchBar(
-          controller: controller,
-          onTap: () {
-            controller.openView();
-          },
-          onChanged: (_) {
-            controller.openView();
-          },
-          padding: const MaterialStatePropertyAll<EdgeInsets>(
-              EdgeInsets.symmetric(horizontal: 10.0)),
-          shape: const MaterialStatePropertyAll<OutlinedBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)))),
-          backgroundColor:
-              const MaterialStatePropertyAll<Color>(Colors.white70),
-          hintText: "Add new item",
-        );
-      }, suggestionsBuilder:
-              (BuildContext context, SearchController controller) {
-        const Text("data");
-        return List<ListTile>.generate(5, (int index) {
-          final String item = 'item $index';
-          return ListTile(
-            title: Text(item),
-            onTap: () {
-              setState(() {
-                controller.closeView(item);
-              });
-            },
-          );
-        });
-      }),
-    );
-  }
-
-  Widget newAddItem(BuildContext context) {
-    if (addIsOpen) {
-      return TextButton(
-        onPressed: () {
-          setState(() {
-            addIsOpen = !addIsOpen;
-            print('add');
-          });
-        },
-        child: TextField(
-          controller: _nameController,
-          decoration: const InputDecoration(
-            hintText: 'New Item',
-          ),
-        ),
-      );
-    } else {
-      return TextButton(
-          onPressed: () {
-            setState(() {
-              addIsOpen = !addIsOpen;
-              print('add');
-            });
-          },
-          child: const Icon(
-            Icons.add_circle_outline_rounded,
-            size: 30,
-          ));
-    }
   }
 
   // delete list
