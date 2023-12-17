@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DataClasses/FrequencyUnits.dart';
+import 'package:itu_app/Widgets/UserChooser.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:itu_app/Database/DataClasses/Task.dart';
 import 'package:itu_app/Database/DataClasses/User.dart';
@@ -10,6 +11,8 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../Database/DataClasses/Room.dart';
 import '../../Database/DatabaseHandler.dart';
+
+enum InputError {none, name, room, lastDone, frequency, frequencyUnits, users}
 
 class MyCreateTaskPage extends StatefulWidget {
   const MyCreateTaskPage({super.key});
@@ -20,7 +23,8 @@ class MyCreateTaskPage extends StatefulWidget {
 
 class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
   DatabaseHandler databaseHandler = DatabaseHandler();
-  String chosenID = "";
+  int chosenID = 0;
+  UserChooserController userChooserController = UserChooserController();
   double currentSliderValue = 5;
   List<DropdownMenuEntry<String>> entries = [];
   String chosenRoom = "";
@@ -35,26 +39,37 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
     const DropdownMenuEntry(value: "365", label: "Year"),
   ];
   double currentPriorityValue = 1;
+  List<bool> checked = [];
+  List<String> usersIds = [];
+  List<OurUser> users = [];
 
   TextEditingController nameController = TextEditingController();
   TextEditingController daysController = TextEditingController();
 
-  Future<void> crateNewTask() async {
-    List<String> users = [];
-    users.add(chosenID);
+  void crateNewTask() {
+    print(chosenFrequencyUnit);
+    if(nameController.text != "" && chosenRoom != "" && daysController.text != "" && chosenFrequencyUnit != "" && users.isNotEmpty) {
+      int days = int.parse(daysController.text) * int.parse(chosenFrequencyUnit);
+      DateTime next = lastDoneDate.add(Duration(days: days));
 
-    print("Name: ${nameController.text}");
-    print("Room: $chosenRoom");
-    print("Last done: $formatedLastDoneDate");
-    print("Frequency: ${daysController.text}");
-    print("Frequency units: $chosenFrequencyUnit");
-    print("Priority: ${currentPriorityValue.round()}");
-    print("Priority: ${currentSliderValue.round()}");
+      int between = daysBetween(DateTime.now(), next);
+      bool done = false;
+      if(between > 3) {
+        done = true;
+      }
 
-    /*Task newTask = Task(nameController.text, int.parse(rewardController.text), int.parse(daysController.text), int.parse(priorityController.text), bool.parse(taskIsDoneController.text),
-        roomController.text, DateTime.parse(lastDoneController.text), DateTime.parse(targetDateController.text), users);
+      Task newTask = Task(nameController.text, currentSliderValue.round() + 1, int.parse(daysController.text), currentPriorityValue.round() + 1, done,
+          chosenRoom, lastDoneDate, next, userChooserController.getUserIds(), "");
 
-    await databaseHandler.createTask(newTask);*/
+      databaseHandler.createTask(newTask);
+      Navigator.pop(context);
+    }
+  }
+
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return (to.difference(from).inHours / 24).round();
   }
 
   Widget buildEffect(BuildContext context) {
@@ -89,7 +104,6 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
       onSelected: (String? value) {
         setState(() {
           chosenRoom = value!;
-          print(chosenRoom);
         });
       },
     );
@@ -108,7 +122,6 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
   }
 
   void onSelectionDateChanged(DateRangePickerSelectionChangedArgs arguments) {
-    print(arguments.value);
     setState(() {
       lastDoneDate = arguments.value;
       formatedLastDoneDate = DateFormat('dd.MM.yyyy').format(arguments.value);
@@ -172,6 +185,7 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
                 child: Container(
                   //color: Colors.grey[300],
                   child: SfDateRangePicker(
+                    showNavigationArrow: true,
                     todayHighlightColor: Colors.deepPurple[400],
                     selectionColor: Colors.deepPurple[400],
                     onSelectionChanged: onSelectionDateChanged,
@@ -228,7 +242,6 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
                     onSelected: (String? value) {
                       setState(() {
                         chosenFrequencyUnit = value!;
-                        print(chosenFrequencyUnit);
                       });
                     },
                   ),
@@ -316,23 +329,52 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
+              child: (usersIds.isEmpty) ? FutureBuilder(
+                future: databaseHandler.getUsers(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    users = snapshot.data!;
+                    return UserChooser(
+                        users: users,
+                        controller: userChooserController,
+                        //checked: checked,
+                        //usersIds: usersIds
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ) : UserChooser(
+                  users: users,
+                  controller: userChooserController,
+                  //checked: checked,
+                  //usersIds: usersIds
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Material(
                   elevation: 10.0,
-                  child: Container(
-                    height: 50,
-                    color: Colors.deepPurple,
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("CREATE", style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                      ],
+                  child: InkWell(
+                    onTap: crateNewTask,
+                    child: Container(
+                      height: 50,
+                      color: Colors.deepPurple,
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("CREATE", style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -343,4 +385,5 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
       ),
     );
   }
+
 }

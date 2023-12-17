@@ -90,47 +90,6 @@ class _TabBarState extends State<TabBarTasksPage>
           ),
         ],
       ),
-      floatingActionButton: (_tabController.index != 2) ? Padding(
-        padding: const EdgeInsets.only(bottom: 100.0),
-        child: FloatingActionButton(
-          tooltip: "Create new task",
-          enableFeedback: true,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const MyCreateTaskPage()),
-            );
-          },
-          child: const Icon(Icons.add_task),
-        ),
-      ) : Container(),
     );
   }
 }
-
-/*FutureBuilder<Box> (
-        future: Hive.openBox('rooms'),
-        builder: (context, AsyncSnapshot<Box> snapshot) {
-          if(snapshot.hasData) {
-            return ValueListenableBuilder<Box>(
-              valueListenable: Hive.box("rooms").listenable(),
-              builder: (context, Box<dynamic> box, widget) {
-                if(box.isEmpty) {
-                  return const Center(
-                    child: Text("No room created."),
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return ourWidgets.roomWidget(snapshot.data!.getAt(index));
-                    },
-                  );
-                }
-              },
-            );
-          } else {
-            return const CircularProgressIndicator(color: Colors.purpleAccent,);
-          }
-        },
-      ),*/

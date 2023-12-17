@@ -32,6 +32,14 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
     }
   }
 
+  Future<void> getShoppingList() async {
+    String id = '9hnKWwuFii88csHJGotP';
+    ShoppingList shoppingList = await databaseHandler.getShoppingListByID(id);
+
+    print("ShoppingList by ID $shoppingList ----------");
+    shoppingList.debugPrint();
+  }
+
   Future<void> getAllUsers() async {
     List<OurUser> users = await databaseHandler.getUsers();
     int index = 0;
@@ -53,7 +61,7 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
   }
 
   Future<void> getTasksForAlex() async {
-    List<Task> alexTasks = await databaseHandler.getTaskForUser();
+    List<Task> alexTasks = await databaseHandler.getTaskForUserToday();
     int index = 0;
     for(var task in alexTasks) {
       print("Task $index ----------");
@@ -100,6 +108,21 @@ class _MyBEtestPageState extends State<MyBEtestPage> {
                   Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text("getShoppingLists()"),
+                  )
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(),
+            ),
+            InkWell(
+              onTap: getShoppingList,
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("getShoppingListByID()"),
                   )
                 ],
               ),

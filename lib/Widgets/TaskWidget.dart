@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:itu_app/Database/DatabaseHandler.dart';
 
 import '../Database/DataClasses/Task.dart';
 import '../Pages/Tasks/TaskDetails.dart';
 
 class TaskWidget extends StatefulWidget {
-  const TaskWidget({super.key, required this.task});
+  TaskWidget({super.key, required this.task, required this.update});
   final Task task;
+  ValueNotifier<bool> update;
 
   @override
   TaskWidgetState createState() => TaskWidgetState();
@@ -15,6 +17,7 @@ class TaskWidgetState extends State<TaskWidget> {
   @override
   Widget build(BuildContext context) {
     MaterialColor colorPriority;
+    DatabaseHandler databaseHandler = DatabaseHandler();
 
     if(widget.task.priority == 3) {
       colorPriority = Colors.red;
@@ -73,7 +76,10 @@ class TaskWidgetState extends State<TaskWidget> {
                         Padding(
                           padding: const EdgeInsets.only(right: 10.0),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              databaseHandler.taskIsDone(widget.task);
+                              widget.update.value = !widget.update.value;
+                            },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Material(
