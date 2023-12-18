@@ -1,7 +1,9 @@
 //Authors: Alexander Okrucký (xokruc00)
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:itu_app/Database/DatabaseHandler.dart';
 import '../../Database/DataClasses/Task.dart';
 
 class TaskDetailsPage extends StatefulWidget {
@@ -91,11 +93,45 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
                 padding: const EdgeInsets.all(5.0),
                 child: Text("🗓 Deadline: $targetDate", style: const TextStyle(fontSize: 25.0)),
               ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: Material(
+                    elevation: 10.0,
+                    child: InkWell(
+                      onTap: deleteTask,
+                      child: Container(
+                        height: 50,
+                        color: Colors.red,
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("DELETE", style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  DatabaseHandler databaseHandler = DatabaseHandler();
+  void deleteTask() {
+    databaseHandler.deleteTask(widget.task).then((_) {
+      Navigator.of(context).pop();
+    });
   }
 
   Widget _buildPriorityDot(int priority) {

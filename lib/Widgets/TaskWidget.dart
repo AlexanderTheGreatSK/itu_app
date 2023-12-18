@@ -52,7 +52,9 @@ class TaskWidgetState extends State<TaskWidget> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => TaskDetailsPage(task: widget.task)),
-                );
+                ).then((value) {
+                  widget.update.value = !widget.update.value;
+                });
               },
               child: Container(
                 height: 70,

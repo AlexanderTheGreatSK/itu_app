@@ -764,6 +764,15 @@ class DatabaseHandler {
     }
   }
 
+  Future<void> deleteTask(Task task) async {
+    if(isMobilePlatform()) {
+      await FirebaseFirestore.instance.collection("rooms").doc(task.room).collection("roomTasks").doc(task.taskId).delete();
+      await FirebaseFirestore.instance.collection("tasks").doc(task.taskId).delete();
+    } else {
+
+    }
+  }
+
 // REWARDS end-points--------------------------------------------------------------
   Future<void> createReward(Reward newReward) async {
     if(isMobilePlatform()) {
