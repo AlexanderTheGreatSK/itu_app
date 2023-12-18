@@ -11,9 +11,9 @@ import '../../Database/ImageHandler.dart';
 
 
 class ViewRoomPage extends StatefulWidget {
-  const ViewRoomPage({super.key, required this.room});
+  ViewRoomPage({super.key, required this.room});
 
-  final Room room;
+  Room room;
   
   @override
   State<ViewRoomPage> createState() => _ViewRoomPageState();
@@ -64,32 +64,48 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
             }),
         ]
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 20.0),
-        child: FAProgressBar(
-          currentValue: widget.room.progressBarValue.toDouble(),
-          backgroundColor: getProgressBarBackgroundColor(),
-          progressColor: getProgressBarColor(),
-        ),
-      ),
+      bottomNavigationBar:ValueListenableBuilder<bool>(
+          valueListenable: update,
+          builder: (context, value, child) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 20.0),
+              child: FutureBuilder(
+                future: databaseHandler.updateRoomStatusBar(widget.room.name),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    if(snapshot.data! < 0.0) {
+                      return const Text("No tasks.");
+                    }
+                    return FAProgressBar(
+                      currentValue: snapshot.data!,
+                      backgroundColor: getProgressBarBackgroundColor(snapshot.data!),
+                      progressColor: getProgressBarColor(snapshot.data!),
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+            );
+          }),
     );
   }
 
   ///Color of the progressBar based on the tidiness of the room value
-  Color getProgressBarBackgroundColor() {
-    if(widget.room.progressBarValue <= 33) {
+  Color getProgressBarBackgroundColor(double numberino) {
+    if(numberino <= 33) {
       return Colors.red[200]!;
-    } else if(widget.room.progressBarValue <= 66) {
+    } else if(numberino <= 66) {
       return Colors.orange[200]!;
     } else {
       return Colors.green[200]!;
     }
   }
 
-  MaterialColor getProgressBarColor() {
-    if(widget.room.progressBarValue <= 33) {
+  MaterialColor getProgressBarColor(double numberino) {
+    if(numberino <= 33) {
       return Colors.red;
-    } else if(widget.room.progressBarValue <= 66) {
+    } else if(numberino <= 66) {
       return Colors.orange;
     } else {
       return Colors.green;
@@ -99,7 +115,8 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
   Widget imageWidget() {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: FutureBuilder(
+      child: Image.asset(imageHandler.getLocalRooms(widget.room.imageId))
+      /*FutureBuilder(
         future: imageHandler.getRoomImage(widget.room.imageId),
         builder: (context, snapshot) {
           if(snapshot.hasData) {
@@ -108,7 +125,7 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
             return const CircularProgressIndicator();
           }
         },
-      ),
+      ),*/
     );
   }
 

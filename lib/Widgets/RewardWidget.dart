@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:itu_app/Database/DatabaseHandler.dart';
 import 'package:itu_app/Database/ImageHandler.dart';
-import 'package:itu_app/Pages/LeaderBoardPage.dart';
 
 import '../Database/DataClasses/Reward.dart';
 
@@ -22,12 +21,10 @@ class RewardWidgetState extends State<RewardWidget> {
   DatabaseHandler databaseHandler = DatabaseHandler();
   bool bought = false;
   int boughtTimes = 0;
-  //int points = 0;
 
   Future<void> buy() async {
     String userId = await databaseHandler.getCurrentUserId();
 
-    await databaseHandler.buyReward(widget.reward);
     await databaseHandler.updateUserPoints(userId, - widget.reward.price);
 
     setState(() {
@@ -39,7 +36,7 @@ class RewardWidgetState extends State<RewardWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.reward.price >= widget.points ? null : () async {
+      onTap: widget.reward.price > widget.points ? null : () async {
         await buy().then((value) {
           widget.update.value = !widget.update.value;
         });

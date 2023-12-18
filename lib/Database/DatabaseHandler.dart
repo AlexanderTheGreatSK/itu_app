@@ -583,6 +583,23 @@ class DatabaseHandler {
       return rooms;
     }
   }
+  
+  Future<double> updateRoomStatusBar(String roomId) async {
+    var snapshot = await FirebaseFirestore.instance.collection("rooms").doc(roomId).collection("roomTasks").count().get();
+    int allTasks = snapshot.count;
+    print("ALL TASKS: $allTasks");
+    if(allTasks == 0) {
+      return -1.0;
+    }
+
+    snapshot = await FirebaseFirestore.instance.collection("rooms").doc(roomId).collection("roomTasks").where("taskIsDone", isEqualTo: true).count().get();
+    int doneTasks = snapshot.count;
+    print("DONE TASKS: $doneTasks");
+    double percentage = (doneTasks * 100) / allTasks;
+
+    FirebaseFirestore.instance.collection("rooms").doc(roomId).update({"progressBar": percentage.round()});
+    return percentage;
+  }
 
   // TASKS end-points--------------------------------------------------------------
   Future<void> createTask(Task newTask) async {
@@ -804,7 +821,7 @@ class DatabaseHandler {
       DateTime targetDate = DateTime(today.year, today.month, today.day + task.days);
 
       final taskUpdate = <String, dynamic> {
-        "taskIsDone" : false,
+        "taskIsDone" : true,
         "lastDone" : today,
         "targetDate" : targetDate,
       };

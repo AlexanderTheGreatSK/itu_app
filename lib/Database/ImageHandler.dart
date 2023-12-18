@@ -23,6 +23,10 @@ class ImageHandler {
     return "res/users/$imageId.png";
   }
 
+  String getLocalRooms(String imageId) {
+    return "res/images/$imageId.png";
+  }
+
   String getLocalRewards(String imageId) {
     return "res/rewards/$imageId.png";
   }

@@ -26,7 +26,9 @@ class RoomWidgetState extends State<RoomWidget> {
             context,
             MaterialPageRoute(builder: (context) => ViewRoomPage(room: widget.room)));
       },
-      child: FutureBuilder(
+      child: Image.asset(imageHandler.getLocalRooms(widget.room.imageId))
+
+      /*FutureBuilder(
         future: imageHandler.getRoomImage(widget.room.imageId),
         builder: (context, snapshot) {
           if(snapshot.hasData) {
@@ -35,7 +37,7 @@ class RoomWidgetState extends State<RoomWidget> {
             return const CircularProgressIndicator();
           }
         },
-      )
+      )*/
 
     );
   }
