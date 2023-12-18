@@ -8,6 +8,7 @@ import 'package:itu_app/Widgets/TaskWidget.dart';
 import '../../Database/DataClasses/Room.dart';
 import '../../Database/DataClasses/Task.dart';
 import '../../Database/ImageHandler.dart';
+import '../Tasks/CreateTaskPage.dart';
 
 
 class ViewRoomPage extends StatefulWidget {
@@ -32,6 +33,26 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.room.name),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 10.0),
+        child: FloatingActionButton(
+          tooltip: "Create new task",
+          enableFeedback: true,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyCreateTaskPage()),
+            ).then((value) {
+              update.value = !update.value;
+            });
+          },
+          backgroundColor: Colors.deepPurple[300],
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0))
+          ),
+          child: const Icon(Icons.add_task, color: Colors.white),
+        ),
       ),
       body: ListView(
         children: [
@@ -115,8 +136,8 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
   Widget imageWidget() {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Image.asset(imageHandler.getLocalRooms(widget.room.imageId))
-      /*FutureBuilder(
+      child: /*Image.asset(imageHandler.getLocalRooms(widget.room.imageId))*/
+      FutureBuilder(
         future: imageHandler.getRoomImage(widget.room.imageId),
         builder: (context, snapshot) {
           if(snapshot.hasData) {
@@ -125,7 +146,7 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
             return const CircularProgressIndicator();
           }
         },
-      ),*/
+      ),
     );
   }
 

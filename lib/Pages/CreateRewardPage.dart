@@ -148,13 +148,5 @@ class _MyCreateRewardPageState extends State<MyCreateRewardPage> {
     });
     print(imgIndex);
   }
-
-  _getIndex(){
-    print("Scrolled");
-    print(imgIndex);
-    //setState(() {
-      imgIndex++;
-    //});
-  }
 }
 
