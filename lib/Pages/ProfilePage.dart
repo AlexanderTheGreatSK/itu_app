@@ -17,6 +17,8 @@ class _MyProfilePage extends State<MyProfilePage> {
   ///View the profile of currently logged in user with the profile picture and current points,
   ///Leaderboard page swap after points button click
   DatabaseHandler databaseHandler = DatabaseHandler();
+  int points = 0;
+  String userId = "";
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,8 @@ class _MyProfilePage extends State<MyProfilePage> {
 
         var data = snapshot.data!;
         ImageHandler imageHandler = ImageHandler();
-
+        points = data.points;
+        userId = data.userId;
         Widget positioned = Column(
           children: [
             CircleAvatar(
@@ -81,7 +84,11 @@ class _MyProfilePage extends State<MyProfilePage> {
   void toLeaderBoardPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const LeaderBoardPage()),
-    );
+      MaterialPageRoute(builder: (context) => LeaderBoardPage(points: points, userId: userId,)),
+    ).then((value) {
+      setState(() {
+
+      });
+    });
   }
 }

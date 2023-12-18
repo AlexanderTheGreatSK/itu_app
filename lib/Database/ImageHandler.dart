@@ -22,6 +22,8 @@ class ImageHandler {
   String getLocalUsers(String imageId) {
     return "res/users/$imageId.png";
   }
-}
 
-// /b/nashhouse-6656c.appspot.com/o/rooms/10.png
+  String getLocalRewards(String imageId) {
+    return "res/rewards/$imageId.png";
+  }
+}
