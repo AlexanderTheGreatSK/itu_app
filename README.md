@@ -11,8 +11,8 @@ To install the app on your Android device, follow these steps:
 5. Locate the downloaded APK file and tap to install.
 
 ## Libraries with versions and licences
-- cupertino_icons: ^1.0.2
-- build_runner: ^2.3.3
+- cupertino_icons: ^1.0.2 (MIT)
+- build_runner: ^2.3.3 (BSD-3-Clause)
 - firebase_core: ^2.22.0
 - firebase_auth: ^4.15.0
 - http: ^1.1.0
