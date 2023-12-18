@@ -23,7 +23,7 @@ To install the app on your Android device, follow these steps:
 - google_fonts: ^6.1.0 (Apache-2.0)
 - carousel_slider: ^4.2.1 (MIT)
 - shimmer: ^3.0.0 (BSD-3-Clause)
-- syncfusion_flutter_datepicker: ^23.2.7
+- syncfusion_flutter_datepicker: ^23.2.7 (Syncfusion license)
 - flutter_animation_progress_bar: ^2.3.1
 - googleapis: ^12.0.0
 - googleapis_auth: ^1.4.1
