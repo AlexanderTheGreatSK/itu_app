@@ -21,8 +21,8 @@ To install the app on your Android device, follow these steps:
 - firebase_storage: ^11.5.3 (BSD-3-Clause)
 - shared_preferences: ^2.2.2 (BSD-3-Clause)
 - google_fonts: ^6.1.0 (Apache-2.0)
-- carousel_slider: ^4.2.1
-- shimmer: ^3.0.0
+- carousel_slider: ^4.2.1 (MIT)
+- shimmer: ^3.0.0 (BSD-3-Clause)
 - syncfusion_flutter_datepicker: ^23.2.7
 - flutter_animation_progress_bar: ^2.3.1
 - googleapis: ^12.0.0
