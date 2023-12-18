@@ -26,8 +26,7 @@ class RoomWidgetState extends State<RoomWidget> {
             context,
             MaterialPageRoute(builder: (context) => ViewRoomPage(room: widget.room)));
       },
-      child:
-      FutureBuilder(
+      child: FutureBuilder(
         future: imageHandler.getRoomImage(widget.room.imageId),
         builder: (context, snapshot) {
           if(snapshot.hasData) {

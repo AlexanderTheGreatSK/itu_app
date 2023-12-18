@@ -1,4 +1,4 @@
-///Author: Jana Kováčiková (xkovac59)
+//Author: Jana Kováčiková (xkovac59)
 
 import 'package:flutter/material.dart';
 import 'package:itu_app/Pages/LeaderBoardPage.dart';
@@ -70,10 +70,6 @@ class _MyProfilePage extends State<MyProfilePage> {
           ],
         );
 
-        print("points");
-        print(data.points);
-        print(data.username);
-
         return positioned;
 
       }else {
@@ -83,9 +79,9 @@ class _MyProfilePage extends State<MyProfilePage> {
   );
 
   void toLeaderBoardPage() {
-  Navigator.push(
-  context,
-  MaterialPageRoute(builder: (context) => const LeaderBoardPage()),
-  );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LeaderBoardPage()),
+    );
   }
 }
