@@ -26,15 +26,33 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
     return Scaffold(
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 10),
-        child: FloatingActionButton(
-          onPressed: (){
-            //
-          },
-          backgroundColor: Colors.deepPurple[300],
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30.0))
-          ),
-          child: const Icon(Icons.edit, color: Colors.white,),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: FloatingActionButton(
+                onPressed: (){
+                  //
+                },
+                backgroundColor: Colors.deepPurple[300],
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0))
+                ),
+                child: const Icon(Icons.edit, color: Colors.white,),
+              ),
+            ),
+            FloatingActionButton(
+              onPressed: (){
+                deleteTask();
+              },
+              backgroundColor: Colors.red,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.0))
+              ),
+              child: const Icon(Icons.delete_forever, color: Colors.white,),
+            ),
+          ],
         ),
       ),
       appBar: AppBar(
@@ -93,33 +111,6 @@ class TaskDetailsPageState extends State<TaskDetailsPage> {
                 padding: const EdgeInsets.all(5.0),
                 child: Text("🗓 Deadline: $targetDate", style: const TextStyle(fontSize: 25.0)),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Material(
-                    elevation: 10.0,
-                    child: InkWell(
-                      onTap: deleteTask,
-                      child: Container(
-                        height: 50,
-                        color: Colors.red,
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("DELETE", style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ),
