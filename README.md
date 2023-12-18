@@ -13,14 +13,14 @@ To install the app on your Android device, follow these steps:
 ## Libraries with versions and licences
 - cupertino_icons: ^1.0.2 (MIT)
 - build_runner: ^2.3.3 (BSD-3-Clause)
-- firebase_core: ^2.22.0
-- firebase_auth: ^4.15.0
-- http: ^1.1.0
-- cloud_firestore: ^4.13.1
-- google_sign_in: ^6.1.6
-- firebase_storage: ^11.5.3
-- shared_preferences: ^2.2.2
-- google_fonts: ^6.1.0
+- firebase_core: ^2.22.0 (BSD-3-Clause)
+- firebase_auth: ^4.15.0 (BSD-3-Clause)
+- http: ^1.1.0 (BSD-3-Clause)
+- cloud_firestore: ^4.13.1 (BSD-3-Clause)
+- google_sign_in: ^6.1.6 (BSD-3-Clause)
+- firebase_storage: ^11.5.3 (BSD-3-Clause)
+- shared_preferences: ^2.2.2 (BSD-3-Clause)
+- google_fonts: ^6.1.0 (Apache-2.0)
 - carousel_slider: ^4.2.1
 - shimmer: ^3.0.0
 - syncfusion_flutter_datepicker: ^23.2.7
