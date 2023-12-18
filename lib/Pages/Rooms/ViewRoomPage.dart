@@ -36,6 +36,10 @@ class _ViewRoomPageState extends State<ViewRoomPage> {
       body: ListView(
         children: [
           imageWidget(),
+          const Padding(
+            padding: EdgeInsets.only(left: 13.0, top: 13.0),
+            child: Text("To be done:", style: TextStyle(fontSize: 18)),
+          ),
           ValueListenableBuilder<bool>(
             valueListenable: update,
             builder: (context, value, child) {
