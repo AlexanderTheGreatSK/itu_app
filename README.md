@@ -24,6 +24,6 @@ To install the app on your Android device, follow these steps:
 - carousel_slider: ^4.2.1 (MIT)
 - shimmer: ^3.0.0 (BSD-3-Clause)
 - syncfusion_flutter_datepicker: ^23.2.7 (Syncfusion license)
-- flutter_animation_progress_bar: ^2.3.1
-- googleapis: ^12.0.0
-- googleapis_auth: ^1.4.1
+- flutter_animation_progress_bar: ^2.3.1 (BSD-3-Clause)
+- googleapis: ^12.0.0 (BSD-3-Clause)
+- googleapis_auth: ^1.4.1 (BSD-3-Clause)
