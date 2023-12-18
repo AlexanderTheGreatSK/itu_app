@@ -481,7 +481,6 @@ class DatabaseHandler {
     GoogleAPI.Event event = GoogleAPI.Event();
 
     event.summary = task.name;
-    event.colorId = "MAUVE";
 
     GoogleAPI.EventDateTime start = GoogleAPI.EventDateTime();
     start.date = task.targetDate;
@@ -635,6 +634,7 @@ class DatabaseHandler {
           .collection("rooms")
           .doc(roomName)
           .collection("roomTasks")
+          .where("taskIsDone", isEqualTo: false)
           .get()
           .then((snapshot) {
         for (var docSnapshot in snapshot.docs) {
@@ -776,11 +776,14 @@ class DatabaseHandler {
 // REWARDS end-points--------------------------------------------------------------
   Future<void> createReward(Reward newReward) async {
     if(isMobilePlatform()) {
+      DocumentReference documentReference = FirebaseFirestore.instance.collection("rewards").doc();
+
       final dataMap = <String, dynamic> {
         "name" : newReward.name,
         "price" : newReward.price,
         "imageId" : newReward.imageId,
         "isAvailable" : newReward.isAvailable,
+        "rewardId" : documentReference.id,
       };
 
       print(dataMap.toString());
@@ -834,7 +837,7 @@ class DatabaseHandler {
         for(var docSnapshot in snapshot.docs) {
           var data = docSnapshot.data();
           print(data);
-          rewards.add(Reward(data["name"], data["price"], data["imageId"], data["isAvailable"]));
+          rewards.add(Reward(data["name"], data["price"], data["imageId"], data["isAvailable"], data["rewardId"]));
         }
         return rewards;
       });
@@ -842,6 +845,16 @@ class DatabaseHandler {
       return rewards;
     }
     return rewards;
+  }
+
+  Future<void> buyReward(Reward reward) async {
+    if (isMobilePlatform()) {
+      var ref = FirebaseFirestore.instance.collection("rewards").doc(reward.rewardId);
+
+      await ref
+          .set({"isAvailable": false})
+          .onError((error, stackTrace) => print("Error: $error, $stackTrace"));
+    }
   }
 
 }

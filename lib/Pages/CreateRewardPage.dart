@@ -35,7 +35,7 @@ class _MyCreateRewardPageState extends State<MyCreateRewardPage> {
 
   void crateNewReward() {
     ///Creating a new reward with error handling
-    Reward reward = Reward(nameController.text, int.parse(rewardController.text), imgIndex.toString(), true);
+    Reward reward = Reward(nameController.text, int.parse(rewardController.text), imgIndex.toString(), true, "");
 
     print(nameController.text);
     print(rewardController.text);
