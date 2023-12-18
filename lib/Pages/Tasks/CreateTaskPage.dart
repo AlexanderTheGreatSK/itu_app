@@ -117,10 +117,18 @@ class _MyCreateTaskPageState extends State<MyCreateTaskPage> {
     entries = rooms.map<DropdownMenuEntry<String>>((Room room) {
       return DropdownMenuEntry(value: room.name, label: room.name);
     }).toList();
-    
-    setState(() {
-      loadingRooms = false;
-    });
+
+    if(mounted) {
+      setState(() {
+        loadingRooms = false;
+      });
+    }
+
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void onSelectionDateChanged(DateRangePickerSelectionChangedArgs arguments) {

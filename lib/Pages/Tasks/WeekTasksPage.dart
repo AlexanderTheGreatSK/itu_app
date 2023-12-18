@@ -31,8 +31,9 @@ class _WeekTasksPage extends State<WeekTasksPage> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const MyCreateTaskPage()),
-            );
-            update.value = !update.value;
+            ).then((value) {
+              update.value = !update.value;
+            });
           },
           backgroundColor: Colors.deepPurple[300],
           shape: const RoundedRectangleBorder(
